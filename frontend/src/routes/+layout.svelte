@@ -53,7 +53,7 @@
         justify-content: space-between;
         align-items: center;
         background-color: #010101;
-        max-width: 1664px;
+        /* max-width: 1664px; */
         padding: 18px 0;
     }
 

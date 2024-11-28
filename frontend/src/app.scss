@@ -1,14 +1,11 @@
-// @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
-
-// :root {
-//     --primary: #266b5b;
-//     --background: #1e8a70;
-// }
-
-// body {
-//     box-sizing: border-box;
-//     margin: 0;
-//     padding: 0;
-//     font-family: "Roboto", sans-serif;
-//     background-color: #010101;
-// }
+body {
+    box-sizing: border-box;
+    margin: 0;
+    padding-right: 128px;
+    padding-left: 128px;
+    background-color: #010101;
+    background-image: url("PinkEllipse.svg"), url("YellowEllipse.svg"), url("Star.svg"); 
+    background-repeat: no-repeat, no-repeat, no-repeat; 
+    background-position-x: -500px, 1375px, 0;
+    background-position-y: -100px, -700px , 1000px;
+}

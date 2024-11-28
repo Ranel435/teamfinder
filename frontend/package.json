@@ -25,7 +25,6 @@
 	"type": "module",
 	"dependencies": {
 		"@fontsource-variable/noto-sans-display": "^5.1.0",
-		"@sveltejs/adapter-node": "^5.2.2",
-		"svelte-routing": "^2.13.0"
+		"@sveltejs/adapter-node": "^5.2.2"
 	}
 }

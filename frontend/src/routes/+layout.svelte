@@ -1,6 +1,5 @@
 <script>
-	// let { children } = $props();
-    import '@fontsource-variable/noto-sans-display';
+    import "../app.scss";
 </script>
 
 <header class="navbar">
@@ -24,12 +23,17 @@
 
     <!-- Кнопка входа справа -->
     <div class="login-button">
-        <a href="auth" class="login-button">Вход</a>
+        <a href="/auth" class="login-button">Вход</a>
     </div>
 </header>
 
 <slot />
 
+
+
+<footer>
+
+</footer>
 <style>
     /* noto-sans-display-latin-wght-normal */
     @font-face {
@@ -45,7 +49,7 @@
         font-style: normal;
         font-display: swap;
         font-weight: 100 900;
-        src: url("$lib/fonts/NotSansDisplay.ttf");
+        src: url("$lib/fonts/NotoSansDisplay.ttf");
     }
     /* Стили для навигационной панели */
     .navbar {

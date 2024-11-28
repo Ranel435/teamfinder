@@ -1,7 +1,22 @@
+<script lang="ts">
+    let token: string = "";
+    let auth: string = "/auth";
+
+    let free_agents: string = "/free_agents";
+    let find_team: string = "/find_team";
+    let create_form: string = "/create-form";
+
+    if (!token) {
+        free_agents = "/auth";
+        find_team = "/auth";
+        create_form = "/auth";
+    }    
+
+</script>
+
 
 
 <section class="main-section">
-    <!-- <img src="../static/Ellipse 33.svg" class = "background" alt=""> -->
     <div class="text">
         <p>Команда найдется для каждого</p>
     </div>
@@ -9,9 +24,9 @@
         <img src="Начни Хакатонить!.svg" alt="">
     </div>
     <div class="main-buttons">
-        <a  class="main-button" href="">Свободные агенты</a>
-        <a class="main-button" href="">Найти команду</a>
-        <a class="main-button" href="">Создать анкету</a>
+        <a  class="main-button" href={free_agents}>Свободные агенты</a>
+        <a class="main-button" href={find_team}>Найти команду</a>
+        <a class="main-button" href={create_form}>Создать анкету</a>
     </div> 
 </section>
 <section class="popular-roles">
@@ -37,11 +52,11 @@
         <div class="role-name">Product manager</div>
         <div class="role-teams">14 команд</div>
       </button>
-      <button class="role ui/ux">
+      <button class="role ui">
         <div class="role-name">UX / UI дизайнер</div>
         <div class="role-teams">14 команд</div>
       </button>
-      <button class="role ios">
+      <button class="role mobile">
         <div class="role-name">IOS / Android dev</div>
         <div class="role-teams">14 команд</div>
       </button>
@@ -137,8 +152,7 @@
     /* Grid container */
     .roles-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        /* grid-auto-rows: 140px;  */
+        grid-template-columns: repeat(3, minmax(auto, 440px));        /* grid-auto-rows: 140px;  */
     }
 
     /* Role card styles */
@@ -153,7 +167,7 @@
         align-items: flex-start;
         text-align: left;
 
-        border: 4.55px solid #fff;
+        border: 4px solid #fff;
         border-radius: 24px;
 
         padding: 10px;
@@ -163,8 +177,8 @@
         cursor: pointer;
         font-family: 'Noto Sans Display Variable';
         
-        width: 440px;
-        height: 140px;
+        /* width: 440px;
+        height: 140px; */
         
         transition: transform 0.2s, border-color 0.2s;
     }
@@ -197,20 +211,20 @@
     .analytics::before {
         background-color: rgba(0, 197, 3, 0.3);
     }
-    .fullstack::before {
-        background-color: rgba(255, 39, 39, 0.3);
+    .ml::before {
+        background-color: rgba(0, 90, 12, 0.3);
     }
-    .fullstack::before {
-        background-color: rgba(255, 39, 39, 0.3);
+    .devops::before {
+        background-color: rgba(153, 0, 255, 0.3);
     }
-    .fullstack::before {
-        background-color: rgba(255, 39, 39, 0.3);
+    .ui::before {
+        background-color: rgba(14, 179, 255, 0.3);
     }
-    .fullstack::before {
-        background-color: rgba(255, 39, 39, 0.3);
+    .mobile::before {
+        background-color: rgba(160, 0, 83, 0.3);
     }
-    .fullstack::before {
-        background-color: rgba(255, 39, 39, 0.3);
+    .pm::before {
+        background-color: rgba(255, 225, 0, 0.3);
     }
 
     .role:hover::before {

@@ -80,6 +80,7 @@ declare module '$env/static/private' {
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 	export const XPC_FLAGS: string;
 	export const WEBSTORM_VM_OPTIONS: string;
+	export const FORCE_COLOR: string;
 	export const DATASPELL_VM_OPTIONS: string;
 	export const npm_config_node_gyp: string;
 	export const npm_package_version: string;
@@ -196,6 +197,7 @@ declare module '$env/dynamic/private' {
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 		XPC_FLAGS: string;
 		WEBSTORM_VM_OPTIONS: string;
+		FORCE_COLOR: string;
 		DATASPELL_VM_OPTIONS: string;
 		npm_config_node_gyp: string;
 		npm_package_version: string;

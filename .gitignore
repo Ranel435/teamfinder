@@ -26,7 +26,6 @@ go.work.sum
 
 # other
 .DS_Store
-.gitignore
 node_modules
 dist
 test-results/

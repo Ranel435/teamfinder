@@ -17,11 +17,11 @@
     <div class="form">
       <div class="email">
         <label for="">Почта или логин</label>
-        <input type="email" bind:value={email}>
+        <input type="email" bind:value={email} placeholder="логин">
       </div>
       <div class="password">
         <label for="">Пароль</label>
-        <input type="password" bind:value={password}>
+        <input type="password" bind:value={password} placeholder="пароль">
       </div>
     </div>
     <div class="buttons">
@@ -88,6 +88,7 @@
   }
 
   input {
+    font-family: 'Noto Sans Display Variable';
     background-color: #F3F3F3;
     border: 0;
     height: 24px;

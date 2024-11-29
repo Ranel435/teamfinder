@@ -2,9 +2,15 @@ package main
 
 import (
 	"teamfinder/backend/internal/pkg/server"
+	"teamfinder/backend/internal/pkg/storage"
 )
 
 func main() {
-	s := server.New(":8080", &store)
+	store, err := storage.NewStorage()
+	if err != nil {
+		panic(err)
+	}
+
+	s := server.New(":8090", &store)
 	s.Start()
 }

@@ -1,5 +1,5 @@
 <script>
-    import "../app.scss";
+    import "../app.css";
 </script>
 
 <header class="navbar">

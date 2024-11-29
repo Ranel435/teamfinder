@@ -1,0 +1,19 @@
+body {
+    box-sizing: border-box;
+    margin: 0;
+    padding-right: 128px;
+    padding-left: 128px;
+    background-color: #010101;
+    background-image: url("PinkEllipse.svg"), url("YellowEllipse.svg"), url("Star.svg"); 
+    background-repeat: no-repeat, no-repeat, no-repeat; 
+    background-position-x: -55vh, 135vh, 0vh;
+    background-position-y: -15vh, -100vh , 1000px;
+}
+:root {
+    --gradient: linear-gradient(120deg, #E5469A, #FBA31C);
+    --light-grey: #F3F3F3;
+    --dark-grey: #A2A2A2;
+    --black: #1A1A1A;
+    --pink: #E5429F;
+    --yellow: #FFE99E;
+}

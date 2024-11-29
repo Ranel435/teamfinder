@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "../../app.css";
   let current_form: string = "registration";
 </script>
 
@@ -35,10 +36,7 @@
         <div class="password">
           <label for="">Пароль</label>
           <input type="password" required />
-        </div>
-        <div class="password">
-          <label for="">Повторите пароль</label>
-          <input type="password" required />
+          <input type="password" class="repeat-password" required />
         </div>
       </div>
       <div class="buttons">
@@ -52,7 +50,7 @@
     {/if}
     {#if current_form === "personal_info"}
       <div class="steps">
-        <div class="step active">
+        <div class="step done">
           <div class="circle">1</div>
           <p>Создание логина</p>
         </div>
@@ -90,11 +88,11 @@
     {/if}
     {#if current_form === "confirm"}
       <div class="steps">
-        <div class="step active">
+        <div class="step done">
           <div class="circle">1</div>
           <p>Создание логина</p>
         </div>
-        <div class="step active">
+        <div class="step done">
           <div class="circle">2</div>
           <p>Персональная информация</p>
         </div>
@@ -126,14 +124,57 @@
         <a
           class="login-a"
           href=""
-          on:click={() => (current_form = "confirm")}>Далее</a
+          on:click={() => (current_form = "end")}>Далее</a
+        >
+      </div>
+    {/if}
+    {#if current_form === "end"}
+      <div class="steps">
+        <div class="step done">
+          <div class="circle">1</div>
+          <p>Создание логина</p>
+        </div>
+        <div class="step done">
+          <div class="circle">2</div>
+          <p>Персональная информация</p>
+        </div>
+        <div class="step active">
+          <div class="circle">3</div>
+          <p>Подтверждение</p>
+        </div>
+      </div>
+      <div class="form">
+        <div class="email">
+          <label for="">Логин</label>
+          <input class="email-input" type="email" required />
+        </div>
+        <div class="email">
+          <label for="">Почта</label>
+          <input class="email-input" type="email" required />
+        </div>
+        <div class="password">
+          <label for="">Пароль</label>
+          <input type="password" required />
+        </div>
+        <div class="password">
+          <label for="">Повторите пароль</label>
+          <input type="password" required />
+        </div>
+      </div>
+      <div class="buttons">
+        <a href="" on:click={() => current_form = "personal_info"}>Назад</a>
+        <a
+          class="login-a"
+          href="/"
+          on:click={() => (current_form = "")}>На главную</a
         >
       </div>
     {/if}
   </div>
 </section>
 
-<style>
+<style lang="css">
+
   .registr {
     display: flex;
     align-items: center;
@@ -169,7 +210,7 @@
   p {
     font-family: "Noto Sans Display Variable";
     margin: 0;
-    color: #a2a2a2;
+    color: var(--dark-grey);
     font-size: 24px;
   }
 
@@ -197,16 +238,22 @@
   label {
     font-family: "Noto Sans Display Variable";
     font-size: 24px;
+    margin-left: 10px;
     margin-bottom: 7px;
   }
 
   input {
-    background-color: #f3f3f3;
+    background-color: var(--light-grey);
     border: 0;
     height: 24px;
     border-radius: 50px;
     padding: 8px 16px;
     font-size: 24px;
+  }
+
+
+  .repeat-password {
+    margin-top: 15px;
   }
 
   .buttons {
@@ -218,9 +265,9 @@
   a {
     font-family: "Noto Sans Display Variable";
     font-size: 24px;
-    color: #a2a2a2;
+    color: var(--dark-grey);
     padding: 8px 27px;
-    border: 3px solid #c9c9c9;
+    border: 3px solid var(--light-grey);
     border-radius: 50px;
     text-decoration: none;
   }
@@ -231,7 +278,7 @@
     align-items: center;
     color: #fff;
     border: 0;
-    background-image: linear-gradient(-120deg, #fba31c, #e5469a);
+    background-image: var(--gradient);
   }
 
   .steps {
@@ -250,50 +297,66 @@
   }
 
   .circle {
-    width: 44px;
-    height: 44px;
+    padding-top: 2px;
+    /* padding-right: 2px; */
+    width: 42px;
+    height: 40px;
     border-radius: 50%;
     background: #fff;
-    border: 2px solid #ccc;
-    color: #ccc;
+    border: 2px solid var(--dark-grey);
+    color: var(--dark-grey);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    font-weight: bold;
-    font-family: "Noto Sans Display Variable";
-  }
-
-  .step.active .circle {
-    border-color: #ff4081;
-    color: #ff4081;
-    background: #fff;
+    font-size: 24px;
+    font-family: "Igra Sans Variable";
+    /* border-image: linear-gradient(120deg, #E5469A, #FBA31C) 0; */
   }
 
   .step p {
     font-family: "Noto Sans Display Variable";
     margin-top: 10px;
+    font-size: 16px;
+    color: var(--dark-grey);
+  }
+  .active .circle {
+    color: var(--pink);
+  }
+  .active p {
+    color: var(--pink);
+  }
+
+  .done .circle {
+    color: #fff;
+    background-image: var(--gradient);
+    border: 0;
+    height: 44px;
+    width: 46px;
+    /* border-image: var(--gradient); */
+  }
+  .done p {
+    color: var(--pink);
+  }
+  /* .active .circle {
+    color: var(--pink);
+    background: #fff;
+  }
+  .done .circle{
+    background-image: var(--gradient);
+  }
+
+
+
+  .step p {
+    font-family: "Noto Sans Display Variable";
+    margin-top: 10px;
     font-size: 19px;
-    color: #999;
+    color: var(--dark-grey);
   }
 
-  .step.active p {
-    color: #ff4081;
-  }
+  .active, .done p {
+    color: var(--pink);
+  } */
 
-  /* Линия соединения */
-  .steps::before {
-    content: "";
-    position: absolute;
-    top: 20px;
-    left: 10%;
-    width: 80%;
-    height: 2px;
-    background: #ccc;
-    z-index: -1;
-  }
 
-  .step.active ~ .step::before {
-    background: #ff4081;
-  }
 </style>

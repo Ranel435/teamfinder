@@ -93,11 +93,6 @@
     .main-buttons {
         margin-bottom: 128px;
     }
-    /* .gradient-text {
-        background-image: linear-gradient(90deg, #E5469A, #FBA31C);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    } */
     
     p {
         font-family: 'Igra Sans Variable';
@@ -120,10 +115,9 @@
         margin:0 18px;
     }
     .main-button:hover {
-        transition: all 0.5s ease; /* Применить плавный переход ко всем свойствам */
+        transition: all 0.5s ease;
         color: #000;
         background-color: #fff;
-        /* background-color: #45a049; */
     }
 
 
@@ -249,11 +243,15 @@
 
     /* More roles link */
     .more-roles {
+        display: flex;
+        align-items: flex-end;
+        text-align: left;
         margin-top: 20px;
         font-size: 24px;
         cursor: pointer;
         transition: color 0.2s;
         text-decoration: none;
+
     }
     .more:hover {
         text-decoration: underline;

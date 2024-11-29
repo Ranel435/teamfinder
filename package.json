@@ -1,0 +1,5 @@
+{
+    "scripts": {
+      "dev": "concurrently \"npm run dev --prefix frontend\" \"go run ./backend/cmd/main.go\""
+    }
+  }

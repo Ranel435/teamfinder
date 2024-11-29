@@ -28,51 +28,7 @@
 declare module '$env/static/private' {
 	export const SHELL: string;
 	export const npm_command: string;
-<<<<<<< HEAD
 	export const npm_config_userconfig: string;
-=======
-	export const PWD: string;
-	export const npm_lifecycle_event: string;
-	export const EDITOR: string;
-	export const npm_package_name: string;
-	export const LANG: string;
-	export const IDEA_VM_OPTIONS: string;
-	export const CLION_VM_OPTIONS: string;
-	export const npm_config_npm_version: string;
-	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
-	export const XPC_FLAGS: string;
-	export const WEBSTORM_VM_OPTIONS: string;
-	export const FORCE_COLOR: string;
-	export const DATASPELL_VM_OPTIONS: string;
-	export const npm_config_node_gyp: string;
-	export const npm_package_version: string;
-	export const _CE_M: string;
-	export const XPC_SERVICE_NAME: string;
-	export const VSCODE_INJECTION: string;
-	export const SHLVL: string;
-	export const STUDIO_VM_OPTIONS: string;
-	export const HOME: string;
-	export const VSCODE_GIT_ASKPASS_MAIN: string;
-	export const HOMEBREW_PREFIX: string;
-	export const npm_config_cache: string;
-	export const CONDA_PYTHON_EXE: string;
-	export const LOGNAME: string;
-	export const npm_lifecycle_script: string;
-	export const VSCODE_GIT_IPC_HANDLE: string;
-	export const GATEWAY_VM_OPTIONS: string;
-	export const CONDA_DEFAULT_ENV: string;
-	export const DATAGRIP_VM_OPTIONS: string;
-	export const npm_config_user_agent: string;
-	export const VSCODE_GIT_ASKPASS_NODE: string;
-	export const GIT_ASKPASS: string;
-	export const INFOPATH: string;
-	export const HOMEBREW_CELLAR: string;
-	export const RIDER_VM_OPTIONS: string;
-	export const JETBRAINS_CLIENT_VM_OPTIONS: string;
-	export const RUBYMINE_VM_OPTIONS: string;
-	export const npm_node_execpath: string;
-	export const npm_config_prefix: string;
->>>>>>> cae572c7f50d28495320cdc17d612ff0e9206dad
 	export const COLORTERM: string;
 	export const HYPRLAND_CMD: string;
 	export const npm_config_cache: string;
@@ -168,51 +124,7 @@ declare module '$env/dynamic/private' {
 	export const env: {
 		SHELL: string;
 		npm_command: string;
-<<<<<<< HEAD
 		npm_config_userconfig: string;
-=======
-		PWD: string;
-		npm_lifecycle_event: string;
-		EDITOR: string;
-		npm_package_name: string;
-		LANG: string;
-		IDEA_VM_OPTIONS: string;
-		CLION_VM_OPTIONS: string;
-		npm_config_npm_version: string;
-		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
-		XPC_FLAGS: string;
-		WEBSTORM_VM_OPTIONS: string;
-		FORCE_COLOR: string;
-		DATASPELL_VM_OPTIONS: string;
-		npm_config_node_gyp: string;
-		npm_package_version: string;
-		_CE_M: string;
-		XPC_SERVICE_NAME: string;
-		VSCODE_INJECTION: string;
-		SHLVL: string;
-		STUDIO_VM_OPTIONS: string;
-		HOME: string;
-		VSCODE_GIT_ASKPASS_MAIN: string;
-		HOMEBREW_PREFIX: string;
-		npm_config_cache: string;
-		CONDA_PYTHON_EXE: string;
-		LOGNAME: string;
-		npm_lifecycle_script: string;
-		VSCODE_GIT_IPC_HANDLE: string;
-		GATEWAY_VM_OPTIONS: string;
-		CONDA_DEFAULT_ENV: string;
-		DATAGRIP_VM_OPTIONS: string;
-		npm_config_user_agent: string;
-		VSCODE_GIT_ASKPASS_NODE: string;
-		GIT_ASKPASS: string;
-		INFOPATH: string;
-		HOMEBREW_CELLAR: string;
-		RIDER_VM_OPTIONS: string;
-		JETBRAINS_CLIENT_VM_OPTIONS: string;
-		RUBYMINE_VM_OPTIONS: string;
-		npm_node_execpath: string;
-		npm_config_prefix: string;
->>>>>>> cae572c7f50d28495320cdc17d612ff0e9206dad
 		COLORTERM: string;
 		HYPRLAND_CMD: string;
 		npm_config_cache: string;

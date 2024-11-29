@@ -94,7 +94,7 @@
     height: 24px;
     border-radius: 50px;
     padding: 8px 16px;
-    font-size: 24px;
+    font-size: 20px;
   }
 
 

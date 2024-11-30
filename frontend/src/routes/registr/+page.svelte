@@ -1,13 +1,24 @@
 <script lang="ts">
   import "../../app.css";
-  let current_form: string = "registration";
+  import Code from "$lib/code.svelte";
+  $: current_form = "registration";
+  $: main_text = "Заполните пол необходимой информацией";
+  $: main_title = "Регистрация";
+  if (current_form === "confirm") {
+    main_title = "Подтверждение почты";
+    main_text = "";
+  }
+  if (current_form === "end") {
+    main_title = "Регистрация завершена";
+    main_text = "";
+  }
 </script>
 
 <section class="registr">
   <div class="registr-container">
     <div class="text">
-      <h2>Регистрация</h2>
-      <p>Заполните поля необходимой информацией</p>
+      <h2>{main_title}</h2>
+      <p>{main_text}</p>
     </div>
     {#if current_form === "registration"}
       <div class="steps">
@@ -27,16 +38,26 @@
       <div class="form">
         <div class="login">
           <label for="">Логин</label>
-          <input class="input" type="text" required />
+          <input class="input" type="text" required placeholder="логин" />
         </div>
         <div class="email">
           <label for="">Почта</label>
-          <input class="input" type="email" required />
+          <input
+            class="input"
+            type="email"
+            required
+            placeholder="x@email.com"
+          />
         </div>
         <div class="password">
           <label for="">Пароль</label>
-          <input type="password" required />
-          <input type="password" class="repeat-password" required />
+          <input type="password" required placeholder="пароль" />
+          <input
+            type="password"
+            class="repeat-password"
+            required
+            placeholder="повторите пароль"
+          />
         </div>
       </div>
       <div class="buttons">
@@ -66,11 +87,11 @@
       <div class="form">
         <div class="name">
           <label for="">Имя</label>
-          <input class="input" type="text" required placeholder="Иван"/>
+          <input class="input" type="text" required placeholder="Иван" />
         </div>
         <div class="surname">
           <label for="">Фамилия</label>
-          <input class="input" type="text" required placeholder="Иванов"/>
+          <input class="input" type="text" required placeholder="Иванов" />
         </div>
         <div class="tgid">
           <label for="">Телеграм</label>
@@ -78,11 +99,9 @@
         </div>
       </div>
       <div class="buttons">
-        <a href="" on:click={() => current_form = "registration"}>Назад</a>
-        <a
-          class="login-a"
-          href=""
-          on:click={() => (current_form = "confirm")}>Далее</a
+        <a href="" on:click={() => (current_form = "registration")}>Назад</a>
+        <a class="login-a" href="" on:click={() => (current_form = "confirm")}
+          >Далее</a
         >
       </div>
     {/if}
@@ -101,30 +120,18 @@
           <p>Подтверждение</p>
         </div>
       </div>
-      <div class="form">
-        <div class="email">
-          <label for="">Логин</label>
-          <input class="email-input" type="email" required />
-        </div>
-        <div class="email">
-          <label for="">Почта</label>
-          <input class="email-input" type="email" required />
-        </div>
-        <div class="password">
-          <label for="">Пароль</label>
-          <input type="password" required />
-        </div>
-        <div class="password">
-          <label for="">Повторите пароль</label>
-          <input type="password" required />
+      <div class="verify-container">
+        <p>на указанную почту x@email.com был выслан 6-ти значный код</p>
+        <div class="verify">
+          <p>Введите код для продолжения</p>
+          <Code />
         </div>
       </div>
+
       <div class="buttons">
-        <a href="" on:click={() => current_form = "personal_info"}>Назад</a>
-        <a
-          class="login-a"
-          href=""
-          on:click={() => (current_form = "end")}>Далее</a
+        <a href="" on:click={() => (current_form = "personal_info")}>Назад</a>
+        <a class="login-a" href="" on:click={() => (current_form = "end")}
+          >Далее</a
         >
       </div>
     {/if}
@@ -162,11 +169,9 @@
         </div>
       </div>
       <div class="buttons">
-        <a href="" on:click={() => current_form = "personal_info"}>Назад</a>
-        <a
-          class="login-a"
-          href="/"
-          on:click={() => (current_form = "")}>На главную</a
+        <a href="" on:click={() => (current_form = "personal_info")}>Назад</a>
+        <a class="login-a" href="/" on:click={() => (current_form = "")}
+          >На главную</a
         >
       </div>
     {/if}
@@ -174,7 +179,6 @@
 </section>
 
 <style lang="css">
-
   .registr {
     display: flex;
     align-items: center;
@@ -185,7 +189,7 @@
   .registr-container {
     padding: 50px 36px;
     width: 568px;
-    height: auto;
+    height: 700px;
     background-color: #fff;
     border-radius: 32px;
     display: flex;
@@ -222,15 +226,18 @@
     width: calc(100% - 54px);
     margin-bottom: 38px;
   }
-  .email, .login, .name, .surname {
+  .email,
+  .login,
+  .name,
+  .surname {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
   }
   .input {
     margin-bottom: 36px;
   }
-  .password, .tgid {
+  .password,
+  .tgid {
     display: flex;
     flex-direction: column;
   }
@@ -239,7 +246,7 @@
     font-family: "Noto Sans Display Variable";
     font-size: 24px;
     margin-left: 10px;
-    margin-bottom: 7px;
+    margin-bottom: 8px;
   }
 
   input {
@@ -247,10 +254,9 @@
     border: 0;
     height: 24px;
     border-radius: 50px;
-    padding: 8px 16px;
-    font-size: 24px;
+    padding: 7px 16px;
+    font-size: 20px;
   }
-
 
   .repeat-password {
     margin-top: 15px;
@@ -297,10 +303,8 @@
   }
 
   .circle {
-    padding-top: 2px;
-    /* padding-right: 2px; */
     width: 42px;
-    height: 40px;
+    height: 42px;
     border-radius: 50%;
     background: #fff;
     border: 2px solid var(--dark-grey);
@@ -309,8 +313,8 @@
     align-items: center;
     justify-content: center;
     font-size: 24px;
-    font-family: "Igra Sans Variable";
-    /* border-image: linear-gradient(120deg, #E5469A, #FBA31C) 0; */
+    font-family: "Montserrat";
+    font-weight: 7002;
   }
 
   .step p {
@@ -330,33 +334,14 @@
     color: #fff;
     background-image: var(--gradient);
     border: 0;
-    height: 44px;
-    width: 46px;
-    /* border-image: var(--gradient); */
+    height: 48px;
+    width: 48px;
   }
   .done p {
     color: var(--pink);
   }
-  /* .active .circle {
-    color: var(--pink);
-    background: #fff;
+
+  .verify-container p {
+    margin-bottom: 36px;
   }
-  .done .circle{
-    background-image: var(--gradient);
-  }
-
-
-
-  .step p {
-    font-family: "Noto Sans Display Variable";
-    margin-top: 10px;
-    font-size: 19px;
-    color: var(--dark-grey);
-  }
-
-  .active, .done p {
-    color: var(--pink);
-  } */
-
-
 </style>

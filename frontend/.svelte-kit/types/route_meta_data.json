@@ -1,8 +1,9 @@
 {
 	"/": [],
 	"/auth": [],
+	"/forget_password": [],
 	"/homework_notes": [],
 	"/homework_notes/[id]": [],
 	"/practice": [],
-	"/registr": []
+	"/reg": []
 }

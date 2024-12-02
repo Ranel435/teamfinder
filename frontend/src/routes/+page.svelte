@@ -1,4 +1,5 @@
 <script lang="ts">
+    import "../app.css";
     let token: string = "";
     let auth: string = "/auth";
 
@@ -6,11 +7,15 @@
     let find_team: string = "/find_team";
     let create_form: string = "/create-form";
 
+    let count_teams: number = 14;
+
     if (!token) {
         free_agents = "/auth";
         find_team = "/auth";
         create_form = "/auth";
-    }    
+    } else {
+        
+    }
 
 </script>
 
@@ -34,39 +39,39 @@
     <div class="roles-grid">
       <button class="role backend">
         <div class="role-name">Backend</div>
-        <div class="role-teams">14 команд</div>
+        <div class="role-teams">{count_teams} команд</div>
       </button>
       <button class="role frontend">
         <div class="role-name">Frontend</div>
-        <div class="role-teams">14 команд</div>
+        <div class="role-teams">{count_teams} команд</div>
       </button>
       <button class="role fullstack">
         <div class="role-name">Fullstack dev</div>
-        <div class="role-teams">14 команд</div>
+        <div class="role-teams">{count_teams} команд</div>
       </button>
       <button class="role analytics">
         <div class="role-name">Аналитик данных</div>
-        <div class="role-teams">14 команд</div>
+        <div class="role-teams">{count_teams} команд</div>
       </button>
       <button class="role pm">
         <div class="role-name">Product manager</div>
-        <div class="role-teams">14 команд</div>
+        <div class="role-teams">{count_teams} команд</div>
       </button>
       <button class="role ui">
         <div class="role-name">UX / UI дизайнер</div>
-        <div class="role-teams">14 команд</div>
+        <div class="role-teams">{count_teams} команд</div>
       </button>
       <button class="role mobile">
         <div class="role-name">IOS / Android dev</div>
-        <div class="role-teams">14 команд</div>
+        <div class="role-teams">{count_teams} команд</div>
       </button>
       <button class="role ml">
         <div class="role-name">ML engineer</div>
-        <div class="role-teams">14 команд</div>
+        <div class="role-teams">{count_teams} команд</div>
       </button>
       <button class="role devops">
         <div class="role-name">DevOps инженер</div>
-        <div class="role-teams">14 команд</div>
+        <div class="role-teams">{count_teams} команд</div>
       </button>
     </div>
     <div class="more-roles">
@@ -95,7 +100,7 @@
     }
     
     p {
-        font-family: 'Igra Sans Variable';
+        font-family: "Igra";
         font-size: 24px;
         line-height: 130%;
         letter-spacing: 5%;
@@ -103,8 +108,9 @@
         margin: 0;
     }
 
+    /* main buttons */
     .main-button {
-        font-family: 'Noto Sans Display Variable';
+        font-family: 'Manrope';
         max-width: 164px;
         text-decoration: none;
         padding: 3px 50px;
@@ -114,15 +120,13 @@
         font-size: 24px;
         margin:0 18px;
     }
+
     .main-button:hover {
         transition: all 0.5s ease;
         color: #000;
         background-color: #fff;
     }
 
-
-
-    /* General styles */
     .popular-roles {
         display: flex;
         flex-wrap: wrap;
@@ -133,66 +137,93 @@
         text-align: center;
     }
 
-    /* Title styles */
     .title {
         font-size: 48px;
         margin-bottom: 80px;
-        font-family: 'Igra Sans Variable';
-        letter-spacing: -3%;
-        font: 400;
+        font-family: "Igra";
         padding: 0;
+        font-weight: normal;
     }
 
-    /* Grid container */
+    /* grid container */
     .roles-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(auto, 440px));        /* grid-auto-rows: 140px;  */
+        grid-template-columns: repeat(3, minmax(auto, 440px));
     }
 
-    /* Role card styles */
+    /* role card */
     .role {
-        position: relative; /* Обязателен для правильного позиционирования псевдоэлемента */
-        overflow: hidden; /* Обрезает "выходящий" псевдоэлемент */
-
+        position: relative; 
+        overflow: hidden; 
         display: flex;
-        flex: 1; /* Указывает, что все блоки занимают равное пространство */
+        flex: 1;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
         text-align: left;
-
         border: 4px solid #fff;
         border-radius: 24px;
-
         padding: 10px;
         margin: 0px 36px 36px 0;
-
         background: rgba(0, 0, 0,0);
         cursor: pointer;
-        font-family: 'Noto Sans Display Variable';
-        
-        /* width: 440px;
-        height: 140px; */
-        
+        font-family: 'Manrope';     
         transition: transform 0.2s, border-color 0.2s;
     }
     .role:nth-child(3n) {
         margin-right: 0;
     }
 
-    /* Начальное состояние псевдоэлемента (скрыт) */
     .role::before {
-        content: ""; /* Обязателен для псевдоэлементов */
+        content: ""; 
         position: absolute;
         top: 0;
         left: 0;
-        width: 5%; /* Начальная ширина — 0 */
-        height: 100%; /* Полная высота кнопки */
+        width: 5%; 
+        height: 100%;
         background-color: rgba(0, 31, 184, 0.5);
-        z-index: -1; /* Отправляем за текст кнопки */
-        transition: width 0.3s ease; /* Анимация ширины */
+        z-index: -1;
+        transition: width 0.3s ease;
     }
 
+    .role:hover::before {
+        width: 100%; /* Заполняем всю кнопку */
+    }
+
+    .role-name {
+        font-size: 36px;
+        font-weight: medium;
+        margin-bottom: 10px;
+        padding-left: 19px;
+    }
+
+    .role-teams {
+        font-size: 24px;
+        padding-left: 19px;
+        padding-bottom: 10px;
+    }
+
+    /* more roles link */
+    .more-roles {
+        display: flex;
+        justify-content: right;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: color 0.2s;
+        text-decoration: none;
+        width: 80%;
+    }
+
+    .more {
+        font-size: 24px;
+        text-decoration: none;
+    }
+
+    .more:hover {
+        text-decoration: underline;
+    }
+
+    /* colors for roles */
     .backend::before {
         background-color: rgba(0, 31, 184, 0.3);
     }
@@ -221,39 +252,4 @@
         background-color: rgba(255, 225, 0, 0.3);
     }
 
-    .role:hover::before {
-        width: 100%; /* Заполняем всю кнопку */
-    }
-
-
-    /* Role name styles */
-    .role-name {
-        font-size: 36px;
-        font-weight: medium;
-        margin-bottom: 10px;
-        padding-left: 19px;
-    }
-
-    /* Teams count styles */
-    .role-teams {
-        font-size: 24px;
-        padding-left: 19px;
-        padding-bottom: 10px;
-    }
-
-    /* More roles link */
-    .more-roles {
-        display: flex;
-        align-items: flex-end;
-        text-align: left;
-        margin-top: 20px;
-        font-size: 24px;
-        cursor: pointer;
-        transition: color 0.2s;
-        text-decoration: none;
-
-    }
-    .more:hover {
-        text-decoration: underline;
-    }
 </style>

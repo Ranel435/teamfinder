@@ -9,7 +9,8 @@ import (
 )
 
 type Server struct {
-	host    string
+	router  *gin.Engine
+	addr    string
 	storage *storage.Storage
 }
 
@@ -19,8 +20,8 @@ type Entry struct {
 
 func New(host string, st *storage.Storage) *Server {
 	s := &Server{
-		host:    host,
-		storage: st,
+		addr:   host,
+		router: gin.New(),
 	}
 
 	return s
@@ -67,5 +68,9 @@ func (r *Server) handlerGet(ctx *gin.Context) {
 }
 
 func (r *Server) Start() {
-	r.newAPI().Run(r.host)
+	r.newAPI().Run(r.addr)
+}
+
+func (s *Server) GetRouter() *gin.Engine {
+	return s.router
 }

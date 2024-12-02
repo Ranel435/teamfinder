@@ -1,15 +1,7 @@
 <script lang="ts">
   let email: string = "";
   let password: string = "";
-
-
-  function login(email: string, password: string) {
-
-  }
 </script>
-
-
-
 
 <section class="auth">
   <div class="auth-container">
@@ -25,22 +17,20 @@
       </div>
     </div>
     <div class="buttons">
-      <a href="/registr">Регистрация</a>
-      <a href="/">Забыл пароль</a>
-      <a class="login-a" href="/" on:click={() => login}>Войти</a>
+      <a href="/reg">Регистрация</a>
+      <a href="/forget_password">Забыл пароль</a>
+      <a class="login-a" href="/">Войти</a>
     </div>
   </div>
 </section>
-
-
 
 <style>
 
   .auth {
     display: flex;
-    align-items: center;
     justify-content: center;
     height: 100vh;
+    margin: 100px;
   }
 
   .auth-container {
@@ -58,11 +48,11 @@
   }
 
   h2 {
-    font-family: 'Noto Sans Display Variable';
+    font-family: 'Manrope';
     margin: 0;
     font-size: 48px;
-    font-weight: 900px;
-    font-style: medium;
+    font-style: normal;
+    font-weight: 100;
   }
   .form {
     display: flex;
@@ -82,19 +72,19 @@
   }
 
   label {
-    font-family: 'Noto Sans Display Variable';
+    font-family: 'Manrope';
     font-size: 24px;
     margin-bottom: 12px;
   }
 
   input {
-    font-family: 'Noto Sans Display Variable';
+    font-family: 'Manrope';
+    font-size: 20px;
     background-color: #F3F3F3;
     border: 0;
-    height: 24px;
     border-radius: 50px;
+    height: 24px;
     padding: 8px 16px;
-    font-size: 20px;
   }
 
 
@@ -105,13 +95,13 @@
   }
 
   a {
-    font-family: 'Noto Sans Display Variable';
+    font-family: 'Manrope';
     font-size: 24px;
+    text-decoration: none;
     color: #A2A2A2;
     padding:8px 27px;
     border: 3px solid #C9C9C9;
     border-radius: 50px;
-    text-decoration: none;
   }
 
   .login-a{

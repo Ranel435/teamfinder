@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/smtp"
+	"os"
 )
 
 type EmailService struct {
@@ -15,8 +16,8 @@ type EmailService struct {
 
 func NewEmailService() *EmailService {
 	return &EmailService{
-		from:     "your-email@example.com", // Move to env
-		password: "your-password",          // Move to env
+		from:     os.Getenv("EMAIL_LOGIN"),
+		password: os.Getenv("EMAIL_PASSWORD"),
 		host:     "smtp.gmail.com",
 		port:     "587",
 	}

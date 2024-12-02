@@ -21,7 +21,7 @@
     </nav>
 
     <div class="login-button">
-        <a href="/forms/auth" class="login-button">Вход</a>
+        <a href="/auth" class="login-button">Вход</a>
     </div>
 </header>
 <slot />

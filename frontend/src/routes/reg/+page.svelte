@@ -4,32 +4,32 @@
   $: current_form = "registration";
   $: main_text = "Заполните поля необходимой информацией";
   $: main_title = "Регистрация";
-  let tgid: string = "";
+  let email: string = "";
   let errorMessage: string = "";
 
-  async function registr_tg() {
+  async function sendEmailCode() {
     try {
-        // Отправка запроса на сервер
-        const response = await fetch('/auth/login/telegram', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
-  
-        if (response.ok) {
-          // Обработка успешного ответа, например, получение и сохранение токена
-          const url = await response.json();
-          console.log(url);
-          return url;
-        } else {2
-          // Обработка ошибок
-          errorMessage = ('Ошибка входа');
-        }
-      } catch (error) {
-        console.error('Ошибка при подключении к серверу:', error);
-        errorMessage = ('Ошибка подключения. Попробуйте еще раз позже.');
+      const response = await fetch('http://localhost:8090/auth/login/email', {
+        method: 'POST', // Используйте POST для отправки данных
+        headers: {
+          'Content-Type': 'application/json', // Указываем тип контента
+        },
+        body: JSON.stringify({ email }), // Преобразуем объект в строку JSON
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        //message = data.message; // Сообщение от сервера
+      } else {
+        const errorData = await response.json();
+        console.log(1111);
+        //message = errorData.error; // Обработка ошибок
       }
+    } catch (error) {
+      console.error('Ошибка при отправке запроса:', error);
+      console.log(email);
+      //message = 'Ошибка подключения. Попробуйте еще раз позже.';
+    }
   }
 
 
@@ -120,7 +120,7 @@
         </div>
         <div class="email">
           <label for="">Почта</label>
-          <input type="email" required placeholder="x@email.com"/>
+          <input type="email" required placeholder="x@email.com" bind:value={email}/>
         </div>
         <div class="password">
           <label for="">Пароль</label>
@@ -141,7 +141,7 @@
         </div>
         <div class="tgid">
           <label for="">Телеграм</label>
-          <input type="text" required placeholder="@telegram" bind:value={tgid}/>
+          <input type="text" required placeholder="@telegram" />
         </div>
         <div class="looking-for-team">
           <label for="">Ищу команду</label>
@@ -157,7 +157,7 @@
       {/if}
       {#if current_form === "confirm"}
       <div class="verify-container">
-        <p>на указанную почту x@email.com был выслан 6-ти значный код</p>
+        <p>на указанную почту {email} был выслан 6-ти значный код</p>
         <div class="verify">
           <p style="color: #000">Введите код для продолжения</p>
           <Code />
@@ -178,7 +178,7 @@
       {#if current_form === "personal_info"}
       <div class="buttons">
         <a href="" on:click={() => {current_form = "registration"; main_title = "Регистрация"; main_text = "Зполните поля необходимой информацией"}}>Назад</a>
-        <a href="" class="next-button" on:click={() => {registr_tg(); current_form = "confirm"; main_title = "Подтверждение"; main_text = ""}}>Далее</a>
+        <a href="" class="next-button" on:click={() => {sendEmailCode(); current_form = "confirm"; main_title = "Подтверждение"; main_text = ""}}>Далее</a>
       </div>
       {/if}
       {#if current_form === "confirm"}

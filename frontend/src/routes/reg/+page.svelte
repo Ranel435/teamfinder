@@ -4,6 +4,37 @@
   $: current_form = "registration";
   $: main_text = "Заполните поля необходимой информацией";
   $: main_title = "Регистрация";
+  let tgid: string = "";
+  let errorMessage: string = "";
+
+  async function registr_tg() {
+    try {
+        // Отправка запроса на сервер
+        const response = await fetch('/auth/login/telegram', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+  
+        if (response.ok) {
+          // Обработка успешного ответа, например, получение и сохранение токена
+          const url = await response.json();
+          console.log(url);
+          return url;
+        } else {2
+          // Обработка ошибок
+          errorMessage = ('Ошибка входа');
+        }
+      } catch (error) {
+        console.error('Ошибка при подключении к серверу:', error);
+        errorMessage = ('Ошибка подключения. Попробуйте еще раз позже.');
+      }
+  }
+
+
+
+
 </script>
 
 
@@ -110,7 +141,7 @@
         </div>
         <div class="tgid">
           <label for="">Телеграм</label>
-          <input type="text" required placeholder="@telegram"/>
+          <input type="text" required placeholder="@telegram" bind:value={tgid}/>
         </div>
         <div class="looking-for-team">
           <label for="">Ищу команду</label>
@@ -147,7 +178,7 @@
       {#if current_form === "personal_info"}
       <div class="buttons">
         <a href="" on:click={() => {current_form = "registration"; main_title = "Регистрация"; main_text = "Зполните поля необходимой информацией"}}>Назад</a>
-        <a href="" class="next-button" on:click={() => {current_form = "confirm"; main_title = "Подтверждение"; main_text = ""}}>Далее</a>
+        <a href="" class="next-button" on:click={() => {registr_tg(); current_form = "confirm"; main_title = "Подтверждение"; main_text = ""}}>Далее</a>
       </div>
       {/if}
       {#if current_form === "confirm"}

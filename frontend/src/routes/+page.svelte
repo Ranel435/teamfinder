@@ -113,7 +113,7 @@
         font-family: 'Manrope';
         max-width: 164px;
         text-decoration: none;
-        padding: 3px 50px;
+        padding: 8px 50px;
         border: 3px solid;
         border-color: #fff;
         border-radius: 50px;
@@ -122,7 +122,7 @@
     }
 
     .main-button:hover {
-        transition: all 0.5s ease;
+        transition: all 0.7s ease;
         color: #000;
         background-color: #fff;
     }
@@ -215,6 +215,7 @@
     }
 
     .more {
+        font-family: "Igra";
         font-size: 24px;
         text-decoration: none;
     }

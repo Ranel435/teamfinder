@@ -143,6 +143,7 @@
 
 
     footer {
+        margin-top: 128px;
         display: flex;
         flex-direction: column;
         /* margin-top: 256px; */
@@ -167,6 +168,7 @@
 
     .footer-nav-item a {
         color: var(--dark-grey);
+        font-size: 24px;
         text-decoration: none;
     }
 
@@ -202,7 +204,8 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        width: 50%;;
+        width: 50%;
+        padding-right: 128px;
     }
 
     .footer-bottom-links img {

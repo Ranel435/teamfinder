@@ -7,9 +7,9 @@
   let email: string = "";
   let errorMessage: string = "";
 
-  async function sendEmailCode() {
+  async function sendEmailCode(email: string) {
     try {
-      const response = await fetch('http://localhost:8090/auth/login/email', {
+      const response = await fetch('http://localhost:8080/auth/login/email', {
         method: 'POST', // Используйте POST для отправки данных
         headers: {
           'Content-Type': 'application/json', // Указываем тип контента
@@ -178,7 +178,7 @@
       {#if current_form === "personal_info"}
       <div class="buttons">
         <a href="" on:click={() => {current_form = "registration"; main_title = "Регистрация"; main_text = "Зполните поля необходимой информацией"}}>Назад</a>
-        <a href="" class="next-button" on:click={() => {sendEmailCode(); current_form = "confirm"; main_title = "Подтверждение"; main_text = ""}}>Далее</a>
+        <a href="" class="next-button" on:click={() => {sendEmailCode(email); current_form = "confirm"; main_title = "Подтверждение"; main_text = ""}}>Далее</a>
       </div>
       {/if}
       {#if current_form === "confirm"}
@@ -341,7 +341,7 @@
     border: 0;
     height: 24px;
     border-radius: 50px;
-    padding: 7px 16px;
+    padding: 8px 16px;
     font-size: 20px;
   }
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import "../../app.css";
+  import "../../../app.css";
   import Code from "$lib/code.svelte";
   $: current_form = "registration";
   $: main_text = "Заполните поля необходимой информацией";
@@ -9,7 +9,7 @@
 
   async function sendEmailCode(email: string) {
     try {
-      const response = await fetch('http://localhost:8080/auth/login/email', {
+      const response = await fetch('http://localhost:8090/auth/login/email', {
         method: 'POST', // Используйте POST для отправки данных
         headers: {
           'Content-Type': 'application/json', // Указываем тип контента
@@ -171,7 +171,7 @@
     <div class="registr-container-buttons">
       {#if current_form === "registration"}
       <div class="buttons">
-        <a href="/auth">Назад</a>
+        <a href="/forms/auth">Назад</a>
         <a href="" class="next-button" on:click={() => {current_form = "personal_info"}}>Далее</a>
       </div>
       {/if}
@@ -204,10 +204,9 @@
   /* header */
   .registr {
     display: flex;
-    align-items: center;
     justify-content: center;
-    height: 100%;
-    margin: 100px 0;
+    align-items: center;
+    height: 100vh;
   }
 
   .registr-container {

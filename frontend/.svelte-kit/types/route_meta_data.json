@@ -1,9 +1,11 @@
 {
 	"/": [],
-	"/auth": [],
-	"/forget_password": [],
+	"/forms": [],
+	"/forms/auth": [],
+	"/forms/forget_password": [],
+	"/forms/reg": [],
 	"/homework_notes": [],
 	"/homework_notes/[id]": [],
-	"/practice": [],
-	"/reg": []
+	"/main": [],
+	"/practice": []
 }

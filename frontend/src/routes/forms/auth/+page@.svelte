@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
+  import "../../../app.css"
   let email: string = "";
   let password: string = "";
 </script>
@@ -6,20 +8,25 @@
 <section class="auth">
   <div class="auth-container">
     <h2>Вход</h2>
-    <div class="form">
+    <form class="form">
       <div class="email">
-        <label for="">Почта или логин</label>
-        <input type="email" bind:value={email} placeholder="логин">
+        <label for="email">Почта</label>
+        <input type="email" id="email" bind:value={email} placeholder="x@email.com" required>
       </div>
       <div class="password">
-        <label for="">Пароль</label>
-        <input type="password" bind:value={password} placeholder="пароль">
+        <label for="password">Пароль</label>
+        <input type="password" bind:value={password} placeholder="пароль" required>
       </div>
-    </div>
-    <div class="buttons">
-      <a href="/reg">Регистрация</a>
-      <a href="/forget_password">Забыл пароль</a>
-      <a class="login-a" href="/">Войти</a>
+    </form>
+    <div class="all-buttons">
+      <div class="buttons">
+        <a class="button" href="/forms/reg">Регистрация</a>
+        <a href="/forms/forget_password">Забыл пароль</a>
+      </div>
+      <div class="buttons second-buttons">
+        <button class="button" on:click={() => goto('/')}>Назад</button>
+        <a class="login-a" href="/">Войти</a>
+      </div>
     </div>
   </div>
 </section>
@@ -29,8 +36,8 @@
   .auth {
     display: flex;
     justify-content: center;
+    align-items: center;
     height: 100vh;
-    margin: 100px;
   }
 
   .auth-container {
@@ -87,14 +94,29 @@
     padding: 8px 16px;
   }
 
+  .all-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 38px;
+  }
 
   .buttons {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    /* margin-bottom: 30px; */
   }
 
-  a {
+  .second-buttons {
+    margin-top: 20px;
+  }
+
+  .button {
+    margin-right: 20px;
+  }
+
+  a, button {
     font-family: 'Manrope';
     font-size: 24px;
     text-decoration: none;

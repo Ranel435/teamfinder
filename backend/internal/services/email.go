@@ -2,9 +2,12 @@ package services
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"net/smtp"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 type EmailService struct {
@@ -15,6 +18,11 @@ type EmailService struct {
 }
 
 func NewEmailService() *EmailService {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Ошибка загрузки .env файла: %v", err)
+	}
+
 	return &EmailService{
 		from:     os.Getenv("EMAIL_LOGIN"),
 		password: os.Getenv("EMAIL_PASSWORD"),

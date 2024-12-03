@@ -12,6 +12,9 @@ import (
 	"teamfinder/backend/internal/pkg/storage"
 	"teamfinder/backend/internal/services"
 
+	"time"
+
+	"github.com/gin-contrib/cors"
 	"github.com/joho/godotenv"
 )
 
@@ -38,6 +41,16 @@ func main() {
 
 	router := server.New(":8090", &store)
 	ginRouter := router.GetRouter()
+
+	// CORS configuration
+	ginRouter.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173/"}, // Change to your frontend domain
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	// Initialize services
 	emailService := services.NewEmailService()

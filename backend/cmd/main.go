@@ -1,15 +1,36 @@
 package main
 
 import (
+	"log"
+	"os"
+
+	"teamfinder/backend/internal/db"
 	"teamfinder/backend/internal/handlers"
 	"teamfinder/backend/internal/middleware"
 
 	"teamfinder/backend/internal/pkg/server"
 	"teamfinder/backend/internal/pkg/storage"
 	"teamfinder/backend/internal/services"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	//-----POSTGRESSQL-----
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Ошибка загрузки .env файла: %v", err)
+	}
+	dsn := os.Getenv("DATABASE_URL")
+	if dsn == "" {
+		log.Fatal("DATABASE_URL not set")
+	}
+
+	db.ConnectDB(dsn)
+	defer db.Pool.Close()
+
+	//-----ROUTES^SERVER-----
+
 	store, err := storage.NewStorage()
 	if err != nil {
 		panic(err)
@@ -45,6 +66,6 @@ func main() {
 	}
 
 	// router.Run(":8090")
-
 	router.Start()
+	log.Println("Application started successfully")
 }

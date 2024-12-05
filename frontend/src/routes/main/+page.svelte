@@ -13,15 +13,12 @@
         free_agents = "/auth";
         find_team = "/auth";
         create_form = "/auth";
-    } else {
-        
     }
-
 </script>
 
 
 <main>
-    <section class="main-section">
+    <section class="main">
         <div class="text">
             <p>Команда найдется для каждого</p>
         </div>
@@ -83,28 +80,41 @@
 
 
 <style>
-    main {
+    /* main {
         background-image: url("teamfinder/frontend/static/PinkEllipse.svg"), url("/static/YellowEllipse.svg"), url("/static/Star.svg"); 
         background-repeat: no-repeat, no-repeat, no-repeat; 
         background-position: center center, center center, center center; 
-        background-size: cover; /* Или contain */
+        background-size: cover;
+    } */
+    @media (max-width: 1440px) {
+        img {
+            width: 815px;
+            height: 258px;
+        }
 
+        .main {
+            margin-top: 0;
+            margin: 128px 0;
+        }
+
+        .popular-roles {
+            margin-top: 0;
+        }
     }
 
-    * {
-        color: #fff;
-    }
-    .main-section {
+    .main {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
         margin-top: 147px;
     }
+
     .main-text {
         text-align: center;
         margin: 72px 0 72px;
     }
+
     .main-buttons {
         margin-bottom: 128px;
     }
@@ -114,21 +124,23 @@
         font-size: 24px;
         line-height: 130%;
         letter-spacing: 5%;
-        padding: 0;
-        margin: 0;
+        color: #fff;
     }
 
     /* main buttons */
     .main-button {
         font-family: 'Manrope';
-        max-width: 164px;
+        font-size: 24px;
+        color: #fff;
         text-decoration: none;
-        padding: 8px 50px;
+
+        max-width: 164px;
         border: 3px solid;
         border-color: #fff;
         border-radius: 50px;
-        font-size: 24px;
-        margin:0 18px;
+
+        margin: 0 18px;
+        padding: 8px 50px;
     }
 
     .main-button:hover {
@@ -142,17 +154,18 @@
         flex-wrap: wrap;
         flex-direction: column;
         justify-content: center;
-        margin-top: 198px;
         align-items: center;
         text-align: center;
+        margin-top: 198px;
     }
 
     .title {
-        font-size: 48px;
-        margin-bottom: 80px;
         font-family: "Igra";
-        padding: 0;
+        font-size: 48px;
         font-weight: normal;
+        color: #fff;
+        margin-bottom: 80px;
+        padding: 0;
     }
 
     /* grid container */
@@ -177,7 +190,8 @@
         margin: 0px 36px 36px 0;
         background: rgba(0, 0, 0,0);
         cursor: pointer;
-        font-family: 'Manrope';     
+        font-family: 'Manrope';   
+        color: #fff;  
         transition: transform 0.2s, border-color 0.2s;
     }
     .role:nth-child(3n) {
@@ -227,6 +241,7 @@
     .more {
         font-family: "Igra";
         font-size: 24px;
+        color: #fff;
         text-decoration: none;
     }
 
@@ -262,5 +277,8 @@
     .pm::before {
         background-color: rgba(255, 225, 0, 0.3);
     }
+
+
+
 
 </style>

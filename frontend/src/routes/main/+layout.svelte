@@ -4,24 +4,24 @@
 
 </script>
 <header class="navbar">
-    <div class="logo">
+    <div class="navbar-logo">
         <a href="/">
-            <img class="logo-img" src="teamfinder.svg" alt="Логотип компании">
+            <img class="navbar-logo-img" src="teamfinder.svg" alt="Логотип компании">
         </a>
     </div>
 
-    <nav class="nav-links">
+    <nav class="navbar-links">
         <ul>
-            <li><a href="hakatons">Хакатоны</a></li>
-            <li><a href="teams">Команды</a></li>
-            <li><a href="profiles">Анкеты</a></li>
-            <li><a href="community">Сообщества</a></li>
-            <li><a href="about">О проекте</a></li>
+            <li><a class="navbar-links-link" href="hakatons">Хакатоны</a></li>
+            <li><a class="navbar-links-link" href="teams">Команды</a></li>
+            <li><a class="navbar-links-link" href="profiles">Анкеты</a></li>
+            <li><a class="navbar-links-link" href="community">Сообщества</a></li>
+            <li><a class="navbar-links-link" href="about">О проекте</a></li>
         </ul>
     </nav>
 
-    <div class="login-button">
-        <a href="../forms/auth" class="login-button">Вход</a>
+    <div class="navbar-login-button">
+        <a href="../forms/auth" >Вход</a>
     </div>
 </header>
 <slot />
@@ -54,25 +54,25 @@
             <div class="footer-bottom-links-item">
                 <label for="">Сообщество</label>
                 <a href="">
-                    <img src="tg-icon.svg" alt="">
+                    <img class="footer-bottom-links-item-logo" src="tg-icon.svg" alt="">
                 </a>
             </div>
             <div class="footer-bottom-links-item">
                 <label for="">Код</label>
                 <a href="">
-                    <img src="github-icon.svg" alt="">
+                    <img class="footer-bottom-links-item-logo" src="github-icon.svg" alt="">
                 </a>
             </div>
             <div class="footer-bottom-links-item">
                 <label for="">Дизайн</label>
                 <a href="">
-                    <img src="n-icon.svg" alt="">
+                    <img class="footer-bottom-links-item-logo" src="n-icon.svg" alt="">
                 </a>
             </div>
             <div class="footer-bottom-links-item">
                 <label for="">При поддержке</label>
                 <a href="https://t.me/itatmisis">
-                    <img style="height: 42px; width: 136px" class="itam-logo" src="itam.svg" alt="">
+                    <img class="itam-logo" src="itam.svg" alt="">
                 </a>
             </div>
         </div>
@@ -81,49 +81,48 @@
 
 
 <style>
-    .navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 18px 0;
+    
+    * {
+        font-family: "Manrope";
     }
-
-    a, button {
-        font-family: 'Manrope';
-    }
-
-    .logo-img {
-        max-height: 56px;
-        max-width: 232px;
-    }
-
     ul {
         align-items: center;
     }
 
-    /* navigation */
-    .nav-links ul {
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 94px;
+    }
+
+    .navbar-logo-img {
+        max-height: 56px;
+        max-width: 232px;
+    }
+
+    .navbar-links ul {
         list-style: none;
         display: flex;
         padding: 0;
     }
 
-    .nav-links li {
+    .navbar-links li {
         margin: 0 15px;
     }
 
-    .nav-links a {
+    .navbar-links-link {
         color: white;
         text-decoration: none;
         font-size: 24px;
     }
 
-    .nav-links a:hover {
+    .navbar-links-link:hover {
         text-decoration: underline;
     }
 
-    /* login */
-    .login-button a {
+    .navbar-login-button a {
         color: white;
         max-width: 164px;
         text-decoration: none;
@@ -133,7 +132,8 @@
         border-radius: 50px;
         font-size: 24px;
     }
-    .login-button a:hover {
+
+    .navbar-login-button a:hover {
         transition: all 0.5s ease;
         color: #000;
         background-color: #fff;
@@ -146,7 +146,6 @@
         margin-top: 128px;
         display: flex;
         flex-direction: column;
-        /* margin-top: 256px; */
      }
 
     .footer-nav {
@@ -187,7 +186,6 @@
         display: flex;
         align-items: center;
         flex-direction: row;
-        /* justify-content: space-between; */
     }
 
     .footer-bottom p {
@@ -208,9 +206,14 @@
         padding-right: 128px;
     }
 
-    .footer-bottom-links img {
+    .footer-bottom-links-item-logo {
         height: 52px;
         width: 52px;
+    }
+
+    .itam-logo {
+        width: 136px;
+        height: 42px;
     }
 
     .footer-bottom-links-item {
@@ -227,5 +230,56 @@
         color: #fff;
         margin-bottom: 14px;
     } 
+
+    @media (max-width: 1440px) {
+        .navbar {
+            padding: 0 0;
+            height: 94px;
+        }
+
+        .navbar-logo-img {
+            height: 42px;
+            width: 153px;
+        }
+
+        .navbar-links li {
+            margin: 0 0;
+            margin-right: 40px;
+        }
+
+        .navbar-links li:last-child {
+            margin: 0 0;
+            margin-right: 0px;
+        }
+
+        .navbar-links-link {
+            font-size: 16px;
+        }
+
+
+        .footer-nav-item a {
+            font-size: 18px;
+        }
+
+        .rights p {
+            font-size: 18px;
+        }
+
+        .footer-bottom-links-item label {
+            font-size: 12px;
+        }
+
+        .footer-bottom-links-item-logo {
+            height: 39px;
+            width: 39px;
+        }
+
+        .itam-logo {
+            width: 102px;
+            height: 32px;
+        }
+
+    }
+
 
 </style>

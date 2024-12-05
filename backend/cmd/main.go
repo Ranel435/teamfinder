@@ -5,12 +5,9 @@ import (
 	"os"
 
 	"teamfinder/backend/internal/db"
-	"teamfinder/backend/internal/handlers"
-	"teamfinder/backend/internal/middleware"
 
 	"teamfinder/backend/internal/pkg/server"
 	"teamfinder/backend/internal/pkg/storage"
-	"teamfinder/backend/internal/services"
 
 	"time"
 
@@ -19,7 +16,7 @@ import (
 )
 
 func main() {
-	//-----POSTGRESSQL-----
+	//---------- DB (POSTGRESSQL)
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Ошибка загрузки .env файла: %v", err)
@@ -32,53 +29,56 @@ func main() {
 	db.ConnectDB(dsn)
 	defer db.Pool.Close()
 
-	//-----ROUTES^SERVER-----
+	//---------- SERVER (ROUTES)
 
+	//store init
 	store, err := storage.NewStorage()
 	if err != nil {
 		panic(err)
 	}
 
-	router := server.New(":8090", &store)
-	ginRouter := router.GetRouter()
+	//router creating
+	router := server.New(":5173", &store)
 
-	// CORS configuration
-	ginRouter.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173/"}, // Change to your frontend domain
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+	// Updated CORS configuration
+	router.GetRouter().Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
+		AllowWildcard:    true,
 	}))
 
-	// Initialize services
-	emailService := services.NewEmailService()
-	telegramService := services.NewTelegramService()
+	// // Initialize services
+	// emailService := services.NewEmailService()
+	// telegramService := services.NewTelegramService()
 
-	// Initialize handlers
-	authHandler := handlers.NewAuthHandler(emailService, telegramService)
+	// // Initialize handlers
+	// authHandler := handlers.NewAuthHandler(emailService, telegramService)
 
-	// Public routes
-	auth := ginRouter.Group("/auth")
-	{
-		auth.POST("/login/email", authHandler.SendEmailCode)
-		auth.POST("/verify/email", authHandler.VerifyEmailCode)
-		auth.GET("/login/telegram", authHandler.TelegramLogin)
-		auth.POST("/verify/telegram", authHandler.VerifyTelegram)
-		auth.POST("/refresh", authHandler.RefreshToken)
-	}
+	// // Public routes
+	// auth := router.GetRouter().Group("/auth")
+	// {
+	// 	auth.POST("/login/email", authHandler.SendEmailCode)
+	// 	auth.POST("/verify/email", authHandler.VerifyEmailCode)
+	// 	auth.GET("/login/telegram", authHandler.TelegramLogin)
+	// 	auth.POST("/verify/telegram", authHandler.VerifyTelegram)
+	// 	auth.POST("/refresh", authHandler.RefreshToken)
+	// }
 
-	// Protected routes
-	protected := ginRouter.Group("/auth")
-	protected.Use(middleware.AuthRequired())
-	{
-		protected.POST("/logout", authHandler.Logout)
-		protected.GET("/check", authHandler.CheckToken)
-		protected.DELETE("/account", authHandler.DeleteAccount)
-	}
+	// // Protected routes
+	// protected := router.GetRouter().Group("/auth")
+	// protected.Use(middleware.AuthRequired())
+	// {
+	// 	protected.POST("/logout", authHandler.Logout)
+	// 	protected.GET("/check", authHandler.CheckToken)
+	// 	protected.DELETE("/account", authHandler.DeleteAccount)
+	// }
 
-	// router.Run(":8090")
+	//start server
+	// router.Run(":5173")
 	router.Start()
-	log.Println("Application started successfully")
+	log.Println("Backend started successfully")
 }

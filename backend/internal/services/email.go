@@ -41,5 +41,9 @@ func (s *EmailService) SendVerificationCode(to, code string) error {
 	msg := []byte(fmt.Sprintf("Subject: Verification Code\r\n\r\nYour verification code is: %s", code))
 
 	addr := fmt.Sprintf("%s:%s", s.host, s.port)
-	return smtp.SendMail(addr, auth, s.from, []string{to}, msg)
+	err := smtp.SendMail(addr, auth, s.from, []string{to}, msg)
+	if err != nil {
+		log.Printf("Ошибка отправки email: %v", err)
+	}
+	return err
 }

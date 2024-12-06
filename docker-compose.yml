@@ -29,6 +29,7 @@ services:
       - DB_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - DB_NAME=${POSTGRES_DB:-teamfinder}
       - DB_PORT=5432
+      - BASIC_SERVER_PORT=8090
     depends_on:
       postgres:
         condition: service_healthy

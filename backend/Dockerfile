@@ -20,7 +20,7 @@ COPY . .
 RUN go build -o main ./cmd/basic_server/main.go
 
 # Открываем порт
-EXPOSE 8080
+EXPOSE 8090
 
 # Запускаем приложение
 CMD ["./main"] 

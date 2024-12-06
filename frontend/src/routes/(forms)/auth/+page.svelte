@@ -20,7 +20,7 @@
     </form>
     <div class="all-buttons">
       <div class="buttons">
-        <a class="button" href="/forms/reg">Регистрация</a>
+        <a class="button" href="/reg">Регистрация</a>
         <a href="/forms/forget_password">Забыл пароль</a>
       </div>
       <div class="buttons second-buttons">
@@ -41,9 +41,9 @@
   }
 
   .auth-container {
-    padding: 72px 36px;
-    width: 568px;
-    height: 408px;
+    padding: 36px;
+    width: 480px;
+    height: 414px;
     background-color: #fff;
     border-radius: 32px;
     display: flex;

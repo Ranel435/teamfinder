@@ -38,11 +38,11 @@ func main() {
 	}
 
 	// router creating
-	router := server.New(":5173", &store)
+	router := server.New(":5174", &store)
 
 	// CORS configuration
 	router.GetRouter().Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowOrigins:     []string{"http://localhost:5174"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},

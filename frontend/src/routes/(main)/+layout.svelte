@@ -21,7 +21,7 @@
     </nav>
 
     <div class="navbar-login-button">
-        <a href="../forms/auth" >Вход</a>
+        <a href="../auth" >Вход</a>
     </div>
 </header>
 <slot />

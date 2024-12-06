@@ -9,7 +9,7 @@
 
   async function sendEmailCode(email: string) {
     try {
-      const response = await fetch('backend/auth/login/email', {
+      const response = await fetch('http://backend:8090/api/auth/login/email', {
         method: 'POST', // Используйте POST для отправки данных
         headers: {
           'Content-Type': 'application/json', // Указываем тип контента
@@ -114,6 +114,7 @@
     
     <div class="registr-container-main">
       {#if current_form === "registration"}
+      <div class="registr-container-main">
       <div class="form">
         <div class="login">
           <label for="">Логин</label>
@@ -129,8 +130,10 @@
           <input type="password" class="repeat-password" required placeholder="повторите пароль"/>
         </div>
       </div>
+    </div>
       {/if}
       {#if current_form === "personal_info"}
+      <div class="registr-container-main">
       <div class="form">
         <div class="name">
           <label for="">Имя</label>
@@ -155,8 +158,10 @@
         </div>
         </div>
       </div>
+    </div>
       {/if}
       {#if current_form === "confirm"}
+      <div class="registr-container-main">
       <div class="verify-container">
         <p>на указанную почту {email} был выслан 6-ти значный код</p>
         <div class="verify">
@@ -164,8 +169,7 @@
           <Code />
         </div>
       </div>
-      {/if}
-      {#if current_form === "end"}
+    </div>
       {/if}
     </div>
 
@@ -219,8 +223,8 @@
 
     background-color: #fff;
     border-radius: 28px;
-    width: 480px;
-    height: 624px;
+    width: calc(480px-2*36px);
+    height: calc(624px-2*36px);
     padding: 36px 36px;
   }
 
@@ -234,17 +238,13 @@
     font-family: "Manrope";
     font-size: 36px;
     font-weight: normal;
-    line-height: 48px;
-    margin: 0;
-    margin-bottom: 24px;
+    margin-bottom: 10px;
   }
 
   .registr-container-header-text p {
     font-family: "Manrope";
     font-size: 18px;
     color: var(--dark-grey);
-
-    margin: 0;
   }
 
   .steps {
@@ -266,7 +266,7 @@
     font-family: "Manrope";
     font-size: 12px;
     color: var(--dark-grey);
-    margin-top: 10px;
+    margin-top: 7px;
   }
 
   .step-circle {
@@ -311,8 +311,7 @@
     flex-direction: column;
     text-align: left;
     justify-content: space-between;
-    width: calc(100% - 54px);
-    margin-bottom: 38px;
+    width: calc(100%);
   }
   .email,
   .login,
@@ -366,7 +365,7 @@
   .verify-container p {
     font-family: "Manrope";
     color: var(--dark-grey);
-    font-size: 24px;
+    font-size: 18px;
     margin-bottom: 32px;
   }
 
@@ -380,11 +379,11 @@
 
   a {
     font-family: "Manrope";
-    font-size: 24px;
+    font-size: 18px;
     color: var(--dark-grey);
     text-decoration: none;
 
-    padding: 8px 27px;
+    padding: 10px 18px;
     border: 3px solid var(--light-grey);
     border-radius: 50px;
     
@@ -416,8 +415,8 @@
       display: flex;
       align-items: center;
       cursor: pointer;
-      width: 56px;
-      height: 32px;
+      width: 42px;
+      height: 24px;
       background-color: #ccc;
       border-radius: 15px;
       position: relative;
@@ -432,8 +431,8 @@
 
   .switch-switch {
       position: absolute;
-      width: 24px;
-      height: 24px;
+      width: 18px;
+      height: 18px;
       background-color: white;
       border-radius: 50%;
       transition: transform 0.3s ease;
@@ -445,11 +444,11 @@
   }
 
   .switch-input:checked + .switch-label .switch-switch {
-      transform: translateX(28px); /* Перемещение переключателя */
+      transform: translateX(20px); /* Перемещение переключателя */
   }
 
   .end {
-    width: 568px;
-    height: 408px;
+    width: 480px;
+    height: 414px;
   }
 </style>

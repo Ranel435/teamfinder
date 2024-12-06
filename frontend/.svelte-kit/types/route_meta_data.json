@@ -1,11 +1,11 @@
 {
+	"/(main)": [],
+	"/(forms)": [],
 	"/": [],
-	"/forms": [],
-	"/forms/auth": [],
-	"/forms/forget_password": [],
-	"/forms/reg": [],
+	"/(forms)/auth": [],
+	"/(forms)/forget_password": [],
 	"/homework_notes": [],
 	"/homework_notes/[id]": [],
-	"/main": [],
-	"/practice": []
+	"/practice": [],
+	"/(forms)/reg": []
 }

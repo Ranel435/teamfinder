@@ -1,24 +1,16 @@
 body {
-    /* display: flex;
-    flex-direction: column;
-    justify-content: space-between; */
-    /* align-items: center; */
     height: 100%;
     box-sizing: border-box;
     margin: 0;
     padding-right: 128px;
     padding-left: 128px;
     background-color: #010101;
-    background-image: url("static/PinkEllipse.svg"), url("static/YellowEllipse.svg"), url("static/Star.svg"); 
-    background-repeat: no-repeat, no-repeat, no-repeat; 
-    background-position: center center, center center, center center; 
-/* 
-
-    background-position-x: -0vh, 0vh, 0vh;
-    background-position-y: -15vh, -100vh , 1000px; */
+    background-image: url("/PinkEllipse.svg"), url("/YellowEllipse.svg"), url("/Star.svg"), url("/yellow_bottom.svg"), url("/pink_bottom.svg"); 
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat; 
+    background-position: -70vh -20vh, 200% -200%, -100% 50%, 170% 120%, -50% 120%; 
 }
 
-h1, h2, p, ul{
+h1, h2, h3, h4, p, ul{
     margin: 0;
     padding: 0
 }

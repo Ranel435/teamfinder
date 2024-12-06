@@ -53,19 +53,19 @@
         <div class="footer-bottom-links">
             <div class="footer-bottom-links-item">
                 <label for="">Сообщество</label>
-                <a href="">
+                <a href="https://t.me/+WQeYWDOPnvs5yhhY">
                     <img class="footer-bottom-links-item-logo" src="tg-icon.svg" alt="">
                 </a>
             </div>
             <div class="footer-bottom-links-item">
                 <label for="">Код</label>
-                <a href="">
+                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
                     <img class="footer-bottom-links-item-logo" src="github-icon.svg" alt="">
                 </a>
             </div>
             <div class="footer-bottom-links-item">
                 <label for="">Дизайн</label>
-                <a href="">
+                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
                     <img class="footer-bottom-links-item-logo" src="n-icon.svg" alt="">
                 </a>
             </div>
@@ -143,7 +143,6 @@
 
 
     footer {
-        margin-top: 128px;
         display: flex;
         flex-direction: column;
      }
@@ -234,7 +233,7 @@
     @media (max-width: 1440px) {
         .navbar {
             padding: 0 0;
-            height: 94px;
+            height: 80px;
         }
 
         .navbar-logo-img {
@@ -261,6 +260,12 @@
             font-size: 18px;
         }
 
+        .navbar-login-button a{
+            font-size: 20px;
+            padding: 5px 50px;
+        }
+
+
         .rights p {
             font-size: 18px;
         }
@@ -280,6 +285,4 @@
         }
 
     }
-
-
 </style>

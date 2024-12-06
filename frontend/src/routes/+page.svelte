@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
   import "../app.css";
   let token: string = "";
   let auth: string = "/auth";
@@ -482,4 +482,4 @@
       margin-bottom: 14px;
   } 
 
-</style>
+</style> -->

@@ -2,9 +2,9 @@ services:
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-teamfinder}
+      POSTGRES_USER: ${POSTGRES_USER:-teamfinder}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-teamfinder}
+      POSTGRES_DB: ${POSTGRES_DB:-teamfinder_db}
     ports:
       - "5432:5432"
     volumes:
@@ -23,11 +23,22 @@ services:
       - "8090:8090"
     environment:
       - DB_HOST=postgres
-      - DB_USER=${POSTGRES_USER:-postgres}
-      - DB_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-      - DB_NAME=${POSTGRES_DB:-teamfinder}
+      - DB_USER=${POSTGRES_USER:-teamfinder}
+      - DB_PASSWORD=${POSTGRES_PASSWORD:-teamfinder}
+      - DB_NAME=${POSTGRES_DB:-teamfinder_db}
       - DB_PORT=5432
       - BASIC_SERVER_PORT=8090
+
+      # .env FILE:
+      - TG_BOT_TOKEN=AAGF4AIILsB8-DBsqf7m7D3vJXbT3lxOD2k
+      - TG_BOT_ID=7072997582
+      - EMAIL_LOGIN=teamfinderverifycode@gmail.com
+      - EMAIL_PASSWORD=eslkvkemwvomfdokvmnwroiptunvjfwnhptw
+      - DATABASE_URL=postgres://teamfinder:teamfinder@localhost:5432/teamfinder_db?sslmode=disable
+      - POSTGRES_USER=teamfinder
+      - POSTGRES_PASSWORD=teamfinder
+      - POSTGRES_DB=teamfinder_db
+
       
     depends_on:
       postgres:
@@ -41,6 +52,7 @@ services:
       - "3000:3000"
     environment:
       - VITE_API_URL=http://backend:8090
+
     depends_on:
       - backend
 

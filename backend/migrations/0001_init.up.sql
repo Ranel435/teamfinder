@@ -5,7 +5,7 @@ CREATE TABLE users (
     email VARCHAR(100) UNIQUE NOT NULL,
     telegram_id VARCHAR(50) UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 -- Таблица профилей пользователей
@@ -16,13 +16,13 @@ CREATE TABLE profiles (
     academic_group VARCHAR(50),
     telegram_handle VARCHAR(50),
     desired_role VARCHAR(50),
-    skills TEXT[],
+    skills TEXT[] DEFAULT '{}',
     about_me VARCHAR(300),
-    achievements TEXT[],
-    status VARCHAR(20),
-    wishlist TEXT[],
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
+    achievements TEXT[] DEFAULT '{}',
+    status VARCHAR(20) CHECK (status IN ('active', 'inactive', 'pending')) DEFAULT 'active',
+    wishlist TEXT[] DEFAULT '{}',
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 -- Таблица команд
@@ -31,7 +31,8 @@ CREATE TABLE teams (
     name VARCHAR(100) NOT NULL,
     description TEXT,
     captain_id INT NOT NULL REFERENCES users(id),
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    UNIQUE (name, captain_id)
 );
 
 -- Таблица участников команд
@@ -40,15 +41,15 @@ CREATE TABLE team_members (
     team_id INT NOT NULL REFERENCES teams(id) ON DELETE CASCADE,
     user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     role VARCHAR(50),
-    joined_at TIMESTAMP DEFAULT NOW()
+    joined_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 -- Таблица уведомлений
 CREATE TABLE notifications (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    type VARCHAR(50),
+    type VARCHAR(50) CHECK (type IN ('info', 'warning', 'error')),
     message TEXT,
     is_read BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );

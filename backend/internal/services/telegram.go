@@ -10,8 +10,7 @@ import (
 	"os"
 	"sort"
 	"strings"
-
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 )
 
 type TelegramService struct {
@@ -19,10 +18,10 @@ type TelegramService struct {
 }
 
 func NewTelegramService() *TelegramService {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Ошибка загрузки .env файла: %v", err)
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Fatalf("Ошибка загрузки .env файла: %v", err)
+	// }
 
 	token := os.Getenv("TG_BOT_TOKEN")
 	if token == "" {

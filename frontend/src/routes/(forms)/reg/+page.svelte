@@ -9,13 +9,17 @@
 
   async function sendEmailCode(email: string) {
     try {
-      const response = await fetch('http://backend:8090/api/auth/login/email', {
+      const response = await fetch('/api/auth/login/email', {
         method: 'POST', // Используйте POST для отправки данных
         headers: {
           'Content-Type': 'application/json', // Указываем тип контента
         },
         body: JSON.stringify({ email }), // Преобразуем объект в строку JSON
       });
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+      const responseText = await response.text();
+      console.log('Response body:', responseText);
 
       if (response.ok) {
         const data = await response.json();
@@ -41,7 +45,7 @@
 
 <section class="registr">
   <div class="registr-container {current_form}">
-    <div class="registr-container-header">
+    <!-- <div class="registr-container-header"> -->
       <div class="registr-container-header-text">
         <h2>{main_title}</h2>
         <p>{main_text}</p>
@@ -110,68 +114,75 @@
         </div>
       </div>
       {/if}
-    </div>
+    <!-- </div> -->
     
-    <div class="registr-container-main">
+    <!-- <div class="registr-container-main"> -->
       {#if current_form === "registration"}
       <div class="registr-container-main">
-      <div class="form">
-        <div class="login">
-          <label for="">Логин</label>
-          <input type="text" required placeholder="логин"/>
-        </div>
-        <div class="email">
-          <label for="">Почта</label>
-          <input type="email" required placeholder="x@email.com" bind:value={email}/>
-        </div>
-        <div class="password">
-          <label for="">Пароль</label>
-          <input type="password" required placeholder="пароль" />
-          <input type="password" class="repeat-password" required placeholder="повторите пароль"/>
+        <div class="form">
+          <div class="login">
+            <label for="">Логин</label>
+            <input type="text" required placeholder="логин"/>
+          </div>
+          <div class="email">
+            <label for="">Почта</label>
+            <input type="email" required placeholder="x@email.com" bind:value={email}/>
+          </div>
+          <div class="password">
+            <label for="">Пароль</label>
+            <input type="password" required placeholder="пароль" />
+            <input type="password" class="repeat-password" required placeholder="повторите пароль"/>
+          </div>
         </div>
       </div>
-    </div>
       {/if}
       {#if current_form === "personal_info"}
       <div class="registr-container-main">
-      <div class="form">
-        <div class="name">
-          <label for="">Имя</label>
-          <input type="text" required placeholder="Иван"/>
-        </div>
-        <div class="surname">
-          <label for="">Фамилия</label>
-          <input type="text" required placeholder="Иванов"/>
-        </div>
-        <div class="tgid">
-          <label for="">Телеграм</label>
-          <input type="text" required placeholder="@telegram" />
-        </div>
-        <div class="looking-for-team">
-          <label for="">Ищу команду</label>
-          <div class="switch">
-            <input type="checkbox" id="toggle" class="switch-input">
-            <label for="toggle" class="switch-label">
-                <span class="switch-inner"></span>
-                <span class="switch-switch"></span>
-            </label>
-        </div>
+        <div class="form">
+          <div class="name">
+            <label for="">Имя</label>
+            <input type="text" required placeholder="Иван"/>
+          </div>
+          <div class="surname">
+            <label for="">Фамилия</label>
+            <input type="text" required placeholder="Иванов"/>
+          </div>
+          <div class="tgid">
+            <label for="">Телеграм</label>
+            <input type="text" required placeholder="@telegram" />
+          </div>
+          <div class="looking-for-team">
+            <label for="">Ищу команду</label>
+            <div class="switch">
+              <input type="checkbox" id="toggle" class="switch-input">
+              <label for="toggle" class="switch-label">
+                  <span class="switch-inner"></span>
+                  <span class="switch-switch"></span>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
       {/if}
       {#if current_form === "confirm"}
       <div class="registr-container-main">
-      <div class="verify-container">
-        <p>на указанную почту {email} был выслан 6-ти значный код</p>
-        <div class="verify">
-          <p style="color: #000">Введите код для продолжения</p>
-          <Code />
+        <div class="verify-container">
+          <p>на указанную почту {email} был выслан 6-ти значный код</p>
+          <div class="verify">
+            <p style="color: #000">Введите код для продолжения</p>
+            <Code />
+          </div>
         </div>
       </div>
-    </div>
+
       {/if}
-    </div>
+      <!-- {#if current_form === "end"} 
+      <div class="registr-container-main">
+        <p>Заполните информацию в профиле для создания анкеты или присоединения
+          к командам</p>
+      </div>
+      {/if} -->
+    <!-- </div> -->
 
     <div class="registr-container-buttons">
       {#if current_form === "registration"}
@@ -189,7 +200,7 @@
       {#if current_form === "confirm"}
       <div class="buttons">
         <a href="" on:click={() => {current_form = "personal_info"; main_title = "Регистрация"; main_text = "Зполните поля необходимой информацией"}}>Назад</a>
-      <a href="" class="next-button" on:click={() => {current_form = "end"; main_title = "Регистрация завершена"; main_text = "Заполните информацию в профиле для создания анкеты или присоединенияк командам"}}>Завершить</a>
+      <a href="" class="next-button" on:click={() => {current_form = "end"; main_title = "Регистрация завершена"; main_text = "Заполните информацию в профиле для создания анкеты или присоединения к командам"}}>Завершить</a>
       </div>
       <div class="repeat-button">
         <a href="" class="repeat-button">Выслать повторно</a>
@@ -202,7 +213,6 @@
       </div>
       {/if}
     </div>
-  </div>
 </section>
 
 <style>
@@ -223,8 +233,8 @@
 
     background-color: #fff;
     border-radius: 28px;
-    width: calc(480px-2*36px);
-    height: calc(624px-2*36px);
+    width: 408px;
+    height: 552px;
     padding: 36px 36px;
   }
 
@@ -249,7 +259,7 @@
 
   .steps {
     display: flex;
-    margin: 38px 0;
+    margin: 28px 0;
   }
 
   .step {
@@ -265,6 +275,7 @@
   .step-text {
     font-family: "Manrope";
     font-size: 12px;
+    line-height: 12px;
     color: var(--dark-grey);
     margin-top: 7px;
   }
@@ -279,8 +290,8 @@
     justify-content: center;
 
     background-color: #fff;
-    width: 33px;
-    height: 33px;
+    width: 29px;
+    height: 29px;
     border: 2px solid var(--dark-grey);
     border-radius: 50%;
   }
@@ -297,8 +308,8 @@
     color: #fff;
     background-image: var(--gradient);
     border: 0;
-    height: 35px;
-    width: 35px;
+    height: 33px;
+    width: 33px;
   }
 
   .done p {
@@ -339,7 +350,7 @@
     background-color: var(--light-grey);
     border: 0;
     border-radius: 50px;
-    padding: 12px 16px;
+    padding: 10px 16px;
     font-size: 16px;
   }
 
@@ -448,7 +459,7 @@
   }
 
   .end {
-    width: 480px;
-    height: 414px;
+    width: 408px;
+    height: 342px;
   }
 </style>

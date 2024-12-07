@@ -226,10 +226,10 @@
 
     main {
         /* margin: 256px 0; */
-        background-image: url(".static/PinkEllipse.svg"), url("/static/YellowEllipse.svg"), url("/static/Star.svg"); 
+        /* background-image: url(".static/PinkEllipse.svg"), url("/static/YellowEllipse.svg"), url("/static/Star.svg"); 
         background-repeat: no-repeat, no-repeat, no-repeat; 
         background-position: center center, center center, center center; 
-        background-size: cover;
+        background-size: cover; */
         margin: 100px 80px;
     }
 

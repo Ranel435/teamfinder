@@ -9,12 +9,11 @@
 
   async function sendEmailCode(email: string) {
     try {
-      const response = await fetch('/api/auth/login/email', {
-        method: 'POST', // Используйте POST для отправки данных
+      const response = await fetch('http://localhost:8090/auth/login/telegram', {
+        method: 'GET', // Используйте POST для отправки данных
         headers: {
           'Content-Type': 'application/json', // Указываем тип контента
-        },
-        body: JSON.stringify({ email }), // Преобразуем объект в строку JSON
+        } // Преобразуем объект в строку JSON
       });
       console.log('Response status:', response.status);
       console.log('Response headers:', response.headers);

@@ -1,44 +1,70 @@
 <script lang="ts">
   import "../../../app.css";
   import Code from "$lib/code.svelte";
-  $: current_form = "registration";
-  $: main_text = "Заполните поля необходимой информацией";
-  $: main_title = "Регистрация";
+  import { goto } from "$app/navigation";
+
+  let current_form: string = "registration"; // переменная для отображения текущей формы
+  let main_text: string = "Заполните поля необходимой информацией"; // переменная для текста формы
+  let main_title: string = "Регистрация"; // переменная для заголовка формы
+  let repeatPasswordPlaceholder: string = "повторите пароль"; // переменная для placeholderа поля ввода повтора пароля
+
+  let password: string = "";
+  let repeatPassword: string = "";
+  let passwordsMatch: boolean = password === repeatPassword;
+
   let email: string = "";
-  let errorMessage: string = "";
+  let emailCode: string = ""; // Хранит введенный код подтверждения
+  let confirmationCode = ["", "", "", "", "", ""]; // цифры кода подтверждения
+  
+  let name: string = "";
+  let surname: string = "";
+  let tgid: string = "";
+  let lookingForTeam: boolean = false;
+  let formError: string = "";
 
   async function sendEmailCode(email: string) {
     try {
       const response = await fetch('http://localhost:8090/auth/login/email', {
-        method: 'POST', // Используйте POST для отправки данных
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json', // Указываем тип контента
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }), // Преобразуем объект в строку JSON
+        body: JSON.stringify({ email }),
       });
-      console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
-      const responseText = await response.text();
-      console.log('Response body:', responseText);
-
       if (response.ok) {
         const data = await response.json();
         console.log("done");
-        //message = data.message; // Сообщение от сервера
       } else {
         const errorData = await response.json();
-        console.log(1111);
-        //message = errorData.error; // Обработка ошибок
+        console.log("error");
       }
     } catch (error) {
       console.error('Ошибка при отправке запроса:', error);
-      console.log(email);
-      //message = 'Ошибка подключения. Попробуйте еще раз позже.';
     }
   }
 
-
-
+  async function verifyEmailCode(email: string, password: string) {
+    console.log(password);
+    try {
+      const response = await fetch('http://localhost:8090/auth/login/email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          { email: email, password: password}),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("done");
+      } else {
+        const errorData = await response.json();
+        console.log("error");
+      }
+    } catch (error) {
+      console.error('Ошибка при отправке запроса:', error);
+    }
+  }
 
 </script>
 
@@ -114,12 +140,20 @@
         </div>
       </div>
       {/if}
-    <!-- </div> -->
-    
-    <!-- <div class="registr-container-main"> -->
+
       {#if current_form === "registration"}
       <div class="registr-container-main">
-        <div class="form">
+        <form class="form" 
+          on:submit|preventDefault={() => {
+          if (password !== repeatPassword) {
+            repeatPassword = "";
+            repeatPasswordPlaceholder = "Пароли не совпадают";
+            return; // Прерываем обработку, если пароли не совпадают
+          }
+          repeatPassword = "";
+          repeatPasswordPlaceholder = "повторите пароль"
+          current_form = "personal_info"; // Переходим на следующий шаг
+          }}>
           <div class="login">
             <label for="">Логин</label>
             <input type="text" required placeholder="логин"/>
@@ -130,38 +164,68 @@
           </div>
           <div class="password">
             <label for="">Пароль</label>
-            <input type="password" required placeholder="пароль" />
-            <input type="password" class="repeat-password" required placeholder="повторите пароль"/>
+            <input type="password" minlength="8" required placeholder="пароль" bind:value={password}/>
+            <input type="password" class="repeat-password" required placeholder={repeatPasswordPlaceholder} bind:value={repeatPassword}/>
           </div>
-        </div>
+          <div class="buttons">
+            <button type="button" on:click={() => {goto("/auth")}}>Назад</button>
+            <button type="submit" class="next-button">Далее</button>
+          </div>
+        </form>
+        
       </div>
       {/if}
       {#if current_form === "personal_info"}
       <div class="registr-container-main">
-        <div class="form">
+        <form class="form" 
+          on:submit|preventDefault={() => {
+            if (!name || !surname || !tgid) {
+              formError = "Пожалуйста, заполните все обязательные поля.";
+            } else {
+              formError = ""; // Если ошибки нет, сбрасываем сообщение
+              sendEmailCode(email); // Отправка кода на почту
+              current_form = "confirm"; // Переход на следующий шаг
+              main_title = "Подтверждение";
+              main_text = "";
+            }
+          }}>
           <div class="name">
-            <label for="">Имя</label>
-            <input type="text" required placeholder="Иван"/>
+            <label for="name">Имя</label>
+            <input id="name" type="text" required placeholder="Иван" bind:value={name}/>
           </div>
           <div class="surname">
-            <label for="">Фамилия</label>
-            <input type="text" required placeholder="Иванов"/>
+            <label for="surname">Фамилия</label>
+            <input id="surname" type="text" required placeholder="Иванов" bind:value={surname}/>
           </div>
           <div class="tgid">
-            <label for="">Телеграм</label>
-            <input type="text" required placeholder="@telegram" />
+            <label for="tgid">Телеграм</label>
+            <input id="tgid" type="text" required placeholder="@telegram" bind:value={tgid}/>
           </div>
           <div class="looking-for-team">
-            <label for="">Ищу команду</label>
+            <label for="toggle">Ищу команду</label>
             <div class="switch">
-              <input type="checkbox" id="toggle" class="switch-input">
+              <input type="checkbox" id="toggle" class="switch-input" bind:checked={lookingForTeam} />
               <label for="toggle" class="switch-label">
-                  <span class="switch-inner"></span>
-                  <span class="switch-switch"></span>
+                <span class="switch-inner"></span>
+                <span class="switch-switch"></span>
               </label>
             </div>
           </div>
-        </div>
+          
+          {#if formError}
+            <p class="error-message">{formError}</p>
+          {/if}
+
+          <div class="buttons">
+            <button type="button" on:click={() => {
+                current_form = "registration"; 
+                main_title = "Регистрация"; 
+                main_text = "Заполните поля необходимой информацией";
+              }}
+            >Назад</button>
+            <button type="submit" class="next-button">Далее</button>
+          </div>
+        </form>
       </div>
       {/if}
       {#if current_form === "confirm"}
@@ -170,37 +234,18 @@
           <p>на указанную почту {email} был выслан 6-ти значный код</p>
           <div class="verify">
             <p style="color: #000">Введите код для продолжения</p>
-            <Code />
+            <Code bind:code={confirmationCode} />
           </div>
         </div>
       </div>
-
       {/if}
-      <!-- {#if current_form === "end"} 
-      <div class="registr-container-main">
-        <p>Заполните информацию в профиле для создания анкеты или присоединения
-          к командам</p>
-      </div>
-      {/if} -->
-    <!-- </div> -->
+
 
     <div class="registr-container-buttons">
-      {#if current_form === "registration"}
-      <div class="buttons">
-        <a href="/forms/auth">Назад</a>
-        <a href="" class="next-button" on:click={() => {current_form = "personal_info"}}>Далее</a>
-      </div>
-      {/if}
-      {#if current_form === "personal_info"}
-      <div class="buttons">
-        <a href="" on:click={() => {current_form = "registration"; main_title = "Регистрация"; main_text = "Зполните поля необходимой информацией"}}>Назад</a>
-        <a href="" class="next-button" on:click={() => {sendEmailCode(email); current_form = "confirm"; main_title = "Подтверждение"; main_text = ""}}>Далее</a>
-      </div>
-      {/if}
       {#if current_form === "confirm"}
       <div class="buttons">
         <a href="" on:click={() => {current_form = "personal_info"; main_title = "Регистрация"; main_text = "Зполните поля необходимой информацией"}}>Назад</a>
-      <a href="" class="next-button" on:click={() => {current_form = "end"; main_title = "Регистрация завершена"; main_text = "Заполните информацию в профиле для создания анкеты или присоединения к командам"}}>Завершить</a>
+        <a href="" class="next-button" on:click={() => {verifyEmailCode(email, confirmationCode.join('')); current_form = "end"; main_title = "Регистрация завершена"; main_text = "Заполните информацию в профиле для создания анкеты или присоединения к командам"}}>Завершить</a>
       </div>
       <div class="repeat-button">
         <a href="" class="repeat-button">Выслать повторно</a>
@@ -259,7 +304,7 @@
 
   .steps {
     display: flex;
-    margin: 28px 0;
+    margin: 16px 0;
   }
 
   .step {
@@ -388,7 +433,7 @@
     width: 100%;
   }
 
-  a {
+  a, button{
     font-family: "Manrope";
     font-size: 18px;
     color: var(--dark-grey);
@@ -400,6 +445,13 @@
     
   }
   
+  .buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+  }
+
   .next-button {
     margin-left: 25px;
     /* display: flex; */

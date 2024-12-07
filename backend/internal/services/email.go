@@ -2,9 +2,11 @@ package services
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"net/smtp"
 	"os"
+	// "github.com/joho/godotenv"
 )
 
 type EmailService struct {
@@ -15,6 +17,11 @@ type EmailService struct {
 }
 
 func NewEmailService() *EmailService {
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Fatalf("Ошибка загрузки .env файла: %v", err)
+	// }
+
 	return &EmailService{
 		from:     os.Getenv("EMAIL_LOGIN"),
 		password: os.Getenv("EMAIL_PASSWORD"),
@@ -33,5 +40,9 @@ func (s *EmailService) SendVerificationCode(to, code string) error {
 	msg := []byte(fmt.Sprintf("Subject: Verification Code\r\n\r\nYour verification code is: %s", code))
 
 	addr := fmt.Sprintf("%s:%s", s.host, s.port)
-	return smtp.SendMail(addr, auth, s.from, []string{to}, msg)
+	err := smtp.SendMail(addr, auth, s.from, []string{to}, msg)
+	if err != nil {
+		log.Printf("Ошибка отправки email: %v", err)
+	}
+	return err
 }

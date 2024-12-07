@@ -1,5 +1,5 @@
 <script lang="ts">
-  import "../../app.css";
+  import "../../../app.css";
   import Code from "$lib/code.svelte";
   $: current_form = "registration";
   $: main_text = "Заполните поля необходимой информацией";
@@ -7,9 +7,9 @@
   let email: string = "";
   let errorMessage: string = "";
 
-  async function sendEmailCode() {
+  async function sendEmailCode(email: string) {
     try {
-      const response = await fetch('http://localhost:8090/auth/login/email', {
+      const response = await fetch('http://backend:8090/api/auth/login/email', {
         method: 'POST', // Используйте POST для отправки данных
         headers: {
           'Content-Type': 'application/json', // Указываем тип контента
@@ -19,6 +19,7 @@
 
       if (response.ok) {
         const data = await response.json();
+        console.log("done");
         //message = data.message; // Сообщение от сервера
       } else {
         const errorData = await response.json();
@@ -113,6 +114,7 @@
     
     <div class="registr-container-main">
       {#if current_form === "registration"}
+      <div class="registr-container-main">
       <div class="form">
         <div class="login">
           <label for="">Логин</label>
@@ -128,8 +130,10 @@
           <input type="password" class="repeat-password" required placeholder="повторите пароль"/>
         </div>
       </div>
+    </div>
       {/if}
       {#if current_form === "personal_info"}
+      <div class="registr-container-main">
       <div class="form">
         <div class="name">
           <label for="">Имя</label>
@@ -154,8 +158,10 @@
         </div>
         </div>
       </div>
+    </div>
       {/if}
       {#if current_form === "confirm"}
+      <div class="registr-container-main">
       <div class="verify-container">
         <p>на указанную почту {email} был выслан 6-ти значный код</p>
         <div class="verify">
@@ -163,22 +169,21 @@
           <Code />
         </div>
       </div>
-      {/if}
-      {#if current_form === "end"}
+    </div>
       {/if}
     </div>
 
     <div class="registr-container-buttons">
       {#if current_form === "registration"}
       <div class="buttons">
-        <a href="/auth">Назад</a>
+        <a href="/forms/auth">Назад</a>
         <a href="" class="next-button" on:click={() => {current_form = "personal_info"}}>Далее</a>
       </div>
       {/if}
       {#if current_form === "personal_info"}
       <div class="buttons">
         <a href="" on:click={() => {current_form = "registration"; main_title = "Регистрация"; main_text = "Зполните поля необходимой информацией"}}>Назад</a>
-        <a href="" class="next-button" on:click={() => {sendEmailCode(); current_form = "confirm"; main_title = "Подтверждение"; main_text = ""}}>Далее</a>
+        <a href="" class="next-button" on:click={() => {sendEmailCode(email); current_form = "confirm"; main_title = "Подтверждение"; main_text = ""}}>Далее</a>
       </div>
       {/if}
       {#if current_form === "confirm"}
@@ -204,10 +209,9 @@
   /* header */
   .registr {
     display: flex;
-    align-items: center;
     justify-content: center;
-    height: 100%;
-    margin: 100px 0;
+    align-items: center;
+    height: 100vh;
   }
 
   .registr-container {
@@ -218,10 +222,10 @@
     justify-content: space-between;
 
     background-color: #fff;
-    border-radius: 32px;
-    width: 568px;
-    height: 700px;
-    padding: 50px 36px;
+    border-radius: 28px;
+    width: calc(480px-2*36px);
+    height: calc(624px-2*36px);
+    padding: 36px 36px;
   }
 
   .registr-container-header {
@@ -232,19 +236,15 @@
 
   .registr-container-header-text h2 {
     font-family: "Manrope";
-    font-size: 48px;
+    font-size: 36px;
     font-weight: normal;
-    line-height: 48px;
-    margin: 0;
-    margin-bottom: 24px;
+    margin-bottom: 10px;
   }
 
   .registr-container-header-text p {
     font-family: "Manrope";
-    font-size: 24px;
+    font-size: 18px;
     color: var(--dark-grey);
-
-    margin: 0;
   }
 
   .steps {
@@ -264,14 +264,14 @@
 
   .step-text {
     font-family: "Manrope";
-    font-size: 16px;
+    font-size: 12px;
     color: var(--dark-grey);
-    margin-top: 10px;
+    margin-top: 7px;
   }
 
   .step-circle {
     font-family: "Montserrat";
-    font-size: 24px;
+    font-size: 18px;
     color: var(--dark-grey);
 
     display: flex;
@@ -279,8 +279,8 @@
     justify-content: center;
 
     background-color: #fff;
-    width: 42px;
-    height: 42px;
+    width: 33px;
+    height: 33px;
     border: 2px solid var(--dark-grey);
     border-radius: 50%;
   }
@@ -297,8 +297,8 @@
     color: #fff;
     background-image: var(--gradient);
     border: 0;
-    height: 48px;
-    width: 48px;
+    height: 35px;
+    width: 35px;
   }
 
   .done p {
@@ -311,8 +311,7 @@
     flex-direction: column;
     text-align: left;
     justify-content: space-between;
-    width: calc(100% - 54px);
-    margin-bottom: 38px;
+    width: calc(100%);
   }
   .email,
   .login,
@@ -329,20 +328,19 @@
   }
 
   .login, .email {
-    margin-bottom: 36px;
+    margin-bottom: 12px;
   }
 
   .name, .surname, .tgid {
-    margin-bottom: 24px;
+    margin-bottom: 12px;
   }
 
   input {
     background-color: var(--light-grey);
     border: 0;
-    height: 24px;
     border-radius: 50px;
-    padding: 7px 16px;
-    font-size: 20px;
+    padding: 12px 16px;
+    font-size: 16px;
   }
 
   .repeat-password {
@@ -351,7 +349,7 @@
 
   label {
     font-family: "Manrope";
-    font-size: 24px;
+    font-size: 18px;
     margin-left: 10px;
     margin-bottom: 8px;
   }
@@ -367,7 +365,7 @@
   .verify-container p {
     font-family: "Manrope";
     color: var(--dark-grey);
-    font-size: 24px;
+    font-size: 18px;
     margin-bottom: 32px;
   }
 
@@ -381,11 +379,11 @@
 
   a {
     font-family: "Manrope";
-    font-size: 24px;
+    font-size: 18px;
     color: var(--dark-grey);
     text-decoration: none;
 
-    padding: 8px 27px;
+    padding: 10px 18px;
     border: 3px solid var(--light-grey);
     border-radius: 50px;
     
@@ -417,8 +415,8 @@
       display: flex;
       align-items: center;
       cursor: pointer;
-      width: 56px;
-      height: 32px;
+      width: 42px;
+      height: 24px;
       background-color: #ccc;
       border-radius: 15px;
       position: relative;
@@ -433,8 +431,8 @@
 
   .switch-switch {
       position: absolute;
-      width: 24px;
-      height: 24px;
+      width: 18px;
+      height: 18px;
       background-color: white;
       border-radius: 50%;
       transition: transform 0.3s ease;
@@ -446,11 +444,11 @@
   }
 
   .switch-input:checked + .switch-label .switch-switch {
-      transform: translateX(28px); /* Перемещение переключателя */
+      transform: translateX(20px); /* Перемещение переключателя */
   }
 
   .end {
-    width: 568px;
-    height: 408px;
+    width: 480px;
+    height: 414px;
   }
 </style>

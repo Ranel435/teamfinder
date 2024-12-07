@@ -21,6 +21,8 @@
 go.work
 go.work.sum
 
+docker-compose.yml
+
 # env file
 .env
 
@@ -45,8 +47,4 @@ vite.config.js.timestamp-*
 .vercel
 .test-tmp
 symlink-from
-<<<<<<< Updated upstream
 .idea/
-=======
-.idea/
->>>>>>> Stashed changes

@@ -42,14 +42,14 @@
 <style>
   .input-field {
     background-color: var(--light-grey);
-    width: 52px;
-    height: 60px;
+    width: 48px;
+    height: 56px;
     text-align: center;
-    font-size: 24px;
+    font-size: 20px;
     /* margin: 0 5px; */
     margin-right: 12px;
     border: 0px solid #ccc;
-    border-radius: 36px;
+    border-radius: 16px;
   }
   .input-field:last-child {
     margin-right: 0px;

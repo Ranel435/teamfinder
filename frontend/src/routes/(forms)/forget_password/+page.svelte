@@ -1,5 +1,5 @@
 <script lang="ts">
-  import "../../app.css";
+  import "../../../app.css";
   import Code from "$lib/code.svelte";
   $: current_form = "first";
   $: main_title = "Восстановление пароля";
@@ -34,12 +34,18 @@
         </div>
       </div>
       {/if}
+
+      {#if current_form === "gg"}
+      <div class="gg-container">
+        <p>Чтобы восстановить аккаунт, обратитесь в поддержку</p>
+      </div>
+      {/if}
     </div>
 
-    <div class="forget_password-container-header">
+    <div class="forget_password-container-buttons">
       {#if current_form === "first"}
       <div class="buttons">
-        <a href="/">Нет доступа к почте</a>
+        <a href="" on:click={() => {current_form = "gg"; main_title = "ГГ("}}>Нет доступа к почте</a>
         <a href="" class="next-button" on:click={() => {current_form = "second"; main_title = "Подтверждение входа"}}>Далее</a>
       </div>
       {/if}
@@ -47,10 +53,17 @@
       {#if current_form === "second"}
       <div class="buttons">
         <a href="" on:click={() => {current_form = "first"; main_title = "Восстановление пароля"}}>Назад</a>
-        <a href="/auth" class="next-button">Завершить</a>
+        <a href="/" class="next-button">Завершить</a>
       </div>
       <div class="repeat-button">
         <a href="" class="repeat-button">Выслать повторно</a>
+      </div>
+      {/if}
+
+      {#if current_form === "gg"}
+      <div class="buttons">
+        <a href="/">Поддержка</a>
+        <a href="" style="margin-left: 25px;">На главную</a>
       </div>
       {/if}
     </div>
@@ -61,9 +74,9 @@
 <style>
   .forget_password {
     display: flex;
-    align-items: center;
     justify-content: center;
-    height: 100%;
+    align-items: center;
+    height: 100vh;
   }
 
   .forget_password-container {
@@ -167,7 +180,6 @@
 
   .next-button {
     margin-left: 25px;
-    /* display: flex; */
     align-items: center;
     color: #fff;
     border: 0;
@@ -176,5 +188,12 @@
 
   .repeat-button {
     margin-top: 36px;
+  }
+
+  .gg-container p{
+    font-family: "Manrope";
+    font-size: 24px;
+    color: var(--dark-grey);
+    text-align: center;
   }
 </style>

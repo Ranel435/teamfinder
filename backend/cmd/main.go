@@ -1,33 +1,35 @@
 package main
 
 import (
+	"context"
 	"log"
-	"os"
-
+	"teamfinder/backend/internal/config"
 	"teamfinder/backend/internal/db"
-
 	"teamfinder/backend/internal/pkg/server"
 	"teamfinder/backend/internal/pkg/storage"
-
 	"time"
 
 	"github.com/gin-contrib/cors"
-	// "github.com/joho/godotenv"
 )
 
 func main() {
-	//==========> DB (POSTGRESSQL)
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	log.Fatalf("Ошибка загрузки .env файла: %v", err)
-	// }
-	dsn := os.Getenv("DATABASE_URL")
-	if dsn == "" {
-		log.Fatal("DATABASE_URL not set")
+	//==========> DATA BASE (POSTGRESQL)
+	// Загрузка конфигурации
+	cfg := config.LoadConfig()
+
+	// Подключение к базе данных
+	db.ConnectDB(cfg.DatabaseURL)
+	defer db.Pool.Close()
+
+	// Проверка подключения
+	if err := db.Pool.Ping(context.Background()); err != nil {
+		log.Fatalf("Unable to ping database: %v", err)
 	}
 
-	db.ConnectDB(dsn)
-	defer db.Pool.Close()
+	// Запуск миграций
+	if err := db.RunMigrations(); err != nil {
+		log.Printf("Warning: Failed to run migrations: %v", err)
+	}
 
 	//==========> SERVER (ROUTES)
 

@@ -4,8 +4,10 @@
 	"/": [],
 	"/(forms)/auth": [],
 	"/(forms)/forget_password": [],
-	"/homework_notes": [],
-	"/homework_notes/[id]": [],
-	"/practice": [],
+	"/(main)/profile": [],
+	"/(main)/profile/account": [],
+	"/(main)/profile/forms": [],
+	"/(main)/profile/notifications": [],
+	"/(main)/profile/teams": [],
 	"/(forms)/reg": []
 }

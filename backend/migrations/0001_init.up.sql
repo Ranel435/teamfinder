@@ -1,26 +1,26 @@
 CREATE EXTENSION IF NOT EXISTS dblink;
 
 -- Create our application role if it doesn't exist
-DO
-$function$
-BEGIN
-    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'teamfinder_user') THEN
-        CREATE ROLE teamfinder_user WITH LOGIN PASSWORD 'teamfinder_password';
-    END IF;
-END;
-$function$;
+-- DO
+-- $function$
+-- BEGIN
+--     IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'teamfinder_user') THEN
+--         CREATE ROLE teamfinder_user WITH LOGIN PASSWORD 'teamfinder_password';
+--     END IF;
+-- END;
+-- $function$;
 
 -- Create database if it doesn't exist
-DO
-$function$
-BEGIN
-    IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'teamfinder_db') THEN
-        PERFORM dblink_exec('dbname=' || current_database(), 'CREATE DATABASE teamfinder_db');
-    END IF;
-END;
-$function$;
+-- DO
+-- $function$
+-- BEGIN
+--     IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'teamfinder_db') THEN
+--         PERFORM dblink_exec('dbname=' || current_database(), 'CREATE DATABASE teamfinder_db');
+--     END IF;
+-- END;
+-- $function$;
 
-GRANT ALL PRIVILEGES ON DATABASE teamfinder_db TO teamfinder_user;
+-- GRANT ALL PRIVILEGES ON DATABASE teamfinder_db TO teamfinder_user;
 
 -- Create tables
 -- Таблица пользователей

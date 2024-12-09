@@ -7,9 +7,6 @@ import (
 	"teamfinder/backend/internal/db"
 	"teamfinder/backend/internal/pkg/server"
 	"teamfinder/backend/internal/pkg/storage"
-	"time"
-
-	"github.com/gin-contrib/cors"
 )
 
 func main() {
@@ -41,21 +38,6 @@ func main() {
 
 	// router creating
 	router := server.New(":8090", &store)
-
-	// CORS configuration
-	router.GetRouter().Use(cors.New(cors.Config{
-		// AllowOrigins:     []string{"http://localhost:3000"},
-		// AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
-		// AllowHeaders:     []string{"Origin", "Content-Length", "Accept", "Content-Type", "Authorization"},
-		// ExposeHeaders:    []string{"Content-Length"},
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"*"},
-		AllowHeaders:     []string{"*"},
-		ExposeHeaders:    []string{"*"},
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
-		AllowWildcard:    true,
-	}))
 
 	//start server
 	router.Start()

@@ -99,9 +99,10 @@ func (h *AuthHandler) VerifyEmailCode(c *gin.Context) {
 	}
 
 	delete(h.codes, req.Email)
-
+	// c.Header("Access-Control-Allow-Origin", "*")
+	// c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
 	c.JSON(http.StatusOK, gin.H{
-		"token":         accessToken,
+		"access_token":  accessToken,
 		"refresh_token": refreshToken,
 	})
 }

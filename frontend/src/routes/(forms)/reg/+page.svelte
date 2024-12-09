@@ -52,11 +52,11 @@
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(
-          { email: email, password: password}),
+          { email: email, code: password}),
       });
       if (response.ok) {
         const data = await response.json();
-        console.log("done");
+        console.log(data);
       } else {
         const errorData = await response.json();
         console.log("error");
@@ -71,7 +71,6 @@
 
 <section class="registr">
   <div class="registr-container {current_form}">
-    <!-- <div class="registr-container-header"> -->
       <div class="registr-container-header-text">
         <h2>{main_title}</h2>
         <p>{main_text}</p>
@@ -199,7 +198,7 @@
           </div>
           <div class="tgid">
             <label for="tgid">Телеграм</label>
-            <input id="tgid" type="text" required placeholder="@telegram" bind:value={tgid}/>
+            <input id="tgid" type="text" required pattern="^@([A-Za-z0-9_]+)$" placeholder="@telegram" bind:value={tgid}/>
           </div>
           <div class="looking-for-team">
             <label for="toggle">Ищу команду</label>
@@ -244,17 +243,17 @@
     <div class="registr-container-buttons">
       {#if current_form === "confirm"}
       <div class="buttons">
-        <a href="" on:click={() => {current_form = "personal_info"; main_title = "Регистрация"; main_text = "Зполните поля необходимой информацией"}}>Назад</a>
-        <a href="" class="next-button" on:click={() => {verifyEmailCode(email, confirmationCode.join('')); current_form = "end"; main_title = "Регистрация завершена"; main_text = "Заполните информацию в профиле для создания анкеты или присоединения к командам"}}>Завершить</a>
+        <button on:click={() => {current_form = "personal_info"; main_title = "Регистрация"; main_text = "Зполните поля необходимой информацией"}}>Назад</button>
+        <button class="next-button" on:click={() => {verifyEmailCode(email, confirmationCode.join('')); current_form = "end"; main_title = "Регистрация завершена"; main_text = "Заполните информацию в профиле для создания анкеты или присоединения к командам"}}>Завершить</button>
       </div>
       <div class="repeat-button">
-        <a href="" class="repeat-button">Выслать повторно</a>
+        <button class="repeat-button">Выслать повторно</button>
       </div>
       {/if}
       {#if current_form === "end"}
       <div class="buttons">
-        <a href="">К настройкам профиля</a>
-        <a href="/" class="next-button">На главную</a>
+        <button>К настройкам профиля</button>
+        <button on:click={() => goto("/")} class="next-button">На главную</button>
       </div>
       {/if}
     </div>
@@ -433,7 +432,7 @@
     width: 100%;
   }
 
-  a, button{
+  button {
     font-family: "Manrope";
     font-size: 18px;
     color: var(--dark-grey);

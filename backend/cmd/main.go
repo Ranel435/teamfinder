@@ -39,7 +39,7 @@ func main() {
 	// router creating
 	router := server.New(":8090", &store)
 
-	//start server
+	// start server
 	router.Start()
 	log.Println("Backend started successfully")
 }

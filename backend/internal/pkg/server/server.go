@@ -43,7 +43,7 @@ func New(host string, st *storage.Storage) *Server {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	// setup routes
+	//setup routes
 	s.setupRoutes()
 
 	return s

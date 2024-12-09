@@ -12,7 +12,7 @@ type Config struct {
 
 func LoadConfig() Config {
 	return Config{
-		DatabaseURL: getEnvOrDefault("DATABASE_URL", "postgres://teamfinder:teamfinder@postgres:5432/postgres?sslmode=disable"),
+		DatabaseURL: getEnvOrDefault("DATABASE_URL", "postgres://teamfinder_user:teamfinder_password@postgres:5432/teamfinder_db?sslmode=disable"),
 		JWTSecret:   getEnvOrDefault("JWT_SECRET", "your-secret-key"),
 	}
 }

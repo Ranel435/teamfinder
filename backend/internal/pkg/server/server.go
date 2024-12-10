@@ -35,7 +35,7 @@ func New(host string, st *storage.Storage) *Server {
 	// CORS configuration
 	s.router.Use(cors.New(cors.Config{
 		// AllowOrigins:     []string{"*"},
-		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowOrigins:     []string{"http://localhost:3000", "http://141.8.197.173", "http://141.8.197.173:3000"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "Accept"},
 		ExposeHeaders:    []string{"Content-Length"},

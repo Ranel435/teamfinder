@@ -1,6 +1,6 @@
 <script lang="ts">
   import "../../../app.css";
-  import Code from "$lib/code.svelte";
+  import Code from "$lib/components/code.svelte";
   $: current_form = "first";
   $: main_title = "Восстановление пароля";
 </script>

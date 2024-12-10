@@ -1,35 +1,50 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import "../../../app.css"
+  import "../../../app.css";
+
   let email: string = "";
   let password: string = "";
+
+  let n_email: string = "qquerell.fw@gmail.com";
+  let n_password: string = "12341234";
+  function handleLogin(event: Event) {
+    event.preventDefault(); // Останавливаем стандартное поведение
+
+    if (!email || !password) {
+      alert("Все поля обязательны");
+    } else {
+      console.log("Логин:", { email, password });
+      goto("/");
+    }
+  }
 </script>
 
 <section class="auth">
   <div class="auth-container">
     <h2>Вход</h2>
-    <form class="form">
+    <form class="form" on:submit={handleLogin}>
       <div class="email">
         <label for="email">Почта</label>
         <input type="email" id="email" bind:value={email} placeholder="x@email.com" required>
       </div>
       <div class="password">
         <label for="password">Пароль</label>
-        <input type="password" bind:value={password} placeholder="пароль" required>
+        <input type="password" bind:value={password} placeholder="пароль" minlength="8" required>
+      </div>
+      <div class="all-buttons">
+        <div class="buttons">
+          <button class="button" type="button" on:click={() => goto("/reg")}>Регистрация</button>
+          <button class="button" type="button" on:click={() => goto("/forget_password")}>Забыл пароль</button>
+        </div>
+        <div class="buttons second-buttons">
+          <button class="button" type="button" on:click={() => goto('/')}>Назад</button>
+          <button class="login-a" type="submit">Войти</button>
+        </div>
       </div>
     </form>
-    <div class="all-buttons">
-      <div class="buttons">
-        <a class="button" href="/reg">Регистрация</a>
-        <a href="/forms/forget_password">Забыл пароль</a>
-      </div>
-      <div class="buttons second-buttons">
-        <button class="button" on:click={() => goto('/')}>Назад</button>
-        <a class="login-a" href="/">Войти</a>
-      </div>
-    </div>
   </div>
 </section>
+
 
 <style>
 
@@ -41,23 +56,23 @@
   }
 
   .auth-container {
-    padding: 36px;
-    width: 480px;
-    height: 414px;
-    background-color: #fff;
-    border-radius: 32px;
     display: flex;
     flex-direction: column;
     text-align: center;
     align-items: center;
     justify-content: space-between;
-    
+
+    padding: 36px;
+    width: 408px;
+    height: 342px;
+    background-color: #fff;
+    border-radius: 32px;
   }
 
   h2 {
     font-family: 'Manrope';
     margin: 0;
-    font-size: 48px;
+    font-size: 36px;
     font-style: normal;
     font-weight: 100;
   }
@@ -66,12 +81,12 @@
     flex-direction: column;
     text-align: left;
     justify-content: space-between;
-    width: calc(100% - 54px);
+    width: calc(100% - 32px);
   }
   .email {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
   .password {
     display: flex;
@@ -80,17 +95,16 @@
 
   label {
     font-family: 'Manrope';
-    font-size: 24px;
-    margin-bottom: 12px;
+    font-size: 18px;
+    margin-bottom: 8px;
   }
 
   input {
     font-family: 'Manrope';
-    font-size: 20px;
+    font-size: 16px;
     background-color: #F3F3F3;
     border: 0;
     border-radius: 50px;
-    height: 24px;
     padding: 8px 16px;
   }
 
@@ -105,25 +119,24 @@
   .buttons {
     display: flex;
     justify-content: space-between;
-    /* margin-bottom: 30px; */
   }
 
   .second-buttons {
     margin-top: 20px;
   }
 
-  .button {
-    margin-right: 20px;
-  }
-
-  a, button {
+  button {
+    background-color: #fff;
     font-family: 'Manrope';
-    font-size: 24px;
+    font-size: 18px;
     text-decoration: none;
-    color: #A2A2A2;
-    padding:8px 27px;
-    border: 3px solid #C9C9C9;
+    color: var(--dark-grey);
+    padding:8px 16px;
+    border: 3px solid var(--dark-grey);
     border-radius: 50px;
+    margin-right: 20px;
+    cursor: pointer;
+    transition: all 0.5s ease;
   }
 
   .login-a{
@@ -131,6 +144,19 @@
     align-items: center;
     color: #fff;
     border: 0;
-    background-image: linear-gradient(-120deg, #FBA31C, #E5469A);
+    background-image:  linear-gradient(120deg, #E5469A, #FBA31C);
+    transition: all 0.5s ease;
   }
+
+
+  .button:hover {
+    background-color: var(--light-grey);
+    color: var(--dark-grey);
+  }
+
+  .login-a:hover {
+    background-image:  linear-gradient(180deg, #E5469A, #FBA31C);
+
+  }
+
 </style>

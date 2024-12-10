@@ -1,7 +1,11 @@
 <script lang="ts">
-  import "../../../app.css";
-  import Code from "$lib/code.svelte";
-  import { goto } from "$app/navigation";
+  import "../../../app.css"; // главные стили
+  import Code from "$lib/components/code.svelte"; // компонент ввода кода
+  import { goto } from "$app/navigation"; // навигация между страницами
+
+  import { sendEmailCode, verifyEmailCode } from '$lib/api/auth';
+  import { saveTokens } from '$lib/stores/authStore';
+  import { profile } from '$lib/stores/data';
 
   let current_form: string = "registration"; // переменная для отображения текущей формы
   let main_text: string = "Заполните поля необходимой информацией"; // переменная для текста формы
@@ -12,59 +16,40 @@
   let repeatPassword: string = "";
   let passwordsMatch: boolean = password === repeatPassword;
 
-  let email: string = "";
   let emailCode: string = ""; // Хранит введенный код подтверждения
-  let confirmationCode = ["", "", "", "", "", ""]; // цифры кода подтверждения
+  let confirmationCode: string[] = ["", "", "", "", "", ""]; // цифры кода подтверждения
   
-  let name: string = "";
-  let surname: string = "";
-  let tgid: string = "";
   let lookingForTeam: boolean = false;
-  let formError: string = "";
 
-  async function sendEmailCode(email: string) {
-    try {
-      const response = await fetch('http://localhost:8090/auth/login/email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        console.log("done");
-      } else {
-        const errorData = await response.json();
-        console.log("error");
-      }
-    } catch (error) {
-      console.error('Ошибка при отправке запроса:', error);
+  // Отправка email
+  async function handleSendEmail() {
+    const success = await sendEmailCode(profile.email);
+    if (!success) {
+      alert('Не удалось отправить код. Попробуйте снова.\n');
+
+    } else {
+      alert('Код отправлен');
     }
   }
 
-  async function verifyEmailCode(email: string, password: string) {
-    console.log(password);
-    try {
-      const response = await fetch('http://localhost:8090/auth/login/email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(
-          { email: email, code: password}),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-      } else {
-        const errorData = await response.json();
-        console.log("error");
-      }
-    } catch (error) {
-      console.error('Ошибка при отправке запроса:', error);
+  // Проверка кода
+  async function handleVerifyCode() {
+    const tokens = await verifyEmailCode(profile.email, confirmationCode.join(''));
+    if (tokens) {
+      saveTokens(tokens.access, tokens.refresh);
+      current_form = "end";
+      main_title = "Регистрация завершена"; 
+      main_text = "Заполните информацию в профиле для создания анкеты или присоединения к командам";
+      return 1;
+    } else {
+      alert('Неверный код подтверждения.');
+      return 0;
     }
   }
+
+
+
+
 
 </script>
 
@@ -154,15 +139,15 @@
           current_form = "personal_info"; // Переходим на следующий шаг
           }}>
           <div class="login">
-            <label for="">Логин</label>
-            <input type="text" required placeholder="логин"/>
+            <label for="">Логин (только латинские буквы)</label>
+            <input type="text" pattern="^[A-Za-z]+$" required placeholder="логин" bind:value={profile.login}/>
           </div>
           <div class="email">
             <label for="">Почта</label>
-            <input type="email" required placeholder="x@email.com" bind:value={email}/>
+            <input type="email" required placeholder="x@email.com" bind:value={profile.email}/>
           </div>
           <div class="password">
-            <label for="">Пароль</label>
+            <label for="">Пароль  (от 8 символов)</label>
             <input type="password" minlength="8" required placeholder="пароль" bind:value={password}/>
             <input type="password" class="repeat-password" required placeholder={repeatPasswordPlaceholder} bind:value={repeatPassword}/>
           </div>
@@ -178,11 +163,9 @@
       <div class="registr-container-main">
         <form class="form" 
           on:submit|preventDefault={() => {
-            if (!name || !surname || !tgid) {
-              formError = "Пожалуйста, заполните все обязательные поля.";
+            if (!profile.name || !profile.surname || !profile.tgid) {
             } else {
-              formError = ""; // Если ошибки нет, сбрасываем сообщение
-              sendEmailCode(email); // Отправка кода на почту
+              sendEmailCode(profile.email); // Отправка кода на почту
               current_form = "confirm"; // Переход на следующий шаг
               main_title = "Подтверждение";
               main_text = "";
@@ -190,15 +173,15 @@
           }}>
           <div class="name">
             <label for="name">Имя</label>
-            <input id="name" type="text" required placeholder="Иван" bind:value={name}/>
+            <input id="name" pattern="^[A-Za-zА-Яа-яЁё]+$" type="text" required placeholder="Иван" bind:value={profile.name}/>
           </div>
           <div class="surname">
             <label for="surname">Фамилия</label>
-            <input id="surname" type="text" required placeholder="Иванов" bind:value={surname}/>
+            <input id="surname" pattern="^[A-Za-zА-Яа-яЁё]+$" type="text" required placeholder="Иванов" bind:value={profile.surname}/>
           </div>
           <div class="tgid">
             <label for="tgid">Телеграм</label>
-            <input id="tgid" type="text" required pattern="^@([A-Za-z0-9_]+)$" placeholder="@telegram" bind:value={tgid}/>
+            <input id="tgid" type="text" required pattern="^@([A-Za-z0-9_]+)$" placeholder="@telegram" bind:value={profile.tgid}/>
           </div>
           <div class="looking-for-team">
             <label for="toggle">Ищу команду</label>
@@ -210,10 +193,6 @@
               </label>
             </div>
           </div>
-          
-          {#if formError}
-            <p class="error-message">{formError}</p>
-          {/if}
 
           <div class="buttons">
             <button type="button" on:click={() => {
@@ -230,7 +209,7 @@
       {#if current_form === "confirm"}
       <div class="registr-container-main">
         <div class="verify-container">
-          <p>на указанную почту {email} был выслан 6-ти значный код</p>
+          <p>на указанную почту {profile.email} был выслан 6-ти значный код</p>
           <div class="verify">
             <p style="color: #000">Введите код для продолжения</p>
             <Code bind:code={confirmationCode} />
@@ -244,15 +223,15 @@
       {#if current_form === "confirm"}
       <div class="buttons">
         <button on:click={() => {current_form = "personal_info"; main_title = "Регистрация"; main_text = "Зполните поля необходимой информацией"}}>Назад</button>
-        <button class="next-button" on:click={() => {verifyEmailCode(email, confirmationCode.join('')); current_form = "end"; main_title = "Регистрация завершена"; main_text = "Заполните информацию в профиле для создания анкеты или присоединения к командам"}}>Завершить</button>
+        <button class="next-button" on:click={handleVerifyCode}>Завершить</button>
       </div>
       <div class="repeat-button">
-        <button class="repeat-button">Выслать повторно</button>
+        <button class="repeat-button" on:click={handleSendEmail}>Выслать повторно</button>
       </div>
       {/if}
       {#if current_form === "end"}
       <div class="buttons">
-        <button>К настройкам профиля</button>
+        <button on:click={() => goto("/profile/account")}>К настройкам профиля</button>
         <button on:click={() => goto("/")} class="next-button">На главную</button>
       </div>
       {/if}
@@ -260,6 +239,13 @@
 </section>
 
 <style>
+  label {
+    font-family: "Manrope";
+    font-size: 18px;
+    margin-left: 10px;
+    margin-bottom: 8px;
+  }
+
   /* header */
   .registr {
     display: flex;
@@ -401,14 +387,6 @@
   .repeat-password {
     margin-top: 15px;
   }
-
-  label {
-    font-family: "Manrope";
-    font-size: 18px;
-    margin-left: 10px;
-    margin-bottom: 8px;
-  }
-
   .verify-container {
     display: flex;
     flex-direction: column;
@@ -433,17 +411,25 @@
   }
 
   button {
-    font-family: "Manrope";
+    background-color: #fff;
+    font-family: 'Manrope';
     font-size: 18px;
-    color: var(--dark-grey);
     text-decoration: none;
-
-    padding: 10px 18px;
-    border: 3px solid var(--light-grey);
+    color: var(--dark-grey);
+    padding:8px 16px;
+    border: 3px solid var(--dark-grey);
     border-radius: 50px;
-    
+    /* margin-right: 20px; */
+    cursor: pointer;
+    transition: all 0.5s ease;
   }
   
+  .button:hover {
+    background-color: var(--light-grey);
+    color: var(--dark-grey);
+  }
+
+
   .buttons {
     display: flex;
     justify-content: center;

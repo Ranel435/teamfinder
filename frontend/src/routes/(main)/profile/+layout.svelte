@@ -1,5 +1,5 @@
 <script>
-  import Sidebar from '$lib/sidenav.svelte';
+  import Sidebar from '$lib/components/sidenav.svelte';
 </script>
 
 <div class="app">

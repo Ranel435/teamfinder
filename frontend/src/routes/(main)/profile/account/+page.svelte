@@ -1,22 +1,9 @@
 <script lang="ts">
   import "../../../../app.css"
+  import { profile } from "$lib/stores/data";
   let isEditing = false; // Статус редактирования
 
-  interface profile {
-    name: string;
-    surname: string;
-    tgid: string;
-    email: string;
-  }
 
-
-  let profileData = {
-    surname: '',
-    name: '',
-    tgid: '',
-    email: '',
-    about: ''
-  };
   
   // Функция переключения режима
   const toggleEdit = () => {
@@ -25,7 +12,7 @@
 
   // Функция сохранения данных
   const saveData = () => {
-    console.log("Сохраненные данные:", profileData);
+    console.log("Сохраненные данные:", profile);
     toggleEdit(); // Завершаем редактирование
   };
 </script>
@@ -42,15 +29,15 @@
           <p>Стек</p>
         </div>
       </div>
-      <input type="text" placeholder="Фамилия" bind:value={profileData.surname}
+      <input type="text" placeholder="Фамилия" bind:value={profile.surname}
       disabled = {!isEditing}>
-      <input type="text" placeholder="Имя" bind:value={profileData.name}
+      <input type="text" placeholder="Имя" bind:value={profile.name}
       disabled = {!isEditing}>
-      <input type="text" pattern="^@([A-Za-z0-9_]+)$" placeholder="@tgid" bind:value={profileData.tgid}
+      <input type="text" pattern="^@([A-Za-z0-9_]+)$" placeholder="@tgid" bind:value={profile.tgid}
       disabled = {!isEditing}>
-      <input type="email" placeholder="почта@mail.ru" bind:value={profileData.email}
+      <input type="email" placeholder="почта@mail.ru" bind:value={profile.email}
       disabled = {!isEditing}>
-      <textarea rows="2" placeholder="Обо мне" bind:value={profileData.about}
+      <textarea rows="2" placeholder="Обо мне" bind:value={profile.about}
       disabled = {!isEditing}></textarea>
       {#if isEditing}
         <button class="save" on:click={saveData}>Сохранить</button>
@@ -65,15 +52,15 @@
         <h2 class="header">Навыки</h2>
         <div class="form-item">
           <label for="">Владение софтом</label>
-          <input type="text" placeholder="Владение софтом" disabled = {!isEditing}>
+          <input type="text" placeholder="Владение софтом" disabled = {!isEditing} bind:value={$profile.software}>
         </div>
         <div class="form-item">
           <label for="">Полный стэк</label>
-          <input type="text" placeholder="Полный стек" disabled = {!isEditing}>
+          <input type="text" placeholder="Полный стек" disabled = {!isEditing} bind:value={$profile.skills}>
         </div>
         <div class="form-item">
           <label for="">Качества</label>
-          <input type="text" placeholder="Качества" disabled = {!isEditing}>
+          <input type="text" placeholder="Качества" disabled = {!isEditing} bind:value={$profile.qualities}>
         </div>
       </div>
     </div>
@@ -83,20 +70,20 @@
         <h2 class="profile-edu-header">Образование</h2>
         <div class="form-item">
           <label for="">Учебное заведение</label>
-          <input type="text" placeholder="Учебное заведение" disabled = {!isEditing}>
+          <input type="text" placeholder="Учебное заведение" disabled = {!isEditing} bind:value={$profile.edu}>
         </div>
         <div class="form-item">
           <label for="">Учебная группа</label>
-          <input type="text" placeholder="Учебная группа" disabled = {!isEditing}>
+          <input type="text" placeholder="Учебная группа" disabled = {!isEditing} bind:value={$profile.edu_group}>
         </div>
         <div class="toggle-switch">
           <label class="toggle-label" for="educationToggle">Уже имею образование</label>
-          <input type="checkbox" id="educationToggle" class="toggle-checkbox" disabled = {!isEditing}>
+          <input type="checkbox" id="educationToggle" class="toggle-checkbox" disabled = {!isEditing} >
           <label class="toggle-slider" for="educationToggle"></label>
         </div>
         <div class="form-item">
           <label for="">Дополнительное образование</label>
-          <input type="text" placeholder="Дополнительное образование" disabled = {!isEditing}>
+          <input type="text" placeholder="Дополнительное образование" disabled = {!isEditing} bind:value={$profile.extra_edu}>
         </div>
       </div>
     </div>

@@ -185,16 +185,17 @@
 
   /* Кнопка удаления */
   .delete-button {
-    display: none; /* Скрываем кнопку по умолчанию */
-    background-color: #e52e71;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 12px;
-    cursor: pointer;
+    display: none;
     font-family: "Manrope";
-    font-size: 14px;
-    transition: background-color 0.3s ease;
+    font-size: 24px;
+    color: #fff;
+    padding: 10px 24px;
+    border: 3px solid #fff;
+    border-radius: 50px;
+    background-color: transparent;
+    cursor: pointer;
+    margin-right: 16px;
+    transition: all 0.5 ease;
   }
 
   .notification:hover {
@@ -224,4 +225,24 @@
   .notifications-list::-webkit-scrollbar-thumb:hover {
     background-color: var(--light-grey); /* Цвет при наведении */
   }
+
+
+  button {
+    font-family: "Manrope";
+    font-size: 24px;
+    color: #fff;
+    padding: 10px 24px;
+    border: 3px solid #fff;
+    border-radius: 50px;
+    background-color: transparent;
+    cursor: pointer;
+    margin-right: 16px;
+    transition: all 0.5 ease;
+  }
+  
+  button:hover {
+    color: black;
+    background-color: #fff;
+  }
+  
 </style>

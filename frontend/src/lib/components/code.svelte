@@ -1,5 +1,5 @@
 <script lang="ts">
-    import '../app.css';
+    import '../../app.css';
   export let code = ["", "", "", "", "", ""]; // Массив для хранения введенных цифр
   let inputs: HTMLInputElement[] = []; // Масиив для ссылок на элементы input
   function handleInput(event: Event, index: number) {

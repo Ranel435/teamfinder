@@ -1,18 +1,22 @@
 <script lang="ts">
     import "../../app.css";
-    let token: string = "";
-    let auth: string = "/auth";
+    import {type Form} from "$lib/stores/data"
 
-    let free_agents: string = "/free_agents";
-    let find_team: string = "/find_team";
-    let create_form: string = "/create-form";
-
+    let roles: string[] = ["Backend", "Frontend", "Fullstack", "Analyst", "Product-Manager", "Design", "IOS-Developer", "ML", "DevOps"]
+    let array: number[] = [1, 2, 3, 4, 5, 6]
     let count_teams: number = 14;
 
-    if (!token) {
-        free_agents = "/auth";
-        find_team = "/auth";
-        create_form = "/auth";
+
+    let vacancy: Form = {
+        id: "14874231-8512489-y3",
+        name: "Max",
+        surname: "Uskov",
+        tgid: "@qquerell",
+        role: "Frontend",
+        skills: "SvelteKit / TS",
+        about: "Senior++ html dev ceo",
+        archivements: "Shorthack 44th place",
+        status: 1
     }
 </script>
 
@@ -26,50 +30,20 @@
             <img src="Начни Хакатонить!.svg" alt="">
         </div>
         <div class="main-buttons">
-            <a  class="main-button" href={free_agents}>Свободные агенты</a>
-            <a class="main-button" href={find_team}>Найти команду</a>
-            <a class="main-button" href={create_form}>Создать анкету</a>
+            <a  class="main-button" href="">Свободные агенты</a>
+            <a class="main-button" href="">Найти команду</a>
+            <a class="main-button" href="">Создать анкету</a>
         </div> 
     </section>
     <section class="popular-roles">
         <h2 class="title">Популярные роли</h2>
         <div class="roles-grid">
-          <button class="role backend">
-            <div class="role-name">Backend</div>
-            <div class="role-teams">{count_teams} команд</div>
-          </button>
-          <button class="role frontend">
-            <div class="role-name">Frontend</div>
-            <div class="role-teams">{count_teams} команд</div>
-          </button>
-          <button class="role fullstack">
-            <div class="role-name">Fullstack dev</div>
-            <div class="role-teams">{count_teams} команд</div>
-          </button>
-          <button class="role analytics">
-            <div class="role-name">Аналитик данных</div>
-            <div class="role-teams">{count_teams} команд</div>
-          </button>
-          <button class="role pm">
-            <div class="role-name">Product manager</div>
-            <div class="role-teams">{count_teams} команд</div>
-          </button>
-          <button class="role ui">
-            <div class="role-name">UX / UI дизайнер</div>
-            <div class="role-teams">{count_teams} команд</div>
-          </button>
-          <button class="role mobile">
-            <div class="role-name">IOS / Android dev</div>
-            <div class="role-teams">{count_teams} команд</div>
-          </button>
-          <button class="role ml">
-            <div class="role-name">ML engineer</div>
-            <div class="role-teams">{count_teams} команд</div>
-          </button>
-          <button class="role devops">
-            <div class="role-name">DevOps инженер</div>
-            <div class="role-teams">{count_teams} команд</div>
-          </button>
+            {#each roles as role, index}
+            <button class="role {role}">
+                <div class="role-name">{role}</div>
+                <div class="role-teams">{count_teams} команд</div>
+              </button>
+            {/each}
         </div>
         <div class="more-roles">
             <a class="more" href="/">Еще роли</a>
@@ -79,6 +53,7 @@
     <section class="teams_slots">
         <h2 class="teams_slots-title">Поиск сокомандников</h2>
         <div class="slots-grid">
+            {#each array as item}
             <div class="slots-grid-slot">
                 <h4>Ищем</h4>
                 <h3 class="slot-role">Роль</h3>
@@ -98,101 +73,7 @@
                 </div>
                 <button class="slot-more_about">Подробнее</button>
             </div>
-            <div class="slots-grid-slot">
-                <h4>Ищем</h4>
-                <h3 class="slot-role">Роль</h3>
-                <p class="slot-skills">Стек/навыки · Опыт</p>
-                <hr>
-                <h3 class="slot-team_name">Название команды</h3>
-                <div class="slot-players">
-                    <p class="slot-players-player">Player1</p>
-                    <p class="slot-players-player">Player2</p>
-                    <p class="slot-players-player">Player3</p>
-                    <p class="slot-players-player">Player4</p>
-                </div>
-                <div class="slot-features">
-                    <p>1 хак</p>
-                    <p>0 побед</p>
-                    <p>3м 5д в сборе</p>
-                </div>
-                <button class="slot-more_about">Подробнее</button>
-            </div>
-            <div class="slots-grid-slot">
-                <h4>Ищем</h4>
-                <h3 class="slot-role">Роль</h3>
-                <p class="slot-skills">Стек/навыки · Опыт</p>
-                <hr>
-                <h3 class="slot-team_name">Название команды</h3>
-                <div class="slot-players">
-                    <p class="slot-players-player">Player1</p>
-                    <p class="slot-players-player">Player2</p>
-                    <p class="slot-players-player">Player3</p>
-                    <p class="slot-players-player">Player4</p>
-                </div>
-                <div class="slot-features">
-                    <p>1 хак</p>
-                    <p>0 побед</p>
-                    <p>3м 5д в сборе</p>
-                </div>
-                <button class="slot-more_about">Подробнее</button>
-            </div>
-            <div class="slots-grid-slot">
-                <h4>Ищем</h4>
-                <h3 class="slot-role">Роль</h3>
-                <p class="slot-skills">Стек/навыки · Опыт</p>
-                <hr>
-                <h3 class="slot-team_name">Название команды</h3>
-                <div class="slot-players">
-                    <p class="slot-players-player">Player1</p>
-                    <p class="slot-players-player">Player2</p>
-                    <p class="slot-players-player">Player3</p>
-                    <p class="slot-players-player">Player4</p>
-                </div>
-                <div class="slot-features">
-                    <p>1 хак</p>
-                    <p>0 побед</p>
-                    <p>3м 5д в сборе</p>
-                </div>
-                <button class="slot-more_about">Подробнее</button>
-            </div>
-            <div class="slots-grid-slot">
-                <h4>Ищем</h4>
-                <h3 class="slot-role">Роль</h3>
-                <p class="slot-skills">Стек/навыки · Опыт</p>
-                <hr>
-                <h3 class="slot-team_name">Название команды</h3>
-                <div class="slot-players">
-                    <p class="slot-players-player">Player1</p>
-                    <p class="slot-players-player">Player2</p>
-                    <p class="slot-players-player">Player3</p>
-                    <p class="slot-players-player">Player4</p>
-                </div>
-                <div class="slot-features">
-                    <p>1 хак</p>
-                    <p>0 побед</p>
-                    <p>3м 5д в сборе</p>
-                </div>
-                <button class="slot-more_about">Подробнее</button>
-            </div>
-            <div class="slots-grid-slot">
-                <h4>Ищем</h4>
-                <h3 class="slot-role">Роль</h3>
-                <p class="slot-skills">Стек/навыки · Опыт</p>
-                <hr>
-                <h3 class="slot-team_name">Название команды</h3>
-                <div class="slot-players">
-                    <p class="slot-players-player">Player1</p>
-                    <p class="slot-players-player">Player2</p>
-                    <p class="slot-players-player">Player3</p>
-                    <p class="slot-players-player">Player4</p>
-                </div>
-                <div class="slot-features">
-                    <p>1 хак</p>
-                    <p>0 побед</p>
-                    <p>3м 5д в сборе</p>
-                </div>
-                <button class="slot-more_about">Подробнее</button>
-            </div>
+            {/each}
         </div>
         <div class="more-roles">
             <a class="more" href="/">Другие команды</a>
@@ -226,10 +107,10 @@
 
     main {
         /* margin: 256px 0; */
-        background-image: url(".static/PinkEllipse.svg"), url("/static/YellowEllipse.svg"), url("/static/Star.svg"); 
+        /* background-image: url(".static/PinkEllipse.svg"), url("/static/YellowEllipse.svg"), url("/static/Star.svg"); 
         background-repeat: no-repeat, no-repeat, no-repeat; 
         background-position: center center, center center, center center; 
-        background-size: cover;
+        background-size: cover; */
         margin: 100px 80px;
     }
 
@@ -242,7 +123,6 @@
 
     .main-text {
         text-align: center;
-        /* margin: 72px 0 72px; */
         margin: 10px 0 40px;
     }
 
@@ -255,7 +135,6 @@
     /* main buttons */
     .main-button {
         font-family: 'Manrope';
-        /* font-size: 24px; */
         color: #fff;
         text-decoration: none;
 
@@ -263,9 +142,6 @@
         border: 3px solid;
         border-color: #fff;
         border-radius: 50px;
-
-        /* margin: 0 18px; */
-        /* padding: 8px 50px; */
 
         font-size: 18px;
         margin-right: 20px;
@@ -285,26 +161,22 @@
         justify-content: center;
         align-items: center;
         text-align: center;
-        /* margin-top: 198px; */
         margin-top: 0;
     }
 
     .title, .teams_slots-title {
         font-family: "Igra";
-        /* font-size: 48px; */
         font-weight: normal;
         color: #fff;
         margin-bottom: 80px;
         font-size: 56px;
     }
 
-    /* grid container */
     .roles-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(auto, 100vw));
     }
 
-    /* role card */
     .role {
         position: relative; 
         overflow: hidden; 
@@ -345,7 +217,6 @@
     }
 
     .role-name {
-        /* font-size: 36px; */
         font-weight: medium;
         margin-bottom: 10px;
         padding-left: 19px;
@@ -353,13 +224,11 @@
     }
 
     .role-teams {
-        /* font-size: 24px; */
         padding-left: 19px;
         padding-bottom: 10px;
         font-size: 18px;
     }
 
-    /* more roles link */
     .more-roles {
         display: flex;
         justify-content: right;
@@ -380,32 +249,31 @@
         text-decoration: underline;
     }
 
-    /* colors for roles */
-    .backend::before {
+    .Backend::before {
         background-color: rgba(0, 31, 184, 0.3);
     }
-    .frontend::before {
+    .Frontend::before {
         background-color: rgba(255, 77, 0, 0.3);
     }
-    .fullstack::before {
+    .Fullstack::before {
         background-color: rgba(255, 39, 39, 0.3);
     }
-    .analytics::before {
+    .Analyst::before {
         background-color: rgba(0, 197, 3, 0.3);
     }
-    .ml::before {
+    .ML::before {
         background-color: rgba(0, 90, 12, 0.3);
     }
-    .devops::before {
+    .DevOps::before {
         background-color: rgba(153, 0, 255, 0.3);
     }
-    .ui::before {
+    .Design::before {
         background-color: rgba(14, 179, 255, 0.3);
     }
-    .mobile::before {
+    .IOS-Developer::before {
         background-color: rgba(160, 0, 83, 0.3);
     }
-    .pm::before {
+    .Product-Manager::before {
         background-color: rgba(255, 225, 0, 0.3);
     }
 
@@ -451,12 +319,7 @@
 
     .slot-role {
         font-size: 24px;
-    }    /* main {
-        background-image: url("teamfinder/frontend/static/PinkEllipse.svg"), url("/static/YellowEllipse.svg"), url("/static/Star.svg"); 
-        background-repeat: no-repeat, no-repeat, no-repeat; 
-        background-position: center center, center center, center center; 
-        background-size: cover;
-    } */
+    }
 
     .slot-skills {
         font-size: 12px;
@@ -518,52 +381,5 @@
         transition: all 0.7s ease;
         color: #000;
         background-color: #fff;
-    }
-
-
-
-
-
-    @media (max-width: 1440px) {
-        /* img {
-            width: 815px;
-            height: 258px;
-        } */
-
-        /* main {
-            margin: 100px 80px;
-        } */
-
-        /* .main-text {
-            margin: 10px 0 40px;
-        } */
-
-        /* p {
-            font-size: 18px;
-        } */
-
-        /* .main-button {
-            font-size: 18px;
-            margin-right: 20px;
-            padding: 5px 16px;
-        } */
-
-
-
-        /* .title {
-            font-size: 56px;
-        } */
-
-        /* .role-name {
-            font-size: 27px;
-        } */
-
-        /* .role-teams {
-            font-size: 18px;
-        } */
-
-        /* .popular-roles {
-            margin-top: 0;
-        } */
     }
 </style>

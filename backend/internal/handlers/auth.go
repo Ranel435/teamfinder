@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 	"teamfinder/backend/internal/services"
 	"teamfinder/backend/internal/utils"
 	"time"
@@ -39,18 +40,26 @@ func (h *AuthHandler) SendEmailCode(c *gin.Context) {
 	}
 
 	code := h.emailService.GenerateVerificationCode()
+	if err := h.emailService.SendVerificationCode(req.Email, code); err != nil {
+		if strings.Contains(err.Error(), "please wait") {
+			c.JSON(http.StatusTooManyRequests, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to send verification code",
+		})
+		return
+	}
+
 	h.codes[req.Email] = codeInfo{
 		code:      code,
 		createdAt: time.Now(),
 	}
 
-	if err := h.emailService.SendVerificationCode(req.Email, code); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to send verification code"})
-		return
-	}
-
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Verification code sent to email.",
+		"message": "Verification code sent successfully",
 	})
 }
 
@@ -90,9 +99,8 @@ func (h *AuthHandler) VerifyEmailCode(c *gin.Context) {
 	}
 
 	delete(h.codes, req.Email)
-
 	c.JSON(http.StatusOK, gin.H{
-		"token":         accessToken,
+		"access_token":  accessToken,
 		"refresh_token": refreshToken,
 	})
 }

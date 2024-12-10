@@ -1,5 +1,30 @@
+CREATE EXTENSION IF NOT EXISTS dblink;
+
+-- Create our application role if it doesn't exist
+-- DO
+-- $function$
+-- BEGIN
+--     IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'teamfinder_user') THEN
+--         CREATE ROLE teamfinder_user WITH LOGIN PASSWORD 'teamfinder_password';
+--     END IF;
+-- END;
+-- $function$;
+
+-- Create database if it doesn't exist
+-- DO
+-- $function$
+-- BEGIN
+--     IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'teamfinder_db') THEN
+--         PERFORM dblink_exec('dbname=' || current_database(), 'CREATE DATABASE teamfinder_db');
+--     END IF;
+-- END;
+-- $function$;
+
+-- GRANT ALL PRIVILEGES ON DATABASE teamfinder_db TO teamfinder_user;
+
+-- Create tables
 -- Таблица пользователей
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -9,7 +34,7 @@ CREATE TABLE users (
 );
 
 -- Таблица профилей пользователей
-CREATE TABLE profiles (
+CREATE TABLE IF NOT EXISTS profiles (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     name VARCHAR(100),
@@ -26,7 +51,7 @@ CREATE TABLE profiles (
 );
 
 -- Таблица команд
-CREATE TABLE teams (
+CREATE TABLE IF NOT EXISTS teams (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT,
@@ -36,7 +61,7 @@ CREATE TABLE teams (
 );
 
 -- Таблица участников команд
-CREATE TABLE team_members (
+CREATE TABLE IF NOT EXISTS team_members (
     id SERIAL PRIMARY KEY,
     team_id INT NOT NULL REFERENCES teams(id) ON DELETE CASCADE,
     user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -45,7 +70,7 @@ CREATE TABLE team_members (
 );
 
 -- Таблица уведомлений
-CREATE TABLE notifications (
+CREATE TABLE IF NOT EXISTS notifications (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     type VARCHAR(50) CHECK (type IN ('info', 'warning', 'error')),
@@ -53,3 +78,4 @@ CREATE TABLE notifications (
     is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
+

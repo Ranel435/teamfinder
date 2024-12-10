@@ -8,7 +8,11 @@ import (
 	"teamfinder/backend/internal/routes"
 	"teamfinder/backend/internal/services"
 
+	"time"
+
 	"github.com/gin-gonic/gin"
+
+	"github.com/gin-contrib/cors"
 )
 
 type Server struct {
@@ -28,7 +32,20 @@ func New(host string, st *storage.Storage) *Server {
 		storage: st,
 	}
 
+	// CORS configuration
+	s.router.Use(cors.New(cors.Config{
+		// AllowOrigins:     []string{"*"},
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "Accept"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
+	//setup routes
 	s.setupRoutes()
+
 	return s
 }
 

@@ -6,17 +6,18 @@
 <header class="navbar">
     <div class="navbar-logo">
         <a href="/">
-            <img class="navbar-logo-img" src="teamfinder.svg" alt="Логотип компании">
+            <img class="/navbar-logo-img" src="/teamfinder.svg" alt="Логотип компании">
         </a>
     </div>
 
     <nav class="navbar-links">
         <ul>
-            <li><a class="navbar-links-link" href="hakatons">Хакатоны</a></li>
+            <li><a class="navbar-links-link" href="hakatons">Главная</a></li>
             <li><a class="navbar-links-link" href="teams">Команды</a></li>
             <li><a class="navbar-links-link" href="profiles">Анкеты</a></li>
             <li><a class="navbar-links-link" href="community">Сообщества</a></li>
             <li><a class="navbar-links-link" href="about">О проекте</a></li>
+            <li><a href="/profile/notifications"><img src="/profile-nav/notifications.svg" alt=""></a></li>
         </ul>
     </nav>
 
@@ -29,7 +30,7 @@
     <div class="footer-nav">
         <ul>
             <li class="footer-nav-item">
-                <img src="teamfinder.svg" alt="">
+                <img src="/teamfinder.svg" alt="">
             </li>
             <li class="footer-nav-item">
                 <a href="/help">Поддержка</a>
@@ -54,25 +55,25 @@
             <div class="footer-bottom-links-item">
                 <label for="">Сообщество</label>
                 <a href="https://t.me/+WQeYWDOPnvs5yhhY">
-                    <img class="footer-bottom-links-item-logo" src="tg-icon.svg" alt="">
+                    <img class="footer-bottom-links-item-logo" src="/tg-icon.svg" alt="">
                 </a>
             </div>
             <div class="footer-bottom-links-item">
                 <label for="">Код</label>
                 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-                    <img class="footer-bottom-links-item-logo" src="github-icon.svg" alt="">
+                    <img class="footer-bottom-links-item-logo" src="/github-icon.svg" alt="">
                 </a>
             </div>
             <div class="footer-bottom-links-item">
                 <label for="">Дизайн</label>
                 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-                    <img class="footer-bottom-links-item-logo" src="n-icon.svg" alt="">
+                    <img class="footer-bottom-links-item-logo" src="/n-icon.svg" alt="">
                 </a>
             </div>
             <div class="footer-bottom-links-item">
                 <label for="">При поддержке</label>
                 <a href="https://t.me/itatmisis">
-                    <img class="itam-logo" src="itam.svg" alt="">
+                    <img class="itam-logo" src="/itam.svg" alt="">
                 </a>
             </div>
         </div>

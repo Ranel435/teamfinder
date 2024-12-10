@@ -17,7 +17,7 @@ export async function verifyEmailCode(email: string, code: string): Promise<{ ac
     const response = await fetch('http://localhost:8090/auth/verify/email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, code }),
+      body: JSON.stringify({ email: email, code: code }),
     });
 
     if (response.ok) {

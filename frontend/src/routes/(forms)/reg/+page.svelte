@@ -1,5 +1,4 @@
 <script lang="ts">
-  import "../../../app.css"; // главные стили
   import Code from "$lib/components/code.svelte"; // компонент ввода кода
   import { goto } from "$app/navigation"; // навигация между страницами
 
@@ -384,6 +383,9 @@
     font-size: 16px;
   }
 
+
+  
+
   .repeat-password {
     margin-top: 15px;
   }
@@ -438,8 +440,8 @@
   }
 
   .next-button {
+    padding: 11px 19px;
     margin-left: 25px;
-    /* display: flex; */
     align-items: center;
     color: #fff;
     border: 0;

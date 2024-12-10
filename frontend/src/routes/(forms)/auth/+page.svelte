@@ -1,6 +1,5 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import "../../../app.css";
 
   let email: string = "";
   let password: string = "";
@@ -140,6 +139,7 @@
   }
 
   .login-a{
+    padding: 11px 22px;
     display: flex;
     align-items: center;
     color: #fff;

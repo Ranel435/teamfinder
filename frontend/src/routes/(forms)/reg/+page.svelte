@@ -23,7 +23,7 @@
 
   // Отправка email
   async function handleSendEmail() {
-    const success = await sendEmailCode(profile.email);
+    const success = await sendEmailCode($profile.email);
     if (!success) {
       alert('Не удалось отправить код. Попробуйте снова.\n');
 
@@ -34,7 +34,7 @@
 
   // Проверка кода
   async function handleVerifyCode() {
-    const tokens = await verifyEmailCode(profile.email, confirmationCode.join(''));
+    const tokens = await verifyEmailCode($profile.email, confirmationCode.join(''));
     if (tokens) {
       saveTokens(tokens.access, tokens.refresh);
       current_form = "end";
@@ -140,11 +140,11 @@
           }}>
           <div class="login">
             <label for="">Логин (только латинские буквы)</label>
-            <input type="text" pattern="^[A-Za-z]+$" required placeholder="логин" bind:value={profile.login}/>
+            <input type="text" pattern="^[A-Za-z]+$" required placeholder="логин" bind:value={$profile.login}/>
           </div>
           <div class="email">
             <label for="">Почта</label>
-            <input type="email" required placeholder="x@email.com" bind:value={profile.email}/>
+            <input type="email" required placeholder="x@email.com" bind:value={$profile.email}/>
           </div>
           <div class="password">
             <label for="">Пароль  (от 8 символов)</label>
@@ -163,9 +163,9 @@
       <div class="registr-container-main">
         <form class="form" 
           on:submit|preventDefault={() => {
-            if (!profile.name || !profile.surname || !profile.tgid) {
+            if (!$profile.name || !$profile.surname || !$profile.tgid) {
             } else {
-              sendEmailCode(profile.email); // Отправка кода на почту
+              sendEmailCode($profile.email); // Отправка кода на почту
               current_form = "confirm"; // Переход на следующий шаг
               main_title = "Подтверждение";
               main_text = "";
@@ -173,15 +173,15 @@
           }}>
           <div class="name">
             <label for="name">Имя</label>
-            <input id="name" pattern="^[A-Za-zА-Яа-яЁё]+$" type="text" required placeholder="Иван" bind:value={profile.name}/>
+            <input id="name" pattern="^[A-Za-zА-Яа-яЁё]+$" type="text" required placeholder="Иван" bind:value={$profile.name}/>
           </div>
           <div class="surname">
             <label for="surname">Фамилия</label>
-            <input id="surname" pattern="^[A-Za-zА-Яа-яЁё]+$" type="text" required placeholder="Иванов" bind:value={profile.surname}/>
+            <input id="surname" pattern="^[A-Za-zА-Яа-яЁё]+$" type="text" required placeholder="Иванов" bind:value={$profile.surname}/>
           </div>
           <div class="tgid">
             <label for="tgid">Телеграм</label>
-            <input id="tgid" type="text" required pattern="^@([A-Za-z0-9_]+)$" placeholder="@telegram" bind:value={profile.tgid}/>
+            <input id="tgid" type="text" required pattern="^@([A-Za-z0-9_]+)$" placeholder="@telegram" bind:value={$profile.tgid}/>
           </div>
           <div class="looking-for-team">
             <label for="toggle">Ищу команду</label>
@@ -209,7 +209,7 @@
       {#if current_form === "confirm"}
       <div class="registr-container-main">
         <div class="verify-container">
-          <p>на указанную почту {profile.email} был выслан 6-ти значный код</p>
+          <p>на указанную почту {$profile.email} был выслан 6-ти значный код</p>
           <div class="verify">
             <p style="color: #000">Введите код для продолжения</p>
             <Code bind:code={confirmationCode} />

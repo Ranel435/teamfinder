@@ -1,6 +1,6 @@
 export async function sendEmailCode(email: string): Promise<boolean> {
   try {
-    const response = await fetch('http://localhost:8090/auth/login/email', {
+    const response = await fetch('/api/auth/login/email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
@@ -14,10 +14,10 @@ export async function sendEmailCode(email: string): Promise<boolean> {
 
 export async function verifyEmailCode(email: string, code: string): Promise<{ access: string; refresh: string } | null> {
   try {
-    const response = await fetch('http://localhost:8090/auth/verify/email', {
+    const response = await fetch('/api/auth/verify/email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, code: code }),
+      body: JSON.stringify({ email, code }),
     });
 
     if (response.ok) {

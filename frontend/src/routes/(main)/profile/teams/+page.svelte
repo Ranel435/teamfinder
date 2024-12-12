@@ -1,7 +1,5 @@
 <script lang="ts">
-  interface team {
-    
-  }
+  let teams: any[] = [];
 </script>
 
 

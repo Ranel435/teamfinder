@@ -57,8 +57,15 @@ func (s *Server) setupRoutes() {
 	s.router.PUT("/key/:key", s.handlerSet)
 	s.router.GET("/key/:key", s.handlerGet)
 
-	//auth routes group
+	//auth routes
 	routes.SetupAuthRoutes(s.router, handlers.NewAuthHandler(services.NewEmailService(), services.NewTelegramService()))
+
+	api := s.router.Group("/api")
+
+	//hackathon routes
+	routes.SetupHackathonRoutes(api, handlers.NewHackathonHandler(services.NewHackathonService()))
+	//profile routes
+	routes.SetupProfileRoutes(api, handlers.NewProfileHandler(services.NewProfileService()))
 }
 
 func (r *Server) handlerSet(ctx *gin.Context) {

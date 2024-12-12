@@ -1,2 +1,10 @@
-# teamfinder
-Our team, consisting of a backender, a frontender and a designer, creates a service that can help you find a team, have a great hackathon, spend time...
+# Teamfinder
+
+Our team, consisting of a backend developer, a frontend developer, and a designer, is creating a service to help you find a team and have a great hackathon experience.
+
+## Live Services
+
+- [Teamfinder Hack Online](http://teamfinder-hack.online/)
+- [Teamfinder Hack RU](https://teamfinder-hack.ru/) *(Currently under DNS configuration)*
+
+Please visit the above links to explore our service. Note that the last link is still undergoing DNS setup and may not be accessible at the moment.

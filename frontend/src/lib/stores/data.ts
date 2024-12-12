@@ -65,3 +65,4 @@ export const profile = writable<User>({
   extra_edu: ""
 });
 
+

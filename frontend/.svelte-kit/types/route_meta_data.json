@@ -6,6 +6,7 @@
 	"/(forms)/forget_password": [],
 	"/(main)/profile": [],
 	"/(main)/profile/account": [],
+	"/(main)/profile/achievements": [],
 	"/(main)/profile/forms": [],
 	"/(main)/profile/notifications": [],
 	"/(main)/profile/teams": [],

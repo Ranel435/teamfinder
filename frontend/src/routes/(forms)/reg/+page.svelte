@@ -3,8 +3,10 @@
   import { goto } from "$app/navigation"; // навигация между страницами
 
   import { sendEmailCode, verifyEmailCode } from '$lib/api/auth';
-  import { saveTokens } from '$lib/stores/authStore';
+  import { accessToken, refreshToken, saveTokens } from '$lib/stores/authStore';
   import { profile } from '$lib/stores/data';
+  import { refreshAccessToken } from "$lib/api/refresh";
+
 
   let current_form: string = "registration"; // переменная для отображения текущей формы
   let main_text: string = "Заполните поля необходимой информацией"; // переменная для текста формы
@@ -35,12 +37,20 @@
   async function handleVerifyCode() {
     const tokens = await verifyEmailCode($profile.email, confirmationCode.join(''));
     if (tokens) {
-      saveTokens(tokens.access, tokens.refresh);
+      console.log('Полученные токены:', tokens); // Проверка токенов
+      saveTokens(tokens.access_token, tokens.refresh_token);
+
+      console.log('Access Token из Svelte store:', $accessToken); // Проверка хранилища Svelte
+      console.log('Access Token из sessionStorage:', sessionStorage.getItem('accessToken')); // Проверка sessionStorage
+
+
       current_form = "end";
       main_title = "Регистрация завершена"; 
       main_text = "Заполните информацию в профиле для создания анкеты или присоединения к командам";
       return 1;
     } else {
+      confirmationCode= ["", "", "", "", "", ""]; // цифры кода подтверждения
+      emailCode = "";
       alert('Неверный код подтверждения.');
       return 0;
     }
@@ -224,7 +234,7 @@
         <button on:click={() => {current_form = "personal_info"; main_title = "Регистрация"; main_text = "Зполните поля необходимой информацией"}}>Назад</button>
         <button class="next-button" on:click={handleVerifyCode}>Завершить</button>
       </div>
-      <div class="repeat-button">
+      <div>
         <button class="repeat-button" on:click={handleSendEmail}>Выслать повторно</button>
       </div>
       {/if}
@@ -408,7 +418,8 @@
   .registr-container-buttons {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
     width: 100%;
   }
 
@@ -449,7 +460,7 @@
   }
 
   .repeat-button {
-    margin-top: 36px;
+    margin-top: 16px;
   }
 
   /* switcher */

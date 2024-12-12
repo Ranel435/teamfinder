@@ -12,7 +12,7 @@ export async function sendEmailCode(email: string): Promise<boolean> {
   }
 }
 
-export async function verifyEmailCode(email: string, code: string): Promise<{ access: string; refresh: string } | null> {
+export async function verifyEmailCode(email: string, code: string): Promise<{ access_token: string; refresh_token: string } | null> {
   try {
     const response = await fetch('http://localhost:8090/auth/verify/email', {
       method: 'POST',

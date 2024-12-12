@@ -1,20 +1,31 @@
-// src/lib/stores/authStore.ts
 import { writable } from 'svelte/store';
 
-export const accessToken = writable<string | null>(sessionStorage.getItem('accessToken'));
-export const refreshToken = writable<string | null>(localStorage.getItem('refreshToken'));
+const isBrowser = typeof window !== 'undefined';
 
-// Утилиты
-export function saveTokens(access: string, refresh: string) {
-  accessToken.set(access);
-  refreshToken.set(refresh);
-  sessionStorage.setItem('accessToken', access);
-  localStorage.setItem('refreshToken', refresh);
+export const accessToken = writable<string | null>(
+  isBrowser ? sessionStorage.getItem('accessToken') : null
+);
+export const refreshToken = writable<string | null>(
+  isBrowser ? localStorage.getItem('refreshToken') : null
+);
+
+// Utilities
+export function saveTokens(access_token: string, refresh_token: string) {
+  accessToken.set(access_token);
+  refreshToken.set(refresh_token);
+
+  if (isBrowser) {
+    sessionStorage.setItem('accessToken', access_token);
+    localStorage.setItem('refreshToken', refresh_token);
+  }
 }
 
 export function clearTokens() {
   accessToken.set(null);
   refreshToken.set(null);
-  sessionStorage.removeItem('accessToken');
-  localStorage.removeItem('refreshToken');
+
+  if (isBrowser) {
+    sessionStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+  }
 }

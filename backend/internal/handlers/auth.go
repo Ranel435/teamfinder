@@ -227,6 +227,7 @@ func (h *AuthHandler) VerifyEmailCode(c *gin.Context) {
 	var userID int
 	err = db.Pool.QueryRow(c, query, req.Username, req.Email, string(hashedPassword)).Scan(&userID)
 	if err != nil {
+		fmt.Printf("Database error: %v\n", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 		return
 	}

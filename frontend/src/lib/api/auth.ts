@@ -41,3 +41,26 @@ function saveTokens(accessToken: string, refreshToken: string) {
   sessionStorage.setItem('accessToken', accessToken);
   localStorage.setItem('refreshToken', refreshToken);
 }
+
+export async function login(email: string, password: string) {
+  try {
+    const response = await fetch('http://localhost:8090/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        email,
+        password
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      saveTokens(data.access_token, data.refresh_token);
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('Ошибка входа:', error);
+    return false;
+  }
+}

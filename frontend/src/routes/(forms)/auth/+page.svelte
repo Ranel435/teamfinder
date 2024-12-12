@@ -1,19 +1,27 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import { saveTokens } from "$lib/stores/authStore";
+  import { login } from '$lib/api/auth';
 
   let email: string = "";
   let password: string = "";
-
   let n_email: string = "qquerell.fw@gmail.com";
   let n_password: string = "12341234";
-  function handleLogin(event: Event) {
-    event.preventDefault(); // Останавливаем стандартное поведение
+
+  async function handleLogin(event: Event) {
+    event.preventDefault();
 
     if (!email || !password) {
       alert("Все поля обязательны");
+      return;
+    } 
+
+    const success = await login(email, password);
+    if (success) {
+      goto("/profile");
+      //лучше перекидывать на главную или еще лучше на хаки
     } else {
-      console.log("Логин:", { email, password });
-      goto("/");
+      alert('Неверный email или пароль');
     }
   }
 </script>

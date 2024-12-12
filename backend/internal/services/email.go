@@ -41,6 +41,8 @@ func (s *EmailService) GenerateVerificationCode() string {
 }
 
 func (s *EmailService) SendVerificationCode(to, code string) error {
+	log.Printf("Starting to send verification code. SMTP settings - Host: %s, Port: %s, From: %s", s.host, s.port, s.from)
+
 	// Проверяем, прошло ли 5 минут с последней отправки
 	s.mutex.RLock()
 	lastTime, exists := s.lastSent[to]
@@ -56,10 +58,12 @@ func (s *EmailService) SendVerificationCode(to, code string) error {
 
 	// Настройка TLS конфигурации
 	tlsConfig := &tls.Config{
-		ServerName: s.host,
+		InsecureSkipVerify: true, // Добавлено для отладки
+		ServerName:         s.host,
 	}
 
 	// Подключение к серверу с TLS
+	log.Printf("Attempting to connect to SMTP server...")
 	conn, err := tls.Dial("tcp", s.host+":"+s.port, tlsConfig)
 	if err != nil {
 		log.Fatalf("failed to create TLS connection: %v", err)

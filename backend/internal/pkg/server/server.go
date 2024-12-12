@@ -34,8 +34,8 @@ func New(host string, st *storage.Storage) *Server {
 
 	// CORS configuration
 	s.router.Use(cors.New(cors.Config{
-		//AllowOrigins: []string{"*"},
-		AllowOrigins:     []string{"http://localhost:3000", "http://141.8.197.173", "http://141.8.197.173:3000", "http://141.8.197.173:8080"},
+		AllowOrigins: []string{"*"},
+		// AllowOrigins:     []string{"http://teamfinder-hack.online", "http://teamfinder-hack.online:8080", "http://localhost:3000", "http://141.8.197.173", "http://141.8.197.173:3000", "http://141.8.197.173:8080"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Authorization", "Accept"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -57,8 +57,15 @@ func (s *Server) setupRoutes() {
 	s.router.PUT("/key/:key", s.handlerSet)
 	s.router.GET("/key/:key", s.handlerGet)
 
-	//auth routes group
+	//auth routes
 	routes.SetupAuthRoutes(s.router, handlers.NewAuthHandler(services.NewEmailService(), services.NewTelegramService()))
+
+	api := s.router.Group("/api")
+
+	//hackathon routes
+	routes.SetupHackathonRoutes(api, handlers.NewHackathonHandler(services.NewHackathonService()))
+	//profile routes
+	routes.SetupProfileRoutes(api, handlers.NewProfileHandler(services.NewProfileService()))
 }
 
 func (r *Server) handlerSet(ctx *gin.Context) {

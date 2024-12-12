@@ -4,10 +4,13 @@
 	"/": [],
 	"/(forms)/auth": [],
 	"/(forms)/forget_password": [],
+	"/(main)/forms": [],
 	"/(main)/profile": [],
 	"/(main)/profile/account": [],
+	"/(main)/profile/achievements": [],
 	"/(main)/profile/forms": [],
 	"/(main)/profile/notifications": [],
+	"/(main)/profile/participate": [],
 	"/(main)/profile/teams": [],
 	"/(forms)/reg": []
 }

@@ -29,15 +29,15 @@
           <p>Стек</p>
         </div>
       </div>
-      <input type="text" placeholder="Фамилия" bind:value={profile.surname}
+      <input type="text" placeholder="Фамилия" bind:value={$profile.surname}
       disabled = {!isEditing}>
-      <input type="text" placeholder="Имя" bind:value={profile.name}
+      <input type="text" placeholder="Имя" bind:value={$profile.name}
       disabled = {!isEditing}>
-      <input type="text" pattern="^@([A-Za-z0-9_]+)$" placeholder="@tgid" bind:value={profile.tgid}
+      <input type="text" pattern="^@([A-Za-z0-9_]+)$" placeholder="@tgid" bind:value={$profile.tgid}
       disabled = {!isEditing}>
-      <input type="email" placeholder="почта@mail.ru" bind:value={profile.email}
+      <input type="email" placeholder="почта@mail.ru" bind:value={$profile.email}
       disabled = {!isEditing}>
-      <textarea rows="2" placeholder="Обо мне" bind:value={profile.about}
+      <textarea maxlength=300 placeholder="Обо мне" bind:value={$profile.about}
       disabled = {!isEditing}></textarea>
       {#if isEditing}
         <button class="save" on:click={saveData}>Сохранить</button>
@@ -93,7 +93,10 @@
 
 <style>
   h2 {
-    color: var(--pink);
+    background: var(--gradient); /* Градиент */
+    -webkit-background-clip: text; /* Для WebKit браузеров (Chrome, Safari) */
+    background-clip: text; /* Для остальных браузеров, поддерживающих эту функцию */
+    color: transparent; /* Делаем текст прозрачным, чтобы видеть фон */
     font-family: "Manrope";
     margin-bottom: 4px;
   }
@@ -105,8 +108,18 @@
     display: block; /* Чтобы каждая метка занимала отдельную строку */
     margin-bottom: 4px;
   }
+
+
   textarea {
-    resize: none; /* Убираем возможность изменять размер */
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+    overflow: hidden;
+    min-height: 50px; /* Минимальная высота */
+    max-height: 300px; /* Максимальная высота */
   }
   input {
     width: 100%;
@@ -143,6 +156,9 @@
     text-align: left;
   }
 
+  .profile-inf-container input {
+    border-bottom: 1px solid #fff; /* Тонкая нижняя линия */
+  }
 
 
   .profile-inf, .profile-other_inf {
@@ -171,13 +187,20 @@
     padding: 0 0; /* Отступ сверху и снизу */
     background: none; /* Убираем фон */
     border: none; /* Убираем рамки */
-    border-bottom: 1px solid #fff; /* Тонкая нижняя линия */
     color: #fff; /* Белый текст */
     font-family: "Manrope";
     font-size: 18px; /* Размер текста */
-    outline: none; /* Убираем обводку при фокусе */
-    transition: border-color 0.3s ease; /* Анимация при изменении цвета */
     margin-bottom: 16px;
+  }
+
+  .profile-inf-container input, textarea {
+    border-bottom: 1px solid #fff; /* Тонкая нижняя линия */
+  }
+
+  .profile-other_inf input {
+    outline: none; /* Убираем обводку при фокусе */
+    border: 0;
+
   }
 
   .main_text {
@@ -218,10 +241,18 @@
     padding: 12px 24px;
     cursor: pointer;
   }
-  .edit:hover, .save:hover {
+  .save {
+    border: 0;
+    padding: 14px 26px;
+    color: #fff;
+    background: var(--gradient);
+  }
+  .edit:hover {
     background-color: #fff;
     color: #000;
   }
+
+  
 
 
 

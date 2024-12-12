@@ -76,23 +76,22 @@
       <div class="form">
         <div class="form-container">
           <div class="form-info">
-          <h3>{form.hackaton}</h3>
-          <p>{form.role} * {form.date}</p>
-          <div class="form-info-links">
-            <a href="">Отклики: {form.response_count}</a>
-            <a href="">Подходящие команды: {form.teams_count}</a>
+            <h3>{form.hackaton}</h3>
+            <p>{form.role} * {form.date}</p>
+            <div class="form-info-links">
+              <a href="">Отклики: {form.response_count}</a>
+              <a href="">Подходящие команды: {form.teams_count}</a>
+            </div>
           </div>
-          
-          </div>
-          <button class="delete-button" on:click={() => { forms.splice(index, 1); forms = [...forms]; }}> Удалить</button>
+          <button class="delete-button" on:click={() => {forms.splice(index, 1); forms=[...forms]; }}> Удалить</button>
         </div>
       </div>
       {/each}
     </ul>
     <div class="forms-buttons">
-      <button>Все команды</button>
-      <button>Создать</button>
-      <button>Хакатоны</button>
+      <button class="gradient-button">Все команды</button>
+      <button class="gradient-button">Создать</button>
+      <button class="button">Хакатоны</button>
     </div>
   </div>
   {/if}
@@ -100,11 +99,18 @@
 
 
 <style>
+  button {
+    font-family: "Manrope";
+    transition: all 0.5s ease;
+  }
+  .button {
+    border: 3px solid #fff;
+    padding: 10px 16px;
+  }
+
   .forms {
-    border: 4px solid #fff;
-    border-radius: 32px;
     height: 100%;
-    margin-left: 100px;
+    margin-left: 50px;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -200,6 +206,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     padding: 16px 24px;
   }
 
@@ -235,6 +242,12 @@
     margin-right: 10px;
   } 
 
+  .gradient-button {
+    padding: 13px 19px;
+    border: none;
+    margin-right: 10px;
+    transition: all 0.5s ease;
+  }
 
   .forms-buttons {
     display: flex;
@@ -245,26 +258,27 @@
   }
 
   .forms-buttons button {
-    font-family: "Manrope";
+    font-size: 18px;
     color: #fff;
-    font-size: 20px;
-    background-color: transparent;
-    border: 2px solid #fff;
     border-radius: 50px;
-    padding: 12px 24px;
-    cursor: pointer;
+    background-color: #000;
+    width: 30%;
   }
 
-  .forms-buttons button:hover {
+  .button:hover {
     background-color: #fff;
     color: #000;
+  }
+  .gradient-button:hover {
+    background:linear-gradient(90deg, #ED666E, #FBA31C);
   }
   /* Кнопка удаления */
   .delete-button {
     display: none;
     font-family: "Manrope";
-    font-size: 24px;
+    font-size: 20px;
     color: #fff;
+    height: 50px;
     padding: 10px 24px;
     border: 3px solid #fff;
     border-radius: 50px;

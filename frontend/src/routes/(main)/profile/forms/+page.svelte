@@ -76,15 +76,14 @@
       <div class="form">
         <div class="form-container">
           <div class="form-info">
-          <h3>{form.hackaton}</h3>
-          <p>{form.role} * {form.date}</p>
-          <div class="form-info-links">
-            <a href="">Отклики: {form.response_count}</a>
-            <a href="">Подходящие команды: {form.teams_count}</a>
+            <h3>{form.hackaton}</h3>
+            <p>{form.role} * {form.date}</p>
+            <div class="form-info-links">
+              <a href="">Отклики: {form.response_count}</a>
+              <a href="">Подходящие команды: {form.teams_count}</a>
+            </div>
           </div>
-          
-          </div>
-          <button class="delete-button" on:click={() => { forms.splice(index, 1); forms = [...forms]; }}> Удалить</button>
+          <button class="delete-button" on:click={() => {forms.splice(index, 1); forms=[...forms]; }}> Удалить</button>
         </div>
       </div>
       {/each}
@@ -207,6 +206,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     padding: 16px 24px;
   }
 
@@ -276,8 +276,9 @@
   .delete-button {
     display: none;
     font-family: "Manrope";
-    font-size: 24px;
+    font-size: 20px;
     color: #fff;
+    height: 50px;
     padding: 10px 24px;
     border: 3px solid #fff;
     border-radius: 50px;

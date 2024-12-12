@@ -30,7 +30,7 @@
             <img src="Начни Хакатонить!.svg" alt="">
         </div>
         <div class="main-buttons">
-            <a  class="main-button" href="">Свободные агенты</a>
+            <a  class="main-button" href="/forms">Смотреть анкеты</a>
             <a class="main-button" href="">Найти команду</a>
             <a class="main-button" href="">Создать анкету</a>
         </div> 

@@ -93,7 +93,7 @@
                 <p>{notification.hackaton} * {notification.role} * {notification.date}</p>
                 <p>{notification.team} * {notification.profile}</p>
               </div>
-              <button class="delete-button button" on:click={() => notifications = notifications.splice(index)}>Удалить</button>
+              <button class="delete-button button" on:click={() => {notifications.splice(index, 1); notifications=[...notifications];}}>Удалить</button>
             </div>
           </div>
         {/each}
@@ -106,10 +106,7 @@
 
 <style>
 
-    button {
-      font-family: "Manrope";
-      transition: all 0.5s ease;
-    }
+    
 
   .notifications {
     margin-left: 50px;
@@ -241,7 +238,6 @@
 
 
   .notification:hover {
-    /* border: 2px var(--gradient) #fff; */
     border-image: var(--pink);
   }
 
@@ -267,4 +263,11 @@
   .notifications-list::-webkit-scrollbar-thumb:hover {
     background-color: var(--light-grey); /* Цвет при наведении */
   }
+
+
+
+
+
+
+
 </style>

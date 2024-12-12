@@ -15,9 +15,9 @@ import "../../app.css";
         <ul>
             <li><a class="navbar-links-link" href="/">Главная</a></li>
             <li><a class="navbar-links-link" href="/teams">Команды</a></li>
-            <li><a class="navbar-links-link" href="/profiles">Анкеты</a></li>
-            <li><a class="navbar-links-link" href="community">Сообщества</a></li>
-            <li><a class="navbar-links-link" href="about">О проекте</a></li>
+            <li><a class="navbar-links-link" href="/forms">Анкеты</a></li>
+            <li><a class="navbar-links-link" href="/community">Сообщества</a></li>
+            <li><a class="navbar-links-link" href="/about">О проекте</a></li>
             <li><a href="/profile/notifications"><img src="/profile-nav/notifications.svg" alt=""></a></li>
         </ul>
     </nav>

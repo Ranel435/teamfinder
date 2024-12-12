@@ -1,6 +1,7 @@
 <script>
 
-    import "../../app.css";
+    import { accessToken } from "$lib/stores/authStore";
+import "../../app.css";
 
 </script>
 <header class="navbar">
@@ -12,18 +13,23 @@
 
     <nav class="navbar-links">
         <ul>
-            <li><a class="navbar-links-link" href="hakatons">Главная</a></li>
-            <li><a class="navbar-links-link" href="teams">Команды</a></li>
-            <li><a class="navbar-links-link" href="profiles">Анкеты</a></li>
+            <li><a class="navbar-links-link" href="/">Главная</a></li>
+            <li><a class="navbar-links-link" href="/teams">Команды</a></li>
+            <li><a class="navbar-links-link" href="/profiles">Анкеты</a></li>
             <li><a class="navbar-links-link" href="community">Сообщества</a></li>
             <li><a class="navbar-links-link" href="about">О проекте</a></li>
             <li><a href="/profile/notifications"><img src="/profile-nav/notifications.svg" alt=""></a></li>
         </ul>
     </nav>
-
+    {#if !accessToken}
     <div class="navbar-login-button">
-        <a href="../auth" >Вход</a>
+        <a href="/auth" >Вход</a>
     </div>
+    {:else}
+    <div class="navbar-login-button">
+        <a href="/profile/account">Профиль</a>
+    </div>
+    {/if}
 </header>
 <slot />
 <footer>
@@ -131,7 +137,7 @@
         border: 3px solid;
         border-color: #fff;
         border-radius: 50px;
-        font-size: 24px;
+        font-size: 20px;
     }
 
     .navbar-login-button a:hover {

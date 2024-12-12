@@ -79,7 +79,10 @@
     <div class="notifications-container">
       <div class="notifications-header">
         <h2>Все уведомления</h2>
-        <button on:click={() => notifications = []}>Прочитать все</button>
+        <div class="notifications-header-buttons">
+          <button class="gradient-button">Прочитать все</button>
+          <button class="button" on:click={() => notifications = []}>Очистить все</button>
+        </div>
       </div>
       <ul class="notifications-list">
         {#each notifications as notification, index}
@@ -90,7 +93,7 @@
                 <p>{notification.hackaton} * {notification.role} * {notification.date}</p>
                 <p>{notification.team} * {notification.profile}</p>
               </div>
-              <button class="delete-button" on:click={() => notifications = notifications.splice(index)}>Удалить</button>
+              <button class="delete-button button" on:click={() => notifications = notifications.splice(index)}>Удалить</button>
             </div>
           </div>
         {/each}
@@ -102,14 +105,17 @@
 
 
 <style>
+
+    button {
+      font-family: "Manrope";
+      transition: all 0.5s ease;
+    }
+
   .notifications {
-    border: 4px solid #fff;
-    border-radius: 32px;
+    margin-left: 50px;
     height: 100%;
-    margin-left: 100px;
     display: flex;
     flex-direction: column;
-    height: 100%;
   }
 
   .no-notifications {
@@ -125,20 +131,15 @@
     color: #fff;
   }
 
-
-
-
-
   .notifications-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
     padding: 32px;
   }
   .notifications-header {
-    width: 100%;
     display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     margin-bottom: 40px;
   }
@@ -160,7 +161,34 @@
     color: #fff;
   }
 
+  .notifications-header-buttons {
+    display: flex;
+    justify-content: space-between;
+  }
 
+  .button {
+    border: 3px solid #fff;
+    padding: 10px 16px;
+  }
+
+  .notifications-header-buttons button {
+    font-size: 18px;
+    color: #fff;
+    border-radius: 50px;
+    background-color: #000;
+  }
+
+
+  .gradient-button {
+    padding: 13px 19px;
+    border: none;
+    margin-right: 10px;
+    transition: all 0.5s ease;
+  }
+
+  .gradient-button:hover {
+    background:linear-gradient(90deg, #ED666E, #FBA31C);
+  }
 
   .notification {
     border: 2px solid #fff;
@@ -172,10 +200,18 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     padding: 16px 24px;
   }
 
-  .notification-container h3, p {
+  .notification-container h3 {
+    font-size: 24px;
+    color: #fff;
+    font-family: "Manrope";
+  }
+
+  .notification-container p {
+    font-size: 16px;
     color: #fff;
     font-family: "Manrope";
   }
@@ -183,20 +219,26 @@
     margin-bottom: 0;
   }
 
+  
+  
+  .button:hover {
+    color: black;
+    background-color: #fff;
+  }
   /* Кнопка удаления */
   .delete-button {
+    height: 50px;
     display: none;
-    font-family: "Manrope";
-    font-size: 24px;
+    font-size: 18px;
     color: #fff;
-    padding: 10px 24px;
     border: 3px solid #fff;
     border-radius: 50px;
     background-color: transparent;
     cursor: pointer;
     margin-right: 16px;
-    transition: all 0.5 ease;
   }
+
+
 
   .notification:hover {
     /* border: 2px var(--gradient) #fff; */
@@ -225,24 +267,4 @@
   .notifications-list::-webkit-scrollbar-thumb:hover {
     background-color: var(--light-grey); /* Цвет при наведении */
   }
-
-
-  button {
-    font-family: "Manrope";
-    font-size: 24px;
-    color: #fff;
-    padding: 10px 24px;
-    border: 3px solid #fff;
-    border-radius: 50px;
-    background-color: transparent;
-    cursor: pointer;
-    margin-right: 16px;
-    transition: all 0.5 ease;
-  }
-  
-  button:hover {
-    color: black;
-    background-color: #fff;
-  }
-  
 </style>

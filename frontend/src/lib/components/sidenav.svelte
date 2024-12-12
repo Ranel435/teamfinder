@@ -26,13 +26,15 @@
     </a>
     {/each}
   </div>
+  <div class="line"></div>
   
 </nav>
 
 <style>
   .sidebar {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
     font-family: "Manrope";
     font-size: 20px;
     font-weight: bold;
@@ -64,5 +66,12 @@
   .sidebar a:hover {
     color: #fff;
     font-size: 24px; /* Add a hover effect for better interactivity */
+  }
+
+  .line {
+    margin-left: 36px;
+    width: 3px;
+    height: 90vh;
+    background-color: #fff;
   }
 </style>

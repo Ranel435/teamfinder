@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import { saveTokens } from "$lib/stores/authStore";
 
   let email: string = "";
   let password: string = "";

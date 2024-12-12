@@ -33,16 +33,35 @@
 
   // Проверка кода
   async function handleVerifyCode() {
-    const tokens = await verifyEmailCode($profile.email, confirmationCode.join(''));
+    console.log('Sending verification data:', {
+      email: $profile.email,
+      code: confirmationCode.join(''),
+      username: $profile.login,
+      password: password
+    });
+
+    if (!$profile.login) {
+      alert('Имя пользователя не может быть пустым');
+      return false;
+    }
+
+    const tokens = await verifyEmailCode(
+      $profile.email,
+      confirmationCode.join(''),
+      $profile.login,
+      password
+    );
+
     if (tokens) {
+      goto("/profile");
       saveTokens(tokens.access, tokens.refresh);
       current_form = "end";
       main_title = "Регистрация завершена"; 
       main_text = "Заполните информацию в профиле для создания анкеты или присоединения к командам";
-      return 1;
+      return true;
     } else {
       alert('Неверный код подтверждения.');
-      return 0;
+      return false;
     }
   }
 
@@ -51,7 +70,6 @@
 
 
 </script>
-
 
 <section class="registr">
   <div class="registr-container {current_form}">
@@ -230,7 +248,7 @@
       {/if}
       {#if current_form === "end"}
       <div class="buttons">
-        <button on:click={() => goto("/profile/account")}>К настройкам профиля</button>
+        <button on:click={() => goto("/profile/account")}>К настройкам профи��я</button>
         <button on:click={() => goto("/")} class="next-button">На главную</button>
       </div>
       {/if}

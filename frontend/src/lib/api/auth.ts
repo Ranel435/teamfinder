@@ -1,3 +1,6 @@
+import { currentUser } from "$lib/stores/authStore";
+
+
 export async function sendEmailCode(email: string): Promise<boolean> {
   try {
     const response = await fetch('http://localhost:8090/auth/login/email', {
@@ -62,5 +65,30 @@ export async function login(email: string, password: string) {
   } catch (error) {
     console.error('Ошибка входа:', error);
     return false;
+  }
+}
+
+
+
+
+export async function fetchUserProfile() {
+  const token = sessionStorage.getItem('accessToken');
+  if (!token) return null;
+
+  try {
+    const response = await fetch('/api/users/me', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (response.ok) {
+      const userData = await response.json();
+      currentUser.set(userData);
+      return userData;
+    }
+    return null;
+  } catch (error) {
+    console.error('Failed to fetch user profile:', error);
+    return null;
   }
 }

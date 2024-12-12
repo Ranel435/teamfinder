@@ -13,7 +13,7 @@ import "../../app.css";
 
     <nav class="navbar-links">
         <ul>
-            <li><a class="navbar-links-link" href="/">Главная</a></li>
+            <li><a class="navbar-links-link" href="/hackatons">Хакатоны</a></li>
             <li><a class="navbar-links-link" href="/teams">Команды</a></li>
             <li><a class="navbar-links-link" href="/forms">Анкеты</a></li>
             <li><a class="navbar-links-link" href="/community">Сообщества</a></li>

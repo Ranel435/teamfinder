@@ -27,7 +27,7 @@ button, a {
     --IgraSans: "Igra Sans Variable";
 }
 .gradient-text {
-    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Градиент */
+    background: linear-gradient(90deg, #E5469A, #FBA31C); /* Градиент */
     -webkit-background-clip: text; /* Для WebKit браузеров (Chrome, Safari) */
     background-clip: text; /* Для остальных браузеров, поддерживающих эту функцию */
     color: transparent; /* Делаем текст прозрачным, чтобы видеть фон */
@@ -36,6 +36,9 @@ button, a {
     color: #fff;
     background: var(--gradient);
     border: none;
+}
+.gradient-button:hover {
+    background:linear-gradient(90deg, #ED666E, #FBA31C);
 }
 @font-face {
     font-family: "Igra";

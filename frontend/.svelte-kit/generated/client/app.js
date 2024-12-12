@@ -14,7 +14,9 @@ export const nodes = [
 	() => import('./nodes/10'),
 	() => import('./nodes/11'),
 	() => import('./nodes/12'),
-	() => import('./nodes/13')
+	() => import('./nodes/13'),
+	() => import('./nodes/14'),
+	() => import('./nodes/15')
 ];
 
 export const server_loads = [];
@@ -23,11 +25,13 @@ export const dictionary = {
 		"/(main)": [8,[3]],
 		"/(forms)/auth": [5,[2]],
 		"/(forms)/forget_password": [6,[2]],
-		"/(main)/profile/account": [9,[3,4]],
-		"/(main)/profile/achievements": [10,[3,4]],
-		"/(main)/profile/forms": [11,[3,4]],
-		"/(main)/profile/notifications": [12,[3,4]],
-		"/(main)/profile/teams": [13,[3,4]],
+		"/(main)/forms": [9,[3]],
+		"/(main)/profile/account": [10,[3,4]],
+		"/(main)/profile/achievements": [11,[3,4]],
+		"/(main)/profile/forms": [12,[3,4]],
+		"/(main)/profile/notifications": [13,[3,4]],
+		"/(main)/profile/participate": [14,[3,4]],
+		"/(main)/profile/teams": [15,[3,4]],
 		"/(forms)/reg": [7,[2]]
 	};
 

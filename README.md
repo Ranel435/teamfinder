@@ -2,9 +2,7 @@
 
 Our team, consisting of a backend developer, a frontend developer, and a designer, is creating a service to help you find a team and have a great hackathon experience.
 
-## Live Services
+## Links
 
-- [Teamfinder Hack Online](http://teamfinder-hack.online/)
-- [Teamfinder Hack RU](https://teamfinder-hack.ru/) *(Currently under DNS configuration)*
-
-Please visit the above links to explore our service. Note that the last link is still undergoing DNS setup and may not be accessible at the moment.
+- [Teamfinder Hack RU](https://teamfinder-hack.ru/) (https://teamfinder-hack.ru/)
+- [Teamfinder Hack Online](http://teamfinder-hack.online/) (http://teamfinder-hack.online/)

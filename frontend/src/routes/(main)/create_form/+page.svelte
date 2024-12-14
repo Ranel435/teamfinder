@@ -1,5 +1,5 @@
 <script lang="ts">
-  import "../../../../app.css"
+  import "../../../app.css"
   import { profile } from "$lib/stores/data";
   let isEditing = false; // Статус редактирования
 

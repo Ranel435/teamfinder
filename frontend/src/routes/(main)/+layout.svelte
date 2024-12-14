@@ -7,7 +7,7 @@ import "../../app.css";
 <header class="navbar">
     <div class="navbar-logo">
         <a href="/">
-            <img class="/navbar-logo-img" src="/teamfinder.svg" alt="Логотип компании">
+            <img class="navbar-logo-img" src="/teamfinder.svg" alt="Логотип компании">
         </a>
     </div>
 

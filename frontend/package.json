@@ -26,6 +26,7 @@
 	"type": "module",
 	"dependencies": {
 		"@fontsource-variable/noto-sans-display": "^5.1.0",
-		"@sveltejs/adapter-node": "^5.2.2"
+		"@sveltejs/adapter-node": "^5.2.2",
+		"esm-env": "^1.2.1"
 	}
 }

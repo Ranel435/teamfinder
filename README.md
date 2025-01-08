@@ -5,7 +5,6 @@ Our team, consisting of a backend developer, a frontend developer, and a designe
 ## Links
 
 - [Teamfinder Hack RU](http://teamfinder-hack.ru/) (http://teamfinder-hack.ru/)
-- [Teamfinder Hack Online](http://teamfinder-hack.online/) (http://teamfinder-hack.online/)
 
 ## Other info
 

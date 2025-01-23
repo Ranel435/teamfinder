@@ -8,4 +8,4 @@ Our team, consisting of a backend developer, a frontend developer, and a designe
 
 ## Other info
 
-Project at the development stage, work will continue after January 20, 2025
+Project at the development stage, work already continued

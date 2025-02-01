@@ -1,33 +1,23 @@
 # If you prefer the allow list template instead of the deny list, see community template:
 # https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
 #
-# Binaries for programs and plugins
+# Binaries
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-
-# Test binary, built with `go test -c`
 *.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
-
-# Go workspace file
+# Go files
 go.work
 go.work.sum
 
-docker-compose.yml
+# Development docker-compose
+docker-compose.dev.yml
 
-# env file
-.env
-
-# other
-.DS_Store
+# Dependencies
 node_modules
 dist
 test-results/
@@ -37,14 +27,26 @@ vite.config.js.timestamp-*
 /packages/create-svelte/template/CHANGELOG.md
 /packages/package/test/**/package
 /documentation/types.js
-.env
-.vercel_build_output
+
+# Build outputs
+.output
+.vercel
 .svelte-kit
 .cloudflare
-.pnpm-debug.log
 .netlify
 .turbo
-.vercel
 .test-tmp
 symlink-from
+/build
+
+# env file
+.env
+.env.*
+!.env.example
+
+# IDE
 .idea/
+
+# OS
+.DS_Store
+Thumbs.db

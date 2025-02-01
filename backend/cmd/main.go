@@ -5,6 +5,7 @@ import (
 	"log"
 	"teamfinder/backend/internal/config"
 	"teamfinder/backend/internal/db"
+	"teamfinder/backend/internal/middleware"
 	"teamfinder/backend/internal/pkg/server"
 	"teamfinder/backend/internal/pkg/storage"
 )
@@ -38,6 +39,7 @@ func main() {
 
 	// router creating
 	router := server.New(":8090", &store)
+	router.Router.Use(middleware.CorsMiddleware())
 
 	// start server
 	router.Start()

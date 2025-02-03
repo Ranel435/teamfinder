@@ -48,7 +48,7 @@ services:
         NODE_ENV: development
     environment:
       - NODE_ENV=development
-      - VITE_API_URL=http://localhost:8090
+      - VITE_API_URL=${VITE_API_URL}
     volumes:
       - ./frontend:/app
     command: npm run dev

@@ -16,7 +16,7 @@ import (
 )
 
 type Server struct {
-	router  *gin.Engine
+	Router  *gin.Engine
 	addr    string
 	storage *storage.Storage
 }
@@ -28,12 +28,12 @@ type Entry struct {
 func New(host string, st *storage.Storage) *Server {
 	s := &Server{
 		addr:    host,
-		router:  gin.New(),
+		Router:  gin.New(),
 		storage: st,
 	}
 
 	// CORS configuration
-	s.router.Use(cors.New(cors.Config{
+	s.Router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000", "https://teamfinder-hack.ru"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Authorization", "Accept"},
@@ -50,16 +50,16 @@ func New(host string, st *storage.Storage) *Server {
 
 func (s *Server) setupRoutes() {
 	//test routes
-	s.router.GET("/hello", func(ctx *gin.Context) {
+	s.Router.GET("/hello", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, "Hello World!")
 	})
-	s.router.PUT("/key/:key", s.handlerSet)
-	s.router.GET("/key/:key", s.handlerGet)
+	s.Router.PUT("/key/:key", s.handlerSet)
+	s.Router.GET("/key/:key", s.handlerGet)
 
 	//auth routes
-	routes.SetupAuthRoutes(s.router, handlers.NewAuthHandler(services.NewEmailService(), services.NewTelegramService()))
+	routes.SetupAuthRoutes(s.Router, handlers.NewAuthHandler(services.NewEmailService(), services.NewTelegramService()))
 
-	api := s.router.Group("/api")
+	api := s.Router.Group("/api")
 
 	//hackathon routes
 	routes.SetupHackathonRoutes(api, handlers.NewHackathonHandler(services.NewHackathonService()))
@@ -95,9 +95,9 @@ func (r *Server) handlerGet(ctx *gin.Context) {
 }
 
 func (s *Server) Start() {
-	s.router.Run(s.addr)
+	s.Router.Run(s.addr)
 }
 
 func (s *Server) GetRouter() *gin.Engine {
-	return s.router
+	return s.Router
 }

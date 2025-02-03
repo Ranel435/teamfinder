@@ -9,6 +9,7 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
+		"types": ["@sveltejs/kit"],
 		"moduleResolution": "bundler"
 	},
 	"include": [

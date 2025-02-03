@@ -1,10 +1,22 @@
 <script lang="ts">
   import "../../../../app.css"
-  import { profile } from "$lib/stores/data";
+  import { type Profile} from "$lib/stores/data";
   let isEditing = false; // Статус редактирования
 
 
-  
+  let profile: Profile = {
+    profileId: "",
+    name: "",
+    surname: "",
+    tgId: "",
+    email: "",
+    about: "",
+    portfolio: "",
+    university: "",
+    academicGroup: "",
+    extraEducation: "",
+    password: ""
+  };
   // Функция переключения режима
   const toggleEdit = () => {
     isEditing = !isEditing;
@@ -19,71 +31,68 @@
 
 
 <section class="profile">
-  <div class="profile-inf">
-    <div class="profile-inf-container">
-      <img style="width: 300px; height: 300px" src="/profile.png" alt="">
-      <div class="main_text">
-        <p>Мой профиль</p>
-        <div class="main_text-other">
-          <p>Роль</p>
-          <p>Стек</p>
-        </div>
+  <div class="profile__inf inf">
+    <div class="inf__container">
+      <img class="int__img" style="width: 300px; height: 300px" src="/profile.png" alt="">
+      <div class="inf__header">
+        <h4 class="inf__title">Мой профиль</h4>
       </div>
-      <input type="text" placeholder="Фамилия" bind:value={$profile.surname}
+      <input type="text" placeholder="Фамилия" bind:value={profile.surname}
       disabled = {!isEditing}>
-      <input type="text" placeholder="Имя" bind:value={$profile.name}
+      <input type="text" placeholder="Имя" bind:value={profile.name}
       disabled = {!isEditing}>
-      <input type="text" pattern="^@([A-Za-z0-9_]+)$" placeholder="@tgid" bind:value={$profile.tgid}
+      <input type="text" pattern="^@([A-Za-z0-9_]+)$" placeholder="@tgid" bind:value={profile.tgId}
       disabled = {!isEditing}>
-      <input type="email" placeholder="почта@mail.ru" bind:value={$profile.email}
+      <input type="email" placeholder="почта@mail.ru" bind:value={profile.email}
       disabled = {!isEditing}>
-      <textarea maxlength=300 placeholder="Обо мне" bind:value={$profile.about}
+      <textarea maxlength=300 placeholder="Обо мне" bind:value={profile.about}
       disabled = {!isEditing}></textarea>
       {#if isEditing}
-        <button class="save" on:click={saveData}>Сохранить</button>
+        <button class="save gradient-button buttonM" on:click={saveData}>Сохранить</button>
       {:else}
-        <button class="edit" on:click={toggleEdit}>Редактировать</button>
+        <button class="edit black-white-button buttonM" on:click={toggleEdit}>Редактировать</button>
       {/if}
     </div>
   </div>
-  <div class="profile-other_inf">
-    <div class="profile-skills">
-      <div class="profile-skills-container">
-        <h2 class="header">Навыки</h2>
+
+  <div class="profile__other-inf">
+    <div class="profile__skills skills">
+      <div class="skills__container">
+        <h2 class="skills__header gradient-text m3">Навыки</h2>
         <div class="form-item">
-          <label for="">Владение софтом</label>
-          <input type="text" placeholder="Владение софтом" disabled = {!isEditing} bind:value={$profile.software}>
+          <label class="m6" for="">Владение софтом</label>
+          <input class="m8" type="text" placeholder="Владение софтом" disabled = {!isEditing}>
         </div>
         <div class="form-item">
-          <label for="">Полный стэк</label>
-          <input type="text" placeholder="Полный стек" disabled = {!isEditing} bind:value={$profile.skills}>
+          <label class="m6" for="">Полный стэк</label>
+          <input class="m8" type="text" placeholder="Полный стек" disabled = {!isEditing}>
         </div>
         <div class="form-item">
-          <label for="">Качества</label>
-          <input type="text" placeholder="Качества" disabled = {!isEditing} bind:value={$profile.qualities}>
+          <label class="m6" for="">Качества</label>
+          <input class="m8" type="text" placeholder="Качества" disabled = {!isEditing}>
         </div>
       </div>
     </div>
-
-    <div class="profile-edu">
-      <div class="profile-edu-container">
-        <h2 class="profile-edu-header">Образование</h2>
+    
+    <div class="profile__edu edu">
+      <div class="edu__container">
+        <h2 class="edu__header gradient-text m3">Образование</h2>
         <div class="form-item">
-          <label for="">Учебное заведение</label>
-          <input type="text" placeholder="Учебное заведение" disabled = {!isEditing} bind:value={$profile.edu}>
+          <label class="m6" for="">Учебное заведение</label>
+          <input class="m8" type="text" placeholder="Учебное заведение" disabled = {!isEditing} bind:value={profile.university}>
         </div>
         <div class="form-item">
-          <label for="">Учебная группа</label>
-          <input type="text" placeholder="Учебная группа" disabled = {!isEditing} bind:value={$profile.edu_group}>
+          <label class="m6" for="">Учебная группа</label>
+          <input class="m8" type="text" placeholder="Учебная группа" disabled = {!isEditing} bind:value={profile.academicGroup}>
         </div>
         <div class="toggle-switch">
-          <label class="toggle-label" for="educationToggle">Уже имею образование</label>
+          <label class="toggle-label m6" for="educationToggle">Уже имею образование</label>
           <input type="checkbox" id="educationToggle" class="toggle-checkbox" disabled = {!isEditing} >
           <label class="toggle-slider" for="educationToggle"></label>
         </div>
         <div class="form-item">
-          <label for="">Дополнительное образование</label>
-          <input type="text" placeholder="Дополнительное образование" disabled = {!isEditing} bind:value={$profile.extra_edu}>
+          <label class="m6" for="">Дополнительное образование</label>
+          <input class="m8" type="text" placeholder="Дополнительное образование" disabled = {!isEditing} bind:value={profile.extraEducation}>
         </div>
       </div>
     </div>
@@ -92,24 +101,12 @@
 
 
 <style>
-  h2 {
-    background: var(--gradient); /* Градиент */
-    -webkit-background-clip: text; /* Для WebKit браузеров (Chrome, Safari) */
-    background-clip: text; /* Для остальных браузеров, поддерживающих эту функцию */
-    color: transparent; /* Делаем текст прозрачным, чтобы видеть фон */
-    font-family: "Manrope";
-    margin-bottom: 4px;
-  }
-  label {
-    font-family: "Manrope";
-    font-size: 18px;
+  .profile__other-inf label {
     color: #fff;
     text-align: left; /* Выравнивание текста влево */
     display: block; /* Чтобы каждая метка занимала отдельную строку */
     margin-bottom: 4px;
   }
-
-
   textarea {
     font-size: 16px;
     line-height: 1.5;
@@ -125,30 +122,38 @@
     width: 100%;
     box-sizing: border-box
   }
-  p {
-    color: #fff;
-  }
 
   .profile {
       display: flex;
       flex-direction: row;
-      align-items: stretch; /* Растягивает дочерние элементы по высоте */
       justify-content: space-between;
       padding-left: 40px;
-    }
+  }
 
-
-  .profile-inf, .profile-skills, .profile-edu {
+  .profile__inf {
     border: 4px solid #fff;
     border-radius: 32px;
-    
   }
 
-  .profile-other_inf {
-    justify-content: space-between;
+  .profile__inf {
+    width: 48%;
+    display: flex;
+    flex-direction: column; /* Выравнивание содержимого */
   }
 
-  .profile-inf-container, .profile-skills-container, .profile-edu-container {
+  .profile__inf input, textarea {
+    width: 100%; /* Растягиваем на всю ширину контейнера */
+    padding: 0 0; /* Отступ сверху и снизу */
+    background: none; /* Убираем фон */
+    border: none; /* Убираем рамки */
+    color: #fff; /* Белый текст */
+    font-family: "Manrope-medium";
+    font-size: 18px; /* Размер текста */
+    margin-bottom: 16px;
+    border-bottom: 1px solid #fff; /* Тонкая нижняя линия */
+  }
+
+  .inf__container {
     padding: 14px 36px;
     display: flex;
     flex-direction: column;
@@ -156,150 +161,109 @@
     text-align: left;
   }
 
-  .profile-inf-container input {
-    border-bottom: 1px solid #fff; /* Тонкая нижняя линия */
-  }
-
-
-  .profile-inf, .profile-other_inf {
-    width: 48%;
-    display: flex;
-    flex-direction: column; /* Выравнивание содержимого */
-    min-height: auto; /* Автоматическая высота, если фиксированная не требуется */
-  }
-
-  .form-item {
-    width: 100%;
-    text-align: left;
-  }
-
-  .profile-other_inf input {
-    padding: 8px 16px;
-    background-color: var(--light-grey);
-    border-radius: 27px;
-    font-family: "Manrope";
-    font-size: 16px;
-    margin-bottom: 4px;
-  }
-
-  .profile-inf input, textarea {
-    width: 100%; /* Растягиваем на всю ширину контейнера */
-    padding: 0 0; /* Отступ сверху и снизу */
-    background: none; /* Убираем фон */
-    border: none; /* Убираем рамки */
-    color: #fff; /* Белый текст */
-    font-family: "Manrope";
-    font-size: 18px; /* Размер текста */
-    margin-bottom: 16px;
-  }
-
-  .profile-inf-container input, textarea {
-    border-bottom: 1px solid #fff; /* Тонкая нижняя линия */
-  }
-
-  .profile-other_inf input {
-    outline: none; /* Убираем обводку при фокусе */
-    border: 0;
-
-  }
-
-  .main_text {
-    font-family: "Manrope";
+  .inf__header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: start;
     width: 100%;
+    margin-bottom: 28px;
   }
 
-  .main_text-other {
-    font-family: "Manrope";
-    display: flex;
-    flex-direction: column;
+  .inf__title {
+    font-family: "Manrope-medium";
+    font-size: 20px;
+    color: var(--white);
+  }
+
+  .save {
+    padding: 12px 24px;
   }
 
   .edit {
-    font-family: "Manrope";
-    color: #fff;
-    font-size: 20px;
-    background-color: transparent;
-    border: 2px solid #fff;
-    border-radius: 50px;
-    padding: 12px 24px;
+    padding: 9px 24px;
+  }
+  
+  .profile__other-inf {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: auto;
+  }
+
+  .profile__other-inf input {
+    padding: 8px 16px;
+    background-color: var(--light-grey);
+    border-radius: 27px;
+    margin-bottom: 4px;
+    outline: none;
+    font-family: "Manrope-medium";
+    font-size: 12px;
+    letter-spacing: -3%;
+    border: 0;
+  }
+   
+  .profile__skills, .profile__edu {
+    border: 4px solid #fff;
+    border-radius: 32px;
+    height: auto;
+  }
+
+  .skills__container, .edu__container {
+    padding: 6px 36px 0 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+  }
+
+  .form-item {
+    width: 100%;
+    text-align: left;
+    margin: 0 0 16px 0;
   }
 
   input:disabled, textarea:disabled {
-    color: #aaa;
+    color: var(--light-grey);
   }
-  .edit, .save {
-    font-family: "Manrope";
-    color: #fff;
-    font-size: 20px;
-    background-color: transparent;
-    border: 2px solid #fff;
-    border-radius: 50px;
-    padding: 12px 24px;
-    cursor: pointer;
-  }
-  .save {
-    border: 0;
-    padding: 14px 26px;
-    color: #fff;
-    background: var(--gradient);
-  }
-  .edit:hover {
-    background-color: #fff;
-    color: #000;
-  }
-
-  
-
-
-
-
-
 
 .toggle-switch {
   display: flex;
   align-items: center;
   text-align: left;
   width: 100%;
-  gap: 10px; /* Расстояние между текстом и переключателем */
+  gap: 10px;
   margin-bottom: 4px;
 
 }
 
-/* Стиль текста */
 .toggle-label {
-  font-family: "Manrope";
-  font-size: 18px;
   color: #fff;
   cursor: pointer;
   text-align: left;
 }
 
-/* Прячем стандартный чекбокс */
 .toggle-checkbox {
   display: none;
 }
 
-/* Стиль переключателя */
 .toggle-slider {
   width: 40px;
   height: 20px;
-  background-color: #ccc; /* Цвет выключенного переключателя */
+  background-color: #ccc; 
   border-radius: 20px;
   position: relative;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-/* Круглая кнопка внутри переключателя */
 .toggle-slider::before {
   content: "";
   width: 16px;
   height: 16px;
-  background-color: #fff; /* Цвет кнопки */
+  background-color: #fff;
   border-radius: 50%;
   position: absolute;
   top: 2px;
@@ -307,12 +271,10 @@
   transition: transform 0.3s ease;
 }
 
-/* Когда переключатель включен */
 .toggle-checkbox:checked + .toggle-slider {
-  background-image: var(--gradient); /* Цвет включенного переключателя */
+  background-image: var(--gradient); 
 }
 
-/* Смещаем круглую кнопку вправо */
 .toggle-checkbox:checked + .toggle-slider::before {
   transform: translateX(20px);
 }

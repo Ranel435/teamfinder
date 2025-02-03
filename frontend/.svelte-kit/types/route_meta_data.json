@@ -13,5 +13,6 @@
 	"/(main)/profile/notifications": [],
 	"/(main)/profile/participate": [],
 	"/(main)/profile/teams": [],
-	"/(forms)/reg": []
+	"/(forms)/reg": [],
+	"/(main)/teams": []
 }

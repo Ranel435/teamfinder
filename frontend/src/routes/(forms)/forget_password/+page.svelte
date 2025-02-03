@@ -9,84 +9,73 @@
 </script>
 
 
-<section class="forget_password" >
-  <div class="forget_password-container">
-    <div class="forget_password-container-header">
-      <h2>{main_title}</h2>
-    </div>
-    <div class="forget_password-container-main">
+<section class="forget-password">
+  <div class="forget-password__container">
+    
       {#if current_form === "first"}
-        <form class="form"  on:submit|preventDefault={() => {
+      <header class="forget-password__header">
+        <h2 class="forget-password__title m2">Восстановление пароля</h2>
+      </header>
+      <div class="forget-password__main">
+        <form class="forget-password__form form"  on:submit|preventDefault={() => {
           if (!email || !login) {
           } else {
-            current_form = "second"; // Переход на следующий шаг
+            current_form = "second"; 
             main_title = "Подтверждение входа";
           }
         }}>
-          <div class="email">
-            <label for="">Email</label>
-            <input type="email" required placeholder="x@email.com" bind:value={email}/>
+          <div class="form__email email">
+            <label class="email__label m6" for="">Email</label>
+            <input class="email__input m7" type="email" required placeholder="x@email.com" bind:value={email}/>
           </div>
-          <div class="password">
-            <label for="">Логин</label>
-            <input type="text" pattern="^[A-Za-z]+$" required placeholder="логин" bind:value={login}/>
+          <div class="form__password password">
+            <label class="password__label m6" for="">Фамилия</label>
+            <input class="password__input m7" type="text" pattern="^[А-Яа-я]+$" required placeholder="Иванов" bind:value={login}/>
           </div>
-          <div class="forget_password-container-buttons">
-            <div class="buttons">
-              <button class="button" on:click={() => {current_form = "gg"; main_title = "ГГ("}}>Нет доступа к почте</button>
-              <button class="next-button" type="submit">Далее</button>
-            </div>
+          <div class="forget-password__buttons">
+              <button class="forget-password__button grey-button m6" on:click={() => {current_form = "gg"; main_title = "ГГ("}}>Нет доступа к почте</button>
+              <button class="forget-password__button gradient-button m6" type="submit">Далее</button>
           </div>
         </form>
-        
+      </div>
       {/if}
 
       {#if current_form === "second"}
-      <div class="verify-container">
-        <p>на указанную почту x@email.com был выслан 6-ти значный код</p>
-        <div class="verify">
-          <p style="color: #000">Введите код для продолжения</p>
-          <Code />
-        </div>
+      <header class="verify__header">
+        <h2 class="verify__title m2">Восстановление пароля</h2>
+      </header>
+      <div class="verify">
+        <p class="verify__text buttonM">На указанную почту было выслано письмо с инструкцией
+          для восстановления пароля</p>
+        
       </div>
-      <div class="forget_password-container-buttons">
-      <div class="buttons">
-        <button class="button" on:click={() => {current_form = "first"; main_title = "Восстановление пароля"}}>Назад</button>
-        <button on:click={() => goto("/")} class="next-button">Завершить</button>
-      </div>
-      <div class="repeat-button">
-        <button class="button">Выслать повторно</button>
-      </div>
+      <div class="verify__buttons">
+        <button class="verify__button grey-button m6" on:click={() => {current_form = "first"; main_title = "Восстановление пароля"}}>Назад</button>
+        <button class="verify__button gradient-button m6">Вход</button>
       </div>
       {/if}
 
       {#if current_form === "gg"}
-      
-      <div class="gg-container">
-        <p>Чтобы восстановить аккаунт, обратитесь в поддержку</p>
-      </div>
-      <div class="forget_password-container-buttons">
-
-      <div class="buttons">
-        <button class="button" on:click={() => goto("/")}>Поддержка</button>
-        <button style="margin-left: 25px;">На главную</button>
-      </div>
+      <header class="gg__header m2">ГГ(</header>
+      <p class="gg__text buttonM">Чтобы восстановить аккаунт, обратитесь в поддержку</p>
+      <div class="gg__buttons">
+        <a class="gg__button grey-button m6" href="/">Поддержка</a>
+        <a class="gg__button grey-button m6" href="/">На главную</a>
       </div>
       {/if}
-    </div>
   </div>
 </section>
 
 
 <style>
-  .forget_password {
+  .forget-password {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
   }
 
-  .forget_password-container {
+  .forget-password__container {
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -100,23 +89,17 @@
     padding: 36px 36px;
   }
 
-  .forget_password-container-header {
+  .forget-password__header {
     display: flex;
     flex-direction: column;
     text-align: center;
   }
 
-  .forget_password-container-header h2 {
-    font-family: "Manrope";
-    font-size: 36px;
-    font-weight: normal;
-    line-height: 48px;
-    margin: 0;
+  .forget-password__title {
     margin-bottom: 24px;
   }
 
-  /* main */
-  .forget_password-container-main {
+  .forget-password__main {
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -125,91 +108,69 @@
     margin-bottom: 18px;
   }
 
-  .email, .password {
+  .form__email, .form__password {
     display: flex;
     flex-direction: column;
   }
 
-  .email {
+  .form__email {
     margin-bottom: 22px;
   }
 
-  input {
+  .email__input, .password__input {
     background-color: var(--light-grey);
     border: 0;
     border-radius: 50px;
     padding: 10px 16px;
-    font-size: 16px;
   }
 
-  label {
-    font-family: "Manrope";
-    font-size: 18px;
+  .email__label, .password__label {
     margin-left: 10px;
     margin-bottom: 8px;
   }
 
-  .verify-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .verify-container p {
-    font-family: "Manrope";
-    color: var(--dark-grey);
-    font-size: 18px;
-    margin-bottom: 16px;
-  }
-
-    /* buttons */
-  .forget_password-container-buttons {
+  .forget-password__buttons {
     margin-top: 16px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
     width: 100%;
   }
 
-  button {
-    background-color: #fff;
-    font-family: 'Manrope';
-    font-size: 18px;
-    text-decoration: none;
-    color: var(--dark-grey);
-    padding:8px 16px;
-    border: 3px solid var(--dark-grey);
-    border-radius: 50px;
-    /* margin-right: 20px; */
-    cursor: pointer;
-    transition: all 0.5s ease;
-  }
-  
-  .button:hover {
-    background-color: var(--light-grey);
-    color: var(--dark-grey);
+  .grey-button {
+    padding: 8px 16px;
+    margin-right: 12px;
   }
 
-  .next-button {
-    padding:11px 19px;
-    margin-left: 25px;
+  .gradient-button {
+    padding: 10px 18px;
+  }
+
+
+
+
+
+  .verify {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    color: #fff;
-    border: 0;
-    background-image: var(--gradient);
-  }
-
-  .repeat-button {
-    margin-top: 16px;
-  }
-
-  .gg-container p{
-    font-family: "Manrope";
-    font-size: 24px;
-    color: var(--dark-grey);
+    justify-content: space-between;
     text-align: center;
+  }
+
+  .verify__text {
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    color: var(--dark-grey);
+  }
+
+  .gg__text {
+    color: var(--dark-grey);
+  }
+
+  .gg__button {
+    text-decoration: none;
   }
 </style>

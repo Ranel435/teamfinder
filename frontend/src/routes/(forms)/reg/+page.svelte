@@ -1,12 +1,23 @@
-<script lang="ts">
+<!-- <script lang="ts">
   import Code from "$lib/components/code.svelte"; // компонент ввода кода
   import { goto } from "$app/navigation"; // навигация между страницами
 
   import { sendEmailCode, verifyEmailCode } from '$lib/api/auth';
   import { accessToken, refreshToken, saveTokens } from '$lib/stores/authStore';
-  import { profile } from '$lib/stores/data';
+  import { type Profile } from '$lib/stores/data';
   import { refreshAccessToken } from "$lib/api/refresh";
-
+  let profile: Profile = {
+    profileId: "",
+    name: "",
+    surname: "",
+    tgId: "",
+    email: "",
+    about: "",
+    portfolio: "",
+    university: "",
+    academicGroup: "",
+    extraEducation: ""
+  };
 
   let current_form: string = "registration"; // переменная для отображения текущей формы
   let main_text: string = "Заполните поля необходимой информацией"; // переменная для текста формы
@@ -24,7 +35,7 @@
 
   // Отправка email
   async function handleSendEmail() {
-    const success = await sendEmailCode($profile.email);
+    const success = await sendEmailCode(profile.email);
     if (!success) {
       alert('Не удалось отправить код. Попробуйте снова.\n');
 
@@ -36,21 +47,14 @@
   // Проверка кода
   async function handleVerifyCode() {
     console.log('Sending verification data:', {
-      email: $profile.email,
+      email: profile.email,
       code: confirmationCode.join(''),
-      username: $profile.login,
       password: password
     });
 
-    if (!$profile.login) {
-      alert('Имя пользователя не может быть пустым');
-      return false;
-    }
-
     const tokens = await verifyEmailCode(
-      $profile.email,
+      profile.email,
       confirmationCode.join(''),
-      $profile.login,
       password
     );
 
@@ -525,4 +529,61 @@
     width: 408px;
     height: 342px;
   }
+</style> -->
+
+
+
+
+<script lang="ts">
+  import type { Profile } from '$lib/stores/data';
+  import Step1 from './step1.svelte';
+  import Step2 from './step2.svelte';
+  import Step3 from './step3.svelte';
+  import Step4 from './step4.svelte';
+
+  let profile: Profile = {
+    profileId: '',
+    name: '',
+    surname: '',
+    tgId: '',
+    email: '',
+    about: '',
+    portfolio: '',
+    university: '',
+    academicGroup: '',
+    extraEducation: '',
+    password: ''
+  };
+
+  let step = 1;
+
+  function nextStep() {
+    step++;
+  }
+
+  function prevStep() {
+    step--;
+  }
+</script>
+
+<div class="container">
+  {#if step == 1}
+    <Step1 {profile} on:next={nextStep} />
+  {:else if step === 2}
+    <Step2 {profile} on:next={nextStep} on:prev={prevStep} />
+  {:else if step === 3}
+    <Step3 {profile} on:next={nextStep} on:prev={prevStep}/>
+  {:else if step === 4}
+    <Step4 />
+  {/if}
+</div>
+
+<style>
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
 </style>
+

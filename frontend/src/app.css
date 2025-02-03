@@ -2,41 +2,61 @@ body {
     height: 100%;
     box-sizing: border-box;
     margin: 0;
-    padding-right: 128px;
-    padding-left: 128px;
-    background-color: #010101;
+    background-color: #151414;
     background-image: url("/PinkEllipse.svg"), url("/YellowEllipse.svg"), url("/Star.svg"), url("/yellow_bottom.svg"), url("/pink_bottom.svg"); 
     background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat; 
     background-position: -70vh -20vh, 200% -200%, -100% 50%, 170% 120%, -50% 120%; 
 }
 
-h1, h2, h3, h4, p, ul{
+h1, h2, h3, h4, p, ul, li{
     margin: 0;
     padding: 0
 }
 button, a {
+    transition: all 0.5s ease;
     cursor: pointer;
 }
 :root {
-    --gradient: linear-gradient(90deg, #E5469A, #FBA31C);
+    --gradient: linear-gradient(90deg, #E5469A, #FFAA11);
+    --white: #fff;
     --light-grey: #F3F3F3;
     --dark-grey: #A2A2A2;
+    --grey: #D9D9D9;
+    --red: #E03F3F;
     --black: #1A1A1A;
     --pink: #E5429F;
-    --yellow: #FFE99E;
+    --yellow: #FFBB11;
+
     --burgundy: #9C004A;
     --IgraSans: "Igra Sans Variable";
 }
 .gradient-text {
-    background: linear-gradient(90deg, #E5469A, #FBA31C); /* Градиент */
+    background: var(--gradient);
     -webkit-background-clip: text; /* Для WebKit браузеров (Chrome, Safari) */
     background-clip: text; /* Для остальных браузеров, поддерживающих эту функцию */
     color: transparent; /* Делаем текст прозрачным, чтобы видеть фон */
 }
 .gradient-button {
-    color: #fff;
+    color: var(--white);
     background: var(--gradient);
     border: none;
+    border-radius: 50px;
+}
+.black-white-button {
+    background-color: transparent;
+    color: var(--white);
+    border: 3px solid var(--white);
+    border-radius: 50px;
+}
+.grey-button {
+    background-color: transparent;
+    color: var(--dark-grey);
+    border: 3px solid var(--dark-grey);
+    border-radius: 50px;
+}
+.black-white-button:hover {
+    color: var(--black);
+    background-color: var(--white);
 }
 .gradient-button:hover {
     background:linear-gradient(90deg, #ED666E, #FBA31C);
@@ -48,13 +68,32 @@ button, a {
     font-weight: 500;
     src: url("$lib/fonts/IgraSans.otf");
 }
-/* noto-sans-display-latin-wght-normal */
 @font-face {
-    font-family: 'Manrope';
+    font-family: 'Manrope-regular';
     font-style: normal;
     font-display: swap;
-    font-weight: 500;
-    src: url("$lib/fonts/Manrope-VariableFont_wght.ttf");
+    /* font-weight: 500; */
+    src: url("$lib/fonts/Manrope-Regular.ttf");
+}
+@font-face {
+    font-family: 'Manrope-medium';
+    font-style: normal;
+    font-display: swap;
+    /* font-weight: 500; */
+    src: url("$lib/fonts/Manrope-Medium.ttf");
+}
+@font-face {
+    font-family: 'Manrope-semibold';
+    font-style: normal;
+    font-display: swap;
+    /* font-weight: 500; */
+    src: url("$lib/fonts/Manrope-SemiBold.ttf");
+}
+@font-face {
+    font-family: 'Manrope-bold';
+    font-style: normal;
+    font-display: swap;
+    src: url("$lib/fonts/Manrope-Bold.ttf");
 }
 @font-face {
     font-family: 'Montserrat';
@@ -63,3 +102,102 @@ button, a {
     font-weight: 500;
     src: url("$lib/fonts/Montserrat-VariableFont_wght.ttf");
 }
+
+
+h1, .h1 {
+    font-family: 'Igra';
+    font-size: 150px;
+    line-height: 120px;
+    letter-spacing: -3%;
+    font-weight: normal;
+}
+
+h2, .h2 {
+    font-family: 'Igra';
+    font-size: 56px;
+    font-weight: normal;
+}
+
+h3, .h3 {
+    font-family: 'Igra';
+    font-size: 24px;
+    font-weight: normal;
+}
+
+h4, .h4 {
+    font-family: 'Igra';
+    font-size: 18px;
+    letter-spacing: 3%;
+    font-weight: normal;
+}
+
+.m1 {
+    font-family: 'Manrope-medium';
+    font-size: 48px;
+    /* font-weight: 500; */
+}
+
+.m2 {
+    font-family: "Manrope-semibold";
+    font-size: 36px;
+    /* font-weight: 500; */
+}
+
+.m3 {
+    font-family: "Manrope-semibold";    
+    font-size: 32px;
+    /* font-weight: 500; */
+}
+
+.m4 {
+    font-family: "Manrope-semibold";    
+    font-size: 27px;
+    /* font-weight: 500; */
+}
+
+.m5 {
+    font-family: "Manrope-semibold";    
+    font-size: 24px;
+    /* font-weight: 500; */
+}
+
+.m6 {
+    font-family: "Manrope-medium";
+    font-size: 18px;
+    /* font-weight: 500; */
+}
+
+.m7 {
+    font-family: "Manrope-medium";
+    font-size: 16px;
+    /* font-weight: 400; */
+}
+
+.m8 {
+    font-family: "Manrope-regular";
+    font-size: 14px;
+    /* font-weight: 400; */
+}
+
+.m9 {
+    font-family: "Manrope-semibold";
+    font-size: 12px;
+    /* font-weight: 400; */
+}
+
+.buttonS {
+    font-family: "Manrope-semibold";
+    font-size: 16px;
+}
+
+.buttonM {
+    font-family: "Manrope-semibold";
+    font-size: 20px;
+}
+
+.buttonL {
+    font-family: "Manrope-semibold";
+    font-size: 18px;
+}
+
+

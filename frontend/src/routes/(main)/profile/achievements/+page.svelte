@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
   interface achievement {
     hackaton: string;
     place: number;
@@ -281,5 +281,39 @@
 
   .achievements-list::-webkit-scrollbar-thumb:hover {
     background-color: var(--light-grey); /* Цвет при наведении */
+  }
+</style> -->
+
+
+
+<section class="archievements">
+  <h2 class="archievement__title m3">Страница в разработке</h2>
+  <p class="archievements__text m5">Скоро будет готово</p>
+  <div class="archievements__buttons">
+    <a href="/profile/ac2zcount" class="archievements__button gradient-button m6">Назад</a>
+    <a href="/" class="archievements__button black-white-button m6">На главную</a>
+  </div>
+</section>
+
+
+<style>
+  .archievements {
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .archievements__text {
+    color: var(--grey);
+  }
+
+  .archievements__buttons {
+    margin-top: 16px;
+  }
+  .archievements__button {
+    padding: 6px 26px;
   }
 </style>

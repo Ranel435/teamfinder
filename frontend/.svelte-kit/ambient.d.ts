@@ -49,7 +49,6 @@ declare module '$env/static/private' {
 	export const LOGNAME: string;
 	export const XDG_SESSION_TYPE: string;
 	export const npm_config_init_module: string;
-	export const _: string;
 	export const KITTY_PUBLIC_KEY: string;
 	export const MOTD_SHOWN: string;
 	export const HOME: string;
@@ -59,7 +58,6 @@ declare module '$env/static/private' {
 	export const npm_package_version: string;
 	export const WAYLAND_DISPLAY: string;
 	export const KITTY_WINDOW_ID: string;
-	export const FORCE_COLOR: string;
 	export const XDG_SEAT_PATH: string;
 	export const INIT_CWD: string;
 	export const npm_lifecycle_script: string;
@@ -91,6 +89,7 @@ declare module '$env/static/private' {
 	export const KITTY_INSTALLATION_DIR: string;
 	export const npm_node_execpath: string;
 	export const HYPRCURSOR_SIZE: string;
+	export const _: string;
 	export const NODE_ENV: string;
 }
 
@@ -146,7 +145,6 @@ declare module '$env/dynamic/private' {
 		LOGNAME: string;
 		XDG_SESSION_TYPE: string;
 		npm_config_init_module: string;
-		_: string;
 		KITTY_PUBLIC_KEY: string;
 		MOTD_SHOWN: string;
 		HOME: string;
@@ -156,7 +154,6 @@ declare module '$env/dynamic/private' {
 		npm_package_version: string;
 		WAYLAND_DISPLAY: string;
 		KITTY_WINDOW_ID: string;
-		FORCE_COLOR: string;
 		XDG_SEAT_PATH: string;
 		INIT_CWD: string;
 		npm_lifecycle_script: string;
@@ -188,6 +185,7 @@ declare module '$env/dynamic/private' {
 		KITTY_INSTALLATION_DIR: string;
 		npm_node_execpath: string;
 		HYPRCURSOR_SIZE: string;
+		_: string;
 		NODE_ENV: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;

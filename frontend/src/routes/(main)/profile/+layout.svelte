@@ -5,7 +5,6 @@
 
 <div class="app">
   <Sidebar />
-  <div style="width: 1px; height: 100%; background-color: #fff;"></div>
   <main>
     <slot />
   </main>
@@ -14,7 +13,7 @@
 <style>
   .app {
     display: flex;
-    margin: 128px 0;
+    margin: 100px 84px;
   }
 
   main {

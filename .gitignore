@@ -14,9 +14,6 @@
 go.work
 go.work.sum
 
-# Development docker-compose
-docker-compose.dev.yml
-
 # Dependencies
 node_modules
 dist

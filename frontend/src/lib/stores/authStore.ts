@@ -35,4 +35,24 @@ export function clearTokens() {
   localStorage.removeItem('refreshToken');
 }
 
+export async function fetchUserProfile() {
+  const token = sessionStorage.getItem('accessToken');
+  if (!token) return null;
 
+  try {
+    const response = await fetch('/api/users/me', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (response.ok) {
+      const userData = await response.json();
+      currentUser.set(userData);
+      return userData;
+    }
+    return null;
+  } catch (error) {
+    console.error('Failed to fetch user profile:', error);
+    return null;
+  }
+}

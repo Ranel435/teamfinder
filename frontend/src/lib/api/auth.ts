@@ -13,6 +13,7 @@ export async function sendEmailCode(email: string): Promise<boolean> {
     });
     return response.ok;
   } catch (error) {
+    console.log(email);
     console.error('Ошибка отправки email:', error);
     return false;
   }

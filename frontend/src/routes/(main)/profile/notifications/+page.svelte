@@ -1,6 +1,6 @@
 <script lang="ts">
   // import { rollupVersion } from "vite";
-  import "../../../../app.css"
+  import "../../../../app.css";
   interface notification {
     type: string;
     hackaton: string;
@@ -59,57 +59,65 @@
       team: "KoVCheG",
       profile: ""
     }
-  ]
+  ];
 
   function deleteNotification(index: number) {
     notifications = notifications.splice(index);
   }
-
-
-
 </script>
 
-
 <section class="notifications">
-    {#if notifications.length === 0} 
+  {#if notifications.length === 0}
     <div class="no-notifications">
-      <p class="no-notifications-text">Уведомлений пока нет</p>
+      <h1 class="no-notifications__title m1">Уведомлений пока нет</h1>
+      <a class="no-notifications__button gradient-button m5" href="/"
+        >На главную</a
+      >
     </div>
-    {:else}
-    <div class="notifications-container">
-      <div class="notifications-header">
-        <h2>Все уведомления</h2>
-        <div class="notifications-header-buttons">
-          <button class="gradient-button">Прочитать все</button>
-          <button class="button" on:click={() => notifications = []}>Очистить все</button>
+  {:else}
+    <div class="notifications__container">
+      <header class="notifications__header">
+        <h2 class="notifications__title m1">Все уведомления</h2>
+        <div class="notifications__buttons">
+          <button class="notifications__button button__read gradient-button m5"
+            >Прочитать все</button
+          >
+          <button
+            class="notifications__button button__clear black-white-button m5"
+            on:click={() => (notifications = [])}>Очистить все</button
+          >
         </div>
-      </div>
-      <ul class="notifications-list">
+      </header>
+      <ul class="notifications__list">
         {#each notifications as notification, index}
           <div class="notification">
-            <div class="notification-container">
-              <div class="notification-info">
-                <h3>{notification.type}</h3>
-                <p>{notification.hackaton} * {notification.role} * {notification.date}</p>
-                <p>{notification.team} * {notification.profile}</p>
+            <div class="notification__container">
+              <div class="notification__info">
+                <h3 class="notification__type m5">{notification.type}</h3>
+                <div class="notification__info">
+                  <span class="notification__hakathon m7"
+                    >{notification.hackaton} •
+                  </span>
+                  <span class="notification__role m7"
+                    >{notification.role} •
+                  </span>
+                  <span class="notification__date m7">{notification.date}</span>
+                </div>
+                <span class="notification__team m7"
+                  >Команда: {notification.team}</span
+                >
               </div>
-              <button class="delete-button button" on:click={() => {notifications.splice(index, 1); notifications=[...notifications];}}>Удалить</button>
             </div>
           </div>
         {/each}
       </ul>
-  </div>
-    {/if}
+    </div>
+  {/if}
 </section>
 
-
-
 <style>
-
-    
-
   .notifications {
-    margin-left: 50px;
+    margin-left: 28px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -119,73 +127,65 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     height: 100%;
   }
 
-  .no-notifications-text {
-    font-family: "Manrope";
-    font-size: 48px;
-    color: #fff;
+  .no-notifications__title {
+    color: var(--white);
   }
 
-  .notifications-container {
+  .no-notifications__button {
+    padding: 12px 32px;
+    text-decoration: none;
+  }
+
+  /* //////////////////////////////////////////////////////////////////////////////////////////////// */
+
+  .notifications__container {
     display: flex;
     flex-direction: column;
-    padding: 32px;
-  }
-  .notifications-header {
-    display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 40px;
+    justify-content: flex-start;
+    padding: 32px 0 0 0;
   }
 
-  .notifications-list {
+  .notifications__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .notifications__title {
+    color: var(--white);
+  }
+
+  .notifications__buttons {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .notifications__button {
+    padding: 5px 36px;
+  }
+
+  .button__read {
+    margin-right: 32px;
+  }
+
+  .notifications__list {
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-height: 50vh; /* Фиксированная высота для прокрутки */
-    overflow-y: auto; /* Добавление вертикального скроллбара */
-    padding-right: 10px; /* Добавляем отступ для скроллбара */
-    box-sizing: content-box; /* Учитываем отступ, не влияя на ширину */
+    margin: 32px;
+    /* max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 10px;
+    box-sizing: content-box; */
   }
 
-  .notifications-header h2{
-    font-family: "Manrope";
-    font-size: 48px;
-    font-weight: 400;
-    color: #fff;
-  }
-
-  .notifications-header-buttons {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .button {
-    border: 3px solid #fff;
-    padding: 10px 16px;
-  }
-
-  .notifications-header-buttons button {
-    font-size: 18px;
-    color: #fff;
-    border-radius: 50px;
-    background-color: #000;
-  }
-
-
-  .gradient-button {
-    padding: 13px 19px;
-    border: none;
-    margin-right: 10px;
-    transition: all 0.5s ease;
-  }
-
-  .gradient-button:hover {
-    background:linear-gradient(90deg, #ED666E, #FBA31C);
-  }
+  /* ///////////////////////////////////////////////////////////////////////// */
 
   .notification {
     border: 2px solid #fff;
@@ -193,7 +193,7 @@
     margin-bottom: 16px;
   }
 
-  .notification-container {
+  .notification__container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -201,73 +201,39 @@
     padding: 16px 24px;
   }
 
-  .notification-container h3 {
-    font-size: 24px;
-    color: #fff;
-    font-family: "Manrope";
+  .notification__type {
+    color: var(--white);
   }
 
-  .notification-container p {
-    font-size: 16px;
-    color: #fff;
-    font-family: "Manrope";
+  .notification__team,
+  .notification__hakathon,
+  .notification__date,
+  .notification__role {
+    color: var(--grey);
   }
+
   .notification:last-child {
     margin-bottom: 0;
   }
 
-  
-  
-  .button:hover {
-    color: black;
-    background-color: #fff;
+  /* .notifications__list::-webkit-scrollbar {
+    width: 28px;
   }
-  /* Кнопка удаления */
-  .delete-button {
-    height: 50px;
-    display: none;
-    font-size: 18px;
-    color: #fff;
-    border: 3px solid #fff;
-    border-radius: 50px;
+
+  .notifications__list::-webkit-scrollbar-thumb {
+    background-color: var(--dark-grey);
+    border: 5px solid transparent;
+    border-radius: 32px;
+    background-clip: padding-box;
+  }
+
+  .notifications__list::-webkit-scrollbar-thumb:hover {
+    background-color: var(--light-grey);
+  }
+
+  .notifications__list::-webkit-scrollbar-track {
     background-color: transparent;
-    cursor: pointer;
-    margin-right: 16px;
-  }
-
-
-
-  .notification:hover {
-    border-image: var(--pink);
-  }
-
-  /* Показываем кнопку при наведении */
-  .notification:hover .delete-button {
-    display: block;
-  }
-
-
-
-  /* Стиль для скроллбара */
-  .notifications-list::-webkit-scrollbar {
-    width: 26px; /* Ширина скроллбара */
-  }
-
-  .notifications-list::-webkit-scrollbar-thumb {
-    background-color: var(--dark-grey); /* Цвет ползунка */
-    border: 2px solid #2a2a2a;
-    
-    border-radius: 32px; /* Скругление */
-  }
-
-  .notifications-list::-webkit-scrollbar-thumb:hover {
-    background-color: var(--light-grey); /* Цвет при наведении */
-  }
-
-
-
-
-
-
-
+    border-radius: 32px;
+    border: 2px solid #fff;
+  } */
 </style>

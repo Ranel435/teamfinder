@@ -27,25 +27,25 @@
 </script>
 
 <section class="auth">
-  <div class="auth-container">
-    <h2>Вход</h2>
-    <form class="form" on:submit={handleLogin}>
-      <div class="email">
-        <label for="email">Почта</label>
-        <input type="email" id="email" bind:value={email} placeholder="x@email.com" required>
+  <div class="auth__container">
+    <h2 class="auth__title m2">Вход</h2>
+    <form class="auth__form" on:submit={handleLogin}>
+      <div class="auth__email email">
+        <label class="email__label m6" for="email">Почта</label>
+        <input class="email__input m7" type="email" id="email" bind:value={email} placeholder="x@email.com" required>
       </div>
-      <div class="password">
-        <label for="password">Пароль</label>
-        <input type="password" bind:value={password} placeholder="пароль" minlength="8" required>
+      <div class="auth__password password">
+        <label class="password__label m6" for="password">Пароль</label>
+        <input class="password__input m7" type="password" bind:value={password} placeholder="пароль" minlength="8" required>
       </div>
-      <div class="all-buttons">
-        <div class="buttons">
-          <button class="button" type="button" on:click={() => goto("/reg")}>Регистрация</button>
-          <button class="button" type="button" on:click={() => goto("/forget_password")}>Забыл пароль</button>
+      <div class="auth__buttons">
+        <div class="auth__first-buttons">
+          <a class="auth__button grey-button m6" href="/reg">Регистрация</a>
+          <a class="auth__button grey-button m6" href="/forget_password">Забыл пароль</a>
         </div>
-        <div class="buttons second-buttons">
-          <button class="button" type="button" on:click={() => goto('/')}>Назад</button>
-          <button class="login-a" type="submit">Войти</button>
+        <div class="auth__second-buttons">
+          <a class="auth__button grey-button m6" href="/">На главную</a>
+          <button class="auth__button gradient-button m6" type="submit">Войти</button>
         </div>
       </div>
     </form>
@@ -54,7 +54,6 @@
 
 
 <style>
-
   .auth {
     display: flex;
     justify-content: center;
@@ -62,7 +61,7 @@
     height: 100vh;
   }
 
-  .auth-container {
+  .auth__container {
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -76,46 +75,37 @@
     border-radius: 32px;
   }
 
-  h2 {
-    font-family: 'Manrope';
-    margin: 0;
-    font-size: 36px;
-    font-style: normal;
-    font-weight: 100;
-  }
-  .form {
+  .auth__form {
     display: flex;
     flex-direction: column;
     text-align: left;
     justify-content: space-between;
     width: calc(100% - 32px);
   }
-  .email {
+
+  .auth__email {
     display: flex;
     flex-direction: column;
     margin-bottom: 16px;
   }
-  .password {
+  
+  .auth__password {
     display: flex;
     flex-direction: column;
   }
 
-  label {
-    font-family: 'Manrope';
-    font-size: 18px;
+  .email__label, .password__label {
     margin-bottom: 8px;
   }
 
-  input {
-    font-family: 'Manrope';
-    font-size: 16px;
+  .email__input, .password__input {
     background-color: #F3F3F3;
     border: 0;
     border-radius: 50px;
     padding: 8px 16px;
   }
 
-  .all-buttons {
+  .auth__buttons {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -123,48 +113,18 @@
     margin-top: 38px;
   }
 
-  .buttons {
+  .auth__button {
+    padding: 8px 16px;
+    margin-right: 20px;
+    text-decoration: none;
+  }
+
+  .auth__first-buttons, .auth__second-buttons {
     display: flex;
     justify-content: space-between;
   }
 
-  .second-buttons {
-    margin-top: 20px;
+  .auth__second-buttons {
+    margin-top: 12px;
   }
-
-  button {
-    background-color: #fff;
-    font-family: 'Manrope';
-    font-size: 18px;
-    text-decoration: none;
-    color: var(--dark-grey);
-    padding:8px 16px;
-    border: 3px solid var(--dark-grey);
-    border-radius: 50px;
-    margin-right: 20px;
-    cursor: pointer;
-    transition: all 0.5s ease;
-  }
-
-  .login-a{
-    padding: 11px 22px;
-    display: flex;
-    align-items: center;
-    color: #fff;
-    border: 0;
-    background-image:  linear-gradient(120deg, #E5469A, #FBA31C);
-    transition: all 0.5s ease;
-  }
-
-
-  .button:hover {
-    background-color: var(--light-grey);
-    color: var(--dark-grey);
-  }
-
-  .login-a:hover {
-    background-image:  linear-gradient(180deg, #E5469A, #FBA31C);
-
-  }
-
 </style>

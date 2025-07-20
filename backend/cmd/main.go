@@ -1,3 +1,27 @@
+// TeamFinder API
+// Backend service for hackathon team finding platform
+//
+// @title           TeamFinder API
+// @description     Complete backend API for TeamFinder - a platform for finding hackathon teammates
+// @version         1.0
+// @termsOfService  https://teamfinder-hack.ru/terms
+//
+// @contact.name   TeamFinder Support
+// @contact.email  support@teamfinder-hack.ru
+//
+// @license.name  MIT
+// @license.url   https://opensource.org/licenses/MIT
+//
+// @host      localhost:8090
+// @BasePath  /
+//
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Type "Bearer" followed by a space and JWT token.
+//
+// @externalDocs.description  TeamFinder GitHub
+// @externalDocs.url          https://github.com/teamfinder/teamfinder
 package main
 
 import (

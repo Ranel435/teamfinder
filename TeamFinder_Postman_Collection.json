@@ -1,35 +1,79 @@
 {
 	"info": {
-		"_postman_id": "eadfa1c2-9523-41b4-a2df-5a3a5da0c335",
-		"name": "TeamFinder Backend API",
-		"description": "Полная коллекция для тестирования API TeamFinder с Health Check, аутентификацией и CRUD операциями",
+		"_postman_id": "teamfinder-api-collection",
+		"name": "TeamFinder API",
+		"description": "Complete API collection for TeamFinder platform",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "38189899"
+		"_exporter_id": "teamfinder"
 	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"exec": [
+					"// Auto-set base URL",
+					"pm.request.url.host = pm.environment.get('base_url') || 'localhost:8090';"
+				],
+				"type": "text/javascript"
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "localhost:8090",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		}
+	],
 	"item": [
 		{
-			"name": "System",
-			"item": [
-				{
-					"name": "Health Check",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/health",
-							"host": ["{{base_url}}"],
-							"path": ["health"]
-						}
-					},
-					"response": []
-				}
-			]
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"health"
+					]
+				},
+				"description": "Check if the backend service is healthy"
+			},
+			"response": []
 		},
 		{
 			"name": "Authentication",
 			"item": [
 				{
-					"name": "Register",
+					"name": "Register User",
 					"event": [
 						{
 							"listen": "test",
@@ -37,8 +81,10 @@
 								"exec": [
 									"if (pm.response.code === 200) {",
 									"    const response = pm.response.json();",
-									"    pm.collectionVariables.set('access_token', response.access_token);",
-									"    pm.collectionVariables.set('refresh_token', response.refresh_token);",
+									"    pm.environment.set('access_token', response.access_token);",
+									"    pm.environment.set('refresh_token', response.refresh_token);",
+									"    pm.environment.set('user_id', response.user.id);",
+									"    console.log('✅ Tokens saved automatically');",
 									"}"
 								],
 								"type": "text/javascript"
@@ -55,18 +101,23 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"username\": \"{{test_username}}\",\n  \"email\": \"{{test_email}}\",\n  \"password\": \"{{test_password}}\"\n}"
+							"raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/register",
-							"host": ["{{base_url}}"],
-							"path": ["auth", "register"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Login",
+					"name": "Login User",
 					"event": [
 						{
 							"listen": "test",
@@ -74,8 +125,10 @@
 								"exec": [
 									"if (pm.response.code === 200) {",
 									"    const response = pm.response.json();",
-									"    pm.collectionVariables.set('access_token', response.access_token);",
-									"    pm.collectionVariables.set('refresh_token', response.refresh_token);",
+									"    pm.environment.set('access_token', response.access_token);",
+									"    pm.environment.set('refresh_token', response.refresh_token);",
+									"    pm.environment.set('user_id', response.user.id);",
+									"    console.log('✅ Tokens saved automatically');",
 									"}"
 								],
 								"type": "text/javascript"
@@ -92,139 +145,17 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"{{test_email}}\",\n  \"password\": \"{{test_password}}\"\n}"
+							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/login",
-							"host": ["{{base_url}}"],
-							"path": ["auth", "login"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Send Email Verification Code",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"{{test_email}}\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/auth/login/email",
-							"host": ["{{base_url}}"],
-							"path": ["auth", "login", "email"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Verify Email Code",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if (pm.response.code === 200) {",
-									"    const response = pm.response.json();",
-									"    pm.collectionVariables.set('access_token', response.access_token);",
-									"    pm.collectionVariables.set('refresh_token', response.refresh_token);",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"{{test_email}}\",\n  \"code\": \"{{verification_code}}\",\n  \"username\": \"{{test_username}}\",\n  \"password\": \"{{test_password}}\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/auth/verify/email",
-							"host": ["{{base_url}}"],
-							"path": ["auth", "verify", "email"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Telegram Auth URL",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/auth/login/telegram",
-							"host": ["{{base_url}}"],
-							"path": ["auth", "login", "telegram"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Verify Telegram Auth",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if (pm.response.code === 200) {",
-									"    const response = pm.response.json();",
-									"    pm.collectionVariables.set('access_token', response.token);",
-									"    pm.collectionVariables.set('refresh_token', response.refresh_token);",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id\": \"123456789\",\n  \"username\": \"test_user\",\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"auth_date\": \"1640995200\",\n  \"hash\": \"sample_hash\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/auth/verify/telegram",
-							"host": ["{{base_url}}"],
-							"path": ["auth", "verify", "telegram"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Check Token",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/auth/check",
-							"host": ["{{base_url}}"],
-							"path": ["auth", "check"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
 						}
 					},
 					"response": []
@@ -238,9 +169,9 @@
 								"exec": [
 									"if (pm.response.code === 200) {",
 									"    const response = pm.response.json();",
-									"    if (response.access_token) {",
-									"        pm.collectionVariables.set('access_token', response.access_token);",
-									"    }",
+									"    pm.environment.set('access_token', response.access_token);",
+									"    pm.environment.set('refresh_token', response.refresh_token);",
+									"    console.log('✅ Tokens refreshed automatically');",
 									"}"
 								],
 								"type": "text/javascript"
@@ -257,12 +188,181 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+							"raw": "{\n    \"refresh_token\": \"{{refresh_token}}\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/refresh",
-							"host": ["{{base_url}}"],
-							"path": ["auth", "refresh"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/check",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Email Code",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"verify@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login/email",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login",
+								"email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Email Code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('access_token', response.access_token);",
+									"    pm.environment.set('refresh_token', response.refresh_token);",
+									"    pm.environment.set('user_id', response.user.id);",
+									"    console.log('✅ Tokens saved automatically');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"verify@example.com\",\n    \"code\": \"123456\",\n    \"username\": \"emailuser\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/verify/email",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"verify",
+								"email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Telegram Auth URL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/login/telegram",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login",
+								"telegram"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Telegram Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('access_token', response.access_token);",
+									"    pm.environment.set('refresh_token', response.refresh_token);",
+									"    console.log('✅ Tokens saved automatically');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"123456789\",\n    \"username\": \"testuser\",\n    \"first_name\": \"Test\",\n    \"auth_date\": \"1640995200\",\n    \"hash\": \"mock_hash_for_testing\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/verify/telegram",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"verify",
+								"telegram"
+							]
 						}
 					},
 					"response": []
@@ -270,17 +370,27 @@
 				{
 					"name": "Logout",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "{{base_url}}/auth/logout",
-							"host": ["{{base_url}}"],
-							"path": ["auth", "logout"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
 						}
 					},
 					"response": []
@@ -288,17 +398,27 @@
 				{
 					"name": "Delete Account",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "{{base_url}}/auth/account",
-							"host": ["{{base_url}}"],
-							"path": ["auth", "account"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"account"
+							]
 						}
 					},
 					"response": []
@@ -309,6 +429,43 @@
 			"name": "Hackathons",
 			"item": [
 				{
+					"name": "Get All Hackathons",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/hackathons",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"hackathons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Hackathon by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/hackathons/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"hackathons",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Hackathon",
 					"event": [
 						{
@@ -317,8 +474,8 @@
 								"exec": [
 									"if (pm.response.code === 201) {",
 									"    const response = pm.response.json();",
-									"    pm.collectionVariables.set('hackathon_id', response.id);",
-									"    pm.collectionVariables.set('latest_hackathon_id', response.id);",
+									"    pm.environment.set('hackathon_id', response.id);",
+									"    console.log('✅ Hackathon ID saved: ' + response.id);",
 									"}"
 								],
 								"type": "text/javascript"
@@ -335,54 +492,17 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"{{hackathon_name}}\",\n  \"description\": \"{{hackathon_description}}\",\n  \"start_date\": \"{{hackathon_start_date}}\",\n  \"end_date\": \"{{hackathon_end_date}}\"\n}"
+							"raw": "{\n    \"name\": \"Test Hackathon 2024\",\n    \"description\": \"A test hackathon for API testing\",\n    \"start_date\": \"2024-03-01T10:00:00Z\",\n    \"end_date\": \"2024-03-03T18:00:00Z\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/hackathons",
-							"host": ["{{base_url}}"],
-							"path": ["api", "hackathons"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get All Hackathons",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if (pm.response.code === 200) {",
-									"    const response = pm.response.json();",
-									"    if (response.length > 0) {",
-									"        pm.collectionVariables.set('first_hackathon_id', response[0].id);",
-									"    }",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/hackathons",
-							"host": ["{{base_url}}"],
-							"path": ["api", "hackathons"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Hackathon by ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/hackathons/{{hackathon_id}}",
-							"host": ["{{base_url}}"],
-							"path": ["api", "hackathons", "{{hackathon_id}}"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"hackathons"
+							]
 						}
 					},
 					"response": []
@@ -399,12 +519,18 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"{{hackathon_name}} Updated\",\n  \"description\": \"{{hackathon_description}} - Updated\",\n  \"start_date\": \"{{hackathon_start_date}}\",\n  \"end_date\": \"{{hackathon_end_date}}\"\n}"
+							"raw": "{\n    \"name\": \"Updated Test Hackathon 2024\",\n    \"description\": \"Updated description for the hackathon\",\n    \"start_date\": \"2024-03-01T10:00:00Z\",\n    \"end_date\": \"2024-03-03T18:00:00Z\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/hackathons/{{hackathon_id}}",
-							"host": ["{{base_url}}"],
-							"path": ["api", "hackathons", "{{hackathon_id}}"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"hackathons",
+								"{{hackathon_id}}"
+							]
 						}
 					},
 					"response": []
@@ -416,8 +542,14 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/api/hackathons/{{hackathon_id}}",
-							"host": ["{{base_url}}"],
-							"path": ["api", "hackathons", "{{hackathon_id}}"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"hackathons",
+								"{{hackathon_id}}"
+							]
 						}
 					},
 					"response": []
@@ -428,6 +560,26 @@
 			"name": "Profiles",
 			"item": [
 				{
+					"name": "Get Profiles by Hackathon",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/profiles/hackathon/{{hackathon_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"hackathon",
+								"{{hackathon_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Profile",
 					"event": [
 						{
@@ -436,8 +588,8 @@
 								"exec": [
 									"if (pm.response.code === 201) {",
 									"    const response = pm.response.json();",
-									"    pm.collectionVariables.set('profile_id', response.id);",
-									"    pm.collectionVariables.set('latest_profile_id', response.id);",
+									"    pm.environment.set('profile_id', response.id);",
+									"    console.log('✅ Profile ID saved: ' + response.id);",
 									"}"
 								],
 								"type": "text/javascript"
@@ -454,41 +606,19 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"user_id\": {{test_user_id}},\n  \"name\": \"{{profile_name}}\",\n  \"surname\": \"{{profile_surname}}\",\n  \"academic_group\": \"{{profile_academic_group}}\",\n  \"telegram_handle\": \"{{profile_telegram}}\",\n  \"desired_role\": \"{{profile_desired_role}}\",\n  \"skills\": {{profile_skills}},\n  \"about_me\": \"{{profile_about_me}}\",\n  \"achievements\": {{profile_achievements}},\n  \"status\": \"active\"\n}"
+							"raw": "{\n    \"user_id\": {{user_id}},\n    \"name\": \"John\",\n    \"surname\": \"Doe\",\n    \"academic_group\": \"CS-21\",\n    \"telegram_handle\": \"@johndoe\",\n    \"desired_role\": \"Frontend Developer\",\n    \"skills\": [\"React\", \"JavaScript\", \"TypeScript\"],\n    \"about_me\": \"Passionate frontend developer with 2 years of experience\",\n    \"achievements\": [\"Won local hackathon 2023\", \"Open source contributor\"]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/profiles/hackathon/{{hackathon_id}}",
-							"host": ["{{base_url}}"],
-							"path": ["api", "profiles", "hackathon", "{{hackathon_id}}"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Profiles by Hackathon ID",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if (pm.response.code === 200) {",
-									"    const response = pm.response.json();",
-									"    if (response.length > 0) {",
-									"        pm.collectionVariables.set('first_profile_id', response[0].id);",
-									"    }",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/profiles/hackathon/{{hackathon_id}}",
-							"host": ["{{base_url}}"],
-							"path": ["api", "profiles", "hackathon", "{{hackathon_id}}"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"hackathon",
+								"{{hackathon_id}}"
+							]
 						}
 					},
 					"response": []
@@ -500,8 +630,17 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/api/profiles/hackathon/{{hackathon_id}}/profile/{{profile_id}}",
-							"host": ["{{base_url}}"],
-							"path": ["api", "profiles", "hackathon", "{{hackathon_id}}", "profile", "{{profile_id}}"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"hackathon",
+								"{{hackathon_id}}",
+								"profile",
+								"{{profile_id}}"
+							]
 						}
 					},
 					"response": []
@@ -518,12 +657,21 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"{{profile_name}} Updated\",\n  \"surname\": \"{{profile_surname}} Updated\",\n  \"academic_group\": \"{{profile_academic_group}}\",\n  \"telegram_handle\": \"{{profile_telegram}}_updated\",\n  \"desired_role\": \"Full Stack Developer\",\n  \"skills\": [\"React\", \"Node.js\", \"Go\", \"PostgreSQL\", \"Docker\"],\n  \"about_me\": \"{{profile_about_me}} - Updated profile\",\n  \"achievements\": [\"Участник хакатона 2023\", \"Победитель хакатона 2024\", \"Финалист 2025\"],\n  \"status\": \"active\"\n}"
+							"raw": "{\n    \"name\": \"John\",\n    \"surname\": \"Doe\",\n    \"academic_group\": \"CS-21\",\n    \"telegram_handle\": \"@johndoe_updated\",\n    \"desired_role\": \"Full Stack Developer\",\n    \"skills\": [\"React\", \"JavaScript\", \"TypeScript\", \"Node.js\"],\n    \"about_me\": \"Passionate full stack developer with 2+ years of experience\",\n    \"achievements\": [\"Won local hackathon 2023\", \"Open source contributor\", \"Internship at tech company\"]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/profiles/hackathon/{{hackathon_id}}/profile/{{profile_id}}",
-							"host": ["{{base_url}}"],
-							"path": ["api", "profiles", "hackathon", "{{hackathon_id}}", "profile", "{{profile_id}}"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"hackathon",
+								"{{hackathon_id}}",
+								"profile",
+								"{{profile_id}}"
+							]
 						}
 					},
 					"response": []
@@ -535,147 +683,22 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/api/profiles/hackathon/{{hackathon_id}}/profile/{{profile_id}}",
-							"host": ["{{base_url}}"],
-							"path": ["api", "profiles", "hackathon", "{{hackathon_id}}", "profile", "{{profile_id}}"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"hackathon",
+								"{{hackathon_id}}",
+								"profile",
+								"{{profile_id}}"
+							]
 						}
 					},
 					"response": []
 				}
 			]
-		}
-	],
-	"variable": [
-		{
-			"key": "base_url",
-			"value": "http://localhost:8090",
-			"type": "string",
-			"description": "Base URL сервера"
-		},
-		{
-			"key": "access_token",
-			"value": "",
-			"type": "string",
-			"description": "JWT Access Token"
-		},
-		{
-			"key": "refresh_token",
-			"value": "",
-			"type": "string",
-			"description": "JWT Refresh Token"
-		},
-		{
-			"key": "hackathon_id",
-			"value": "1",
-			"type": "string",
-			"description": "ID хакатона для тестов"
-		},
-		{
-			"key": "profile_id",
-			"value": "1",
-			"type": "string",
-			"description": "ID профиля для тестов"
-		},
-		{
-			"key": "test_username",
-			"value": "testuser_postman",
-			"type": "string",
-			"description": "Тестовый username"
-		},
-		{
-			"key": "test_email",
-			"value": "testuser.postman@example.com",
-			"type": "string",
-			"description": "Тестовый email"
-		},
-		{
-			"key": "test_password",
-			"value": "password123",
-			"type": "string",
-			"description": "Тестовый пароль"
-		},
-		{
-			"key": "test_user_id",
-			"value": "1",
-			"type": "string",
-			"description": "ID тестового пользователя"
-		},
-		{
-			"key": "verification_code",
-			"value": "123456",
-			"type": "string",
-			"description": "Код верификации email"
-		},
-		{
-			"key": "hackathon_name",
-			"value": "AI Innovation Hackathon 2025",
-			"type": "string",
-			"description": "Название тестового хакатона"
-		},
-		{
-			"key": "hackathon_description",
-			"value": "48-часовой хакатон по разработке AI решений",
-			"type": "string",
-			"description": "Описание тестового хакатона"
-		},
-		{
-			"key": "hackathon_start_date",
-			"value": "2025-09-01T10:00:00Z",
-			"type": "string",
-			"description": "Дата начала хакатона"
-		},
-		{
-			"key": "hackathon_end_date",
-			"value": "2025-09-03T18:00:00Z",
-			"type": "string",
-			"description": "Дата окончания хакатона"
-		},
-		{
-			"key": "profile_name",
-			"value": "Анна",
-			"type": "string",
-			"description": "Имя для тестового профиля"
-		},
-		{
-			"key": "profile_surname",
-			"value": "Разработчикова",
-			"type": "string",
-			"description": "Фамилия для тестового профиля"
-		},
-		{
-			"key": "profile_academic_group",
-			"value": "ИТ-21-3",
-			"type": "string",
-			"description": "Учебная группа"
-		},
-		{
-			"key": "profile_telegram",
-			"value": "@anna_dev",
-			"type": "string",
-			"description": "Telegram handle"
-		},
-		{
-			"key": "profile_desired_role",
-			"value": "Frontend Developer",
-			"type": "string",
-			"description": "Желаемая роль"
-		},
-		{
-			"key": "profile_skills",
-			"value": "[\"React\", \"TypeScript\", \"CSS\", \"Figma\"]",
-			"type": "string",
-			"description": "Навыки (JSON массив)"
-		},
-		{
-			"key": "profile_about_me",
-			"value": "Увлекаюсь созданием красивых и функциональных интерфейсов",
-			"type": "string",
-			"description": "О себе"
-		},
-		{
-			"key": "profile_achievements",
-			"value": "[\"Участник хакатона 2023\", \"Лучший UI/UX дизайн 2024\"]",
-			"type": "string",
-			"description": "Достижения (JSON массив)"
 		}
 	]
 } 

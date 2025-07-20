@@ -47,3 +47,4 @@ symlink-from
 # OS
 .DS_Store
 Thumbs.db
+.vscode/settings.json

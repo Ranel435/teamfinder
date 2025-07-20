@@ -7,7 +7,6 @@ import (
 type Config struct {
 	DatabaseURL string
 	JWTSecret   string
-	// другие конфигурационные параметры здесь
 }
 
 func LoadConfig() Config {

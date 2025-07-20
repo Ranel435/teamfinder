@@ -2,6 +2,7 @@ package routes
 
 import (
 	"teamfinder/backend/internal/handlers"
+	"teamfinder/backend/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,11 +10,11 @@ import (
 func SetupAuthRoutes(router *gin.Engine, authHandler *handlers.AuthHandler) {
 	auth := router.Group("/auth")
 	{
-		// Login routes
+		// Public routes - не требуют аутентификации
 		auth.POST("/register", authHandler.Register)
 		auth.POST("/login", authHandler.Login)
 
-		// Email routes
+		// Email verification routes
 		auth.POST("/login/email", authHandler.SendEmailCode)
 		auth.POST("/verify/email", authHandler.VerifyEmailCode)
 
@@ -21,10 +22,16 @@ func SetupAuthRoutes(router *gin.Engine, authHandler *handlers.AuthHandler) {
 		auth.GET("/login/telegram", authHandler.TelegramLogin)
 		auth.POST("/verify/telegram", authHandler.VerifyTelegram)
 
-		// General routes
-		auth.POST("/logout", authHandler.Logout)
+		// Token routes - refresh не требует аутентификации (использует refresh token)
 		auth.POST("/refresh", authHandler.RefreshToken)
-		auth.GET("/check", authHandler.CheckToken)
-		auth.DELETE("/account", authHandler.DeleteAccount)
+
+		// Protected routes - требуют JWT аутентификации
+		protected := auth.Group("")
+		protected.Use(middleware.AuthRequired())
+		{
+			protected.GET("/check", authHandler.CheckToken)
+			protected.POST("/logout", authHandler.Logout)
+			protected.DELETE("/account", authHandler.DeleteAccount)
+		}
 	}
 }

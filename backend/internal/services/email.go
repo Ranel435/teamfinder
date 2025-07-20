@@ -9,7 +9,6 @@ import (
 	"os"
 	"sync"
 	"time"
-	// "github.com/joho/godotenv"
 )
 
 type EmailService struct {
@@ -22,11 +21,6 @@ type EmailService struct {
 }
 
 func NewEmailService() *EmailService {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	log.Fatalf("Ошибка загрузки .env файла: %v", err)
-	// }
-
 	return &EmailService{
 		from:     os.Getenv("EMAIL_LOGIN"),
 		password: os.Getenv("EMAIL_PASSWORD"),
@@ -41,9 +35,10 @@ func (s *EmailService) GenerateVerificationCode() string {
 }
 
 func (s *EmailService) SendVerificationCode(to, code string) error {
-	log.Printf("Starting to send verification code. SMTP settings - Host: %s, Port: %s, From: %s", s.host, s.port, s.from)
+	if s.from == "" || s.password == "" {
+		return fmt.Errorf("email credentials not configured")
+	}
 
-	// Проверяем, прошло ли 5 минут с последней отправки
 	s.mutex.RLock()
 	lastTime, exists := s.lastSent[to]
 	s.mutex.RUnlock()
@@ -56,33 +51,31 @@ func (s *EmailService) SendVerificationCode(to, code string) error {
 		}
 	}
 
-	// Настройка TLS конфигурации
 	tlsConfig := &tls.Config{
-		InsecureSkipVerify: true, // Добавлено для отладки
+		InsecureSkipVerify: true,
 		ServerName:         s.host,
 	}
 
-	// Подключение к серверу с TLS
-	log.Printf("Attempting to connect to SMTP server...")
 	conn, err := tls.Dial("tcp", s.host+":"+s.port, tlsConfig)
 	if err != nil {
-		log.Fatalf("failed to create TLS connection: %v", err)
+		log.Printf("ERROR: Failed to connect to SMTP server: %v", err)
+		return fmt.Errorf("failed to connect to SMTP server")
 	}
 	defer conn.Close()
 
 	client, err := smtp.NewClient(conn, s.host)
 	if err != nil {
-		log.Fatalf("failed to create SMTP client: %v", err)
+		log.Printf("ERROR: Failed to create SMTP client: %v", err)
+		return fmt.Errorf("failed to create SMTP client")
 	}
 	defer client.Close()
 
-	// Аутентификация
 	auth := smtp.PlainAuth("", s.from, s.password, s.host)
 	if err := client.Auth(auth); err != nil {
-		log.Fatalf("failed to authenticate: %v", err)
+		log.Printf("ERROR: SMTP authentication failed: %v", err)
+		return fmt.Errorf("failed to authenticate with SMTP server")
 	}
 
-	// Отправка письма
 	msg := []byte(fmt.Sprintf("From: %s\r\n"+
 		"To: %s\r\n"+
 		"Subject: Verification Code\r\n"+
@@ -109,7 +102,6 @@ func (s *EmailService) SendVerificationCode(to, code string) error {
 		return err
 	}
 
-	// После успешной отправки обновляем время
 	s.mutex.Lock()
 	s.lastSent[to] = time.Now()
 	s.mutex.Unlock()

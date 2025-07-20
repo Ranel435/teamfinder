@@ -10,9 +10,9 @@ func SetupProfileRoutes(router *gin.RouterGroup, handler *handlers.ProfileHandle
 	profiles := router.Group("/profiles")
 	{
 		profiles.GET("/hackathon/:id", handler.GetProfilesByHackathonID)
-		profiles.POST("", handler.CreateProfile)
-		profiles.GET("/:id", handler.GetProfileByID)
-		profiles.PUT("/:id", handler.UpdateProfile)
-		profiles.DELETE("/:id", handler.DeleteProfile)
+		profiles.POST("/hackathon/:id", handler.CreateProfile)
+		profiles.GET("/hackathon/:id/profile/:profile_id", handler.GetProfileByID)
+		profiles.PUT("/hackathon/:id/profile/:profile_id", handler.UpdateProfile)
+		profiles.DELETE("/hackathon/:id/profile/:profile_id", handler.DeleteProfile)
 	}
 }

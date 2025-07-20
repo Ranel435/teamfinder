@@ -25,18 +25,54 @@ type codeInfo struct {
 }
 
 type RegisterRequest struct {
-	Username string `json:"username" binding:"required"`
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required,min=6"`
+	Username string `json:"username" binding:"required" example:"johndoe"`
+	Email    string `json:"email" binding:"required,email" example:"john@example.com"`
+	Password string `json:"password" binding:"required,min=6" example:"password123"`
 }
 
 type LoginRequest struct {
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required"`
+	Email    string `json:"email" binding:"required,email" example:"john@example.com"`
+	Password string `json:"password" binding:"required" example:"password123"`
 }
 
 type RefreshTokenRequest struct {
-	RefreshToken string `json:"refresh_token" binding:"required"`
+	RefreshToken string `json:"refresh_token" binding:"required" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+}
+
+type EmailCodeRequest struct {
+	Email string `json:"email" binding:"required,email" example:"john@example.com"`
+}
+
+type VerifyEmailRequest struct {
+	Email    string `json:"email" binding:"required,email" example:"john@example.com"`
+	Code     string `json:"code" binding:"required" example:"123456"`
+	Username string `json:"username" binding:"required" example:"johndoe"`
+	Password string `json:"password" binding:"required,min=6" example:"password123"`
+}
+
+type TelegramAuthResponse struct {
+	AuthURL string `json:"auth_url" example:"https://t.me/teamfinder_bot?start=auth_12345"`
+	Message string `json:"message" example:"Open this URL in Telegram to authenticate"`
+}
+
+type AuthResponse struct {
+	AccessToken  string      `json:"access_token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+	RefreshToken string      `json:"refresh_token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+	User         UserProfile `json:"user"`
+}
+
+type UserProfile struct {
+	ID       int    `json:"id" example:"1"`
+	Username string `json:"username" example:"johndoe"`
+	Email    string `json:"email" example:"john@example.com"`
+}
+
+type MessageResponse struct {
+	Message string `json:"message" example:"Operation completed successfully"`
+}
+
+type ErrorResponse struct {
+	Error string `json:"error" example:"Invalid credentials"`
 }
 
 func NewAuthHandler(emailService *services.EmailService, telegramService *services.TelegramService) *AuthHandler {
@@ -48,6 +84,18 @@ func NewAuthHandler(emailService *services.EmailService, telegramService *servic
 	}
 }
 
+// Register godoc
+// @Summary      Register a new user
+// @Description  Create a new user account with username, email and password
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        request body RegisterRequest true "User registration data"
+// @Success      200 {object} AuthResponse "User registered successfully"
+// @Failure      400 {object} ErrorResponse "Invalid request data"
+// @Failure      409 {object} ErrorResponse "User already exists"
+// @Failure      500 {object} ErrorResponse "Internal server error"
+// @Router       /auth/register [post]
 func (h *AuthHandler) Register(c *gin.Context) {
 	var req RegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -97,6 +145,18 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	})
 }
 
+// Login godoc
+// @Summary      User login
+// @Description  Authenticate user with email and password
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        request body LoginRequest true "User login credentials"
+// @Success      200 {object} AuthResponse "Login successful"
+// @Failure      400 {object} ErrorResponse "Invalid request data"
+// @Failure      401 {object} ErrorResponse "Invalid credentials"
+// @Failure      500 {object} ErrorResponse "Internal server error"
+// @Router       /auth/login [post]
 func (h *AuthHandler) Login(c *gin.Context) {
 	var req LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -140,6 +200,18 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	})
 }
 
+// SendEmailCode godoc
+// @Summary      Send email verification code
+// @Description  Send a verification code to email for registration
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        request body EmailCodeRequest true "Email to send verification code"
+// @Success      200 {object} MessageResponse "Verification code sent successfully"
+// @Failure      400 {object} ErrorResponse "Invalid email or request data"
+// @Failure      429 {object} ErrorResponse "Too many requests, please wait"
+// @Failure      500 {object} ErrorResponse "Failed to send verification code"
+// @Router       /auth/login/email [post]
 func (h *AuthHandler) SendEmailCode(c *gin.Context) {
 	var req struct {
 		Email string `json:"email" binding:"required,email"`
@@ -176,6 +248,18 @@ func (h *AuthHandler) SendEmailCode(c *gin.Context) {
 	})
 }
 
+// VerifyEmailCode godoc
+// @Summary      Verify email and register user
+// @Description  Verify email verification code and create user account
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        request body VerifyEmailRequest true "Email verification data"
+// @Success      200 {object} AuthResponse "User registered successfully"
+// @Failure      400 {object} ErrorResponse "Invalid verification code or expired"
+// @Failure      409 {object} ErrorResponse "User already exists"
+// @Failure      500 {object} ErrorResponse "Failed to create user"
+// @Router       /auth/verify/email [post]
 func (h *AuthHandler) VerifyEmailCode(c *gin.Context) {
 	var req struct {
 		Email    string `json:"email" binding:"required,email"`
@@ -244,6 +328,13 @@ func (h *AuthHandler) VerifyEmailCode(c *gin.Context) {
 	})
 }
 
+// TelegramLogin godoc
+// @Summary      Get Telegram auth URL
+// @Description  Generate Telegram bot authentication URL
+// @Tags         Authentication
+// @Produce      json
+// @Success      200 {object} TelegramAuthResponse "Telegram auth URL generated"
+// @Router       /auth/login/telegram [get]
 func (h *AuthHandler) TelegramLogin(c *gin.Context) {
 	authURL := h.telegramService.GenerateAuthURL()
 	c.JSON(http.StatusOK, gin.H{
@@ -252,6 +343,17 @@ func (h *AuthHandler) TelegramLogin(c *gin.Context) {
 	})
 }
 
+// VerifyTelegram godoc
+// @Summary      Verify Telegram authentication
+// @Description  Verify Telegram login data and authenticate user
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        request body object{id=string,username=string,auth_date=string,hash=string} true "Telegram auth data"
+// @Success      200 {object} object{access_token=string,refresh_token=string,user=object,message=string} "Telegram authentication successful"
+// @Failure      400 {object} ErrorResponse "Invalid request format"
+// @Failure      401 {object} ErrorResponse "Invalid Telegram data"
+// @Router       /auth/verify/telegram [post]
 func (h *AuthHandler) VerifyTelegram(c *gin.Context) {
 	var req map[string]string
 
@@ -293,6 +395,18 @@ func (h *AuthHandler) VerifyTelegram(c *gin.Context) {
 	})
 }
 
+// RefreshToken godoc
+// @Summary      Refresh access token
+// @Description  Get new access and refresh tokens using a valid refresh token
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        request body RefreshTokenRequest true "Refresh token"
+// @Success      200 {object} object{access_token=string,refresh_token=string} "Tokens refreshed successfully"
+// @Failure      400 {object} ErrorResponse "Invalid request data"
+// @Failure      401 {object} ErrorResponse "Invalid refresh token"
+// @Failure      500 {object} ErrorResponse "Internal server error"
+// @Router       /auth/refresh [post]
 func (h *AuthHandler) RefreshToken(c *gin.Context) {
 	var req RefreshTokenRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -329,6 +443,15 @@ func (h *AuthHandler) RefreshToken(c *gin.Context) {
 	})
 }
 
+// CheckToken godoc
+// @Summary      Validate token
+// @Description  Check if the provided JWT token is valid
+// @Tags         Authentication
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} object{valid=bool,user_id=int,email=string,message=string} "Token is valid"
+// @Failure      401 {object} ErrorResponse "Invalid or missing token"
+// @Router       /auth/check [get]
 func (h *AuthHandler) CheckToken(c *gin.Context) {
 	userID, exists := c.Get("userID")
 	if !exists {
@@ -346,6 +469,16 @@ func (h *AuthHandler) CheckToken(c *gin.Context) {
 	})
 }
 
+// DeleteAccount godoc
+// @Summary      Delete user account
+// @Description  Permanently delete the user account and all associated data
+// @Tags         Authentication
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} MessageResponse "Account deleted successfully"
+// @Failure      401 {object} ErrorResponse "Invalid or missing token"
+// @Failure      500 {object} ErrorResponse "Failed to delete account"
+// @Router       /auth/account [delete]
 func (h *AuthHandler) DeleteAccount(c *gin.Context) {
 	userID, exists := c.Get("userID")
 	if !exists {
@@ -371,6 +504,15 @@ func (h *AuthHandler) DeleteAccount(c *gin.Context) {
 	})
 }
 
+// Logout godoc
+// @Summary      User logout
+// @Description  Logout user (client should remove tokens)
+// @Tags         Authentication
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} MessageResponse "Logout successful"
+// @Failure      401 {object} ErrorResponse "Invalid or missing token"
+// @Router       /auth/logout [post]
 func (h *AuthHandler) Logout(c *gin.Context) {
 	// В stateless JWT системе logout обычно происходит на клиенте
 	// Можно добавить blacklist токенов в будущем

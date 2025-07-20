@@ -1,0 +1,884 @@
+basePath: /
+definitions:
+  handlers.AuthResponse:
+    properties:
+      access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      user:
+        $ref: '#/definitions/handlers.UserProfile'
+    type: object
+  handlers.EmailCodeRequest:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+    required:
+    - email
+    type: object
+  handlers.ErrorResponse:
+    properties:
+      error:
+        example: Invalid credentials
+        type: string
+    type: object
+  handlers.LoginRequest:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+      password:
+        example: password123
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  handlers.MessageResponse:
+    properties:
+      message:
+        example: Operation completed successfully
+        type: string
+    type: object
+  handlers.RefreshTokenRequest:
+    properties:
+      refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+    required:
+    - refresh_token
+    type: object
+  handlers.RegisterRequest:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+      password:
+        example: password123
+        minLength: 6
+        type: string
+      username:
+        example: johndoe
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  handlers.TelegramAuthResponse:
+    properties:
+      auth_url:
+        example: https://t.me/teamfinder_bot?start=auth_12345
+        type: string
+      message:
+        example: Open this URL in Telegram to authenticate
+        type: string
+    type: object
+  handlers.UserProfile:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+      id:
+        example: 1
+        type: integer
+      username:
+        example: johndoe
+        type: string
+    type: object
+  handlers.VerifyEmailRequest:
+    properties:
+      code:
+        example: "123456"
+        type: string
+      email:
+        example: john@example.com
+        type: string
+      password:
+        example: password123
+        minLength: 6
+        type: string
+      username:
+        example: johndoe
+        type: string
+    required:
+    - code
+    - email
+    - password
+    - username
+    type: object
+  models.Hackathon:
+    properties:
+      description:
+        example: 48-hour hackathon focused on artificial intelligence and machine
+          learning solutions
+        type: string
+      end_date:
+        example: "2024-03-17T18:00:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: AI Innovation Hackathon 2024
+        type: string
+      start_date:
+        example: "2024-03-15T09:00:00Z"
+        type: string
+    type: object
+  models.Profile:
+    properties:
+      about_me:
+        example: Passionate backend developer with 2 years of experience in Go and
+          microservices
+        type: string
+      academic_group:
+        example: CS-401
+        type: string
+      achievements:
+        example:
+        - 1st place in AI Hackathon 2023
+        - Completed 10+ projects
+        items:
+          type: string
+        type: array
+      desired_role:
+        example: Backend Developer
+        type: string
+      hackathon_id:
+        example: 1
+        type: integer
+      id:
+        example: 1
+        type: integer
+      name:
+        example: John
+        type: string
+      skills:
+        example:
+        - Go
+        - PostgreSQL
+        - Docker
+        - REST API
+        items:
+          type: string
+        type: array
+      status:
+        example: active
+        type: string
+      surname:
+        example: Doe
+        type: string
+      telegram_handle:
+        example: '@johndoe'
+        type: string
+      user_id:
+        example: 5
+        type: integer
+    type: object
+  server.HealthResponse:
+    properties:
+      service:
+        example: teamfinder-backend
+        type: string
+      status:
+        example: healthy
+        type: string
+      timestamp:
+        example: "2024-01-01T12:00:00Z"
+        type: string
+      version:
+        example: 1.0.0
+        type: string
+    type: object
+host: localhost:8090
+info:
+  contact:
+    email: support@teamfinder-hack.ru
+    name: TeamFinder Support
+  description: Complete backend API for TeamFinder - a platform for finding hackathon
+    teammates
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://teamfinder-hack.ru/terms
+  title: TeamFinder API
+  version: "1.0"
+paths:
+  /api/hackathons:
+    get:
+      description: Retrieve a list of all available hackathons
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of hackathons
+          schema:
+            items:
+              $ref: '#/definitions/models.Hackathon'
+            type: array
+        "500":
+          description: Failed to retrieve hackathons
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all hackathons
+      tags:
+      - Hackathons
+    post:
+      consumes:
+      - application/json
+      description: Create a new hackathon with the provided details
+      parameters:
+      - description: Hackathon data (ID will be ignored)
+        in: body
+        name: hackathon
+        required: true
+        schema:
+          $ref: '#/definitions/models.Hackathon'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Hackathon created successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Failed to create hackathon
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new hackathon
+      tags:
+      - Hackathons
+  /api/hackathons/{id}:
+    delete:
+      description: Delete an existing hackathon by ID
+      parameters:
+      - description: Hackathon ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hackathon deleted successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid hackathon ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Failed to delete hackathon
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete a hackathon
+      tags:
+      - Hackathons
+    get:
+      description: Retrieve a specific hackathon by its ID
+      parameters:
+      - description: Hackathon ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hackathon details
+          schema:
+            $ref: '#/definitions/models.Hackathon'
+        "400":
+          description: Invalid hackathon ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Hackathon not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get hackathon by ID
+      tags:
+      - Hackathons
+    put:
+      consumes:
+      - application/json
+      description: Update an existing hackathon by ID
+      parameters:
+      - description: Hackathon ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated hackathon data
+        in: body
+        name: hackathon
+        required: true
+        schema:
+          $ref: '#/definitions/models.Hackathon'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hackathon updated successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid hackathon ID or request data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Failed to update hackathon
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update a hackathon
+      tags:
+      - Hackathons
+  /api/profiles/hackathon/{id}:
+    get:
+      description: Retrieve all profiles for a specific hackathon
+      parameters:
+      - description: Hackathon ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of profiles for the hackathon
+          schema:
+            items:
+              $ref: '#/definitions/models.Profile'
+            type: array
+        "400":
+          description: Invalid hackathon ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Failed to retrieve profiles
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get profiles by hackathon ID
+      tags:
+      - Profiles
+    post:
+      consumes:
+      - application/json
+      description: Create a new profile for a specific hackathon
+      parameters:
+      - description: Hackathon ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Profile data (ID and HackathonID will be set automatically)
+        in: body
+        name: profile
+        required: true
+        schema:
+          $ref: '#/definitions/models.Profile'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Profile created successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid hackathon ID or request data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Failed to create profile
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new profile
+      tags:
+      - Profiles
+  /api/profiles/hackathon/{id}/profile/{profile_id}:
+    delete:
+      description: Delete an existing profile by hackathon ID and profile ID
+      parameters:
+      - description: Hackathon ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Profile ID
+        in: path
+        name: profile_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Profile deleted successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid hackathon ID or profile ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Failed to delete profile
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete a profile
+      tags:
+      - Profiles
+    get:
+      description: Retrieve a specific profile by hackathon ID and profile ID
+      parameters:
+      - description: Hackathon ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Profile ID
+        in: path
+        name: profile_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Profile details
+          schema:
+            $ref: '#/definitions/models.Profile'
+        "400":
+          description: Invalid hackathon ID or profile ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Profile not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get profile by ID
+      tags:
+      - Profiles
+    put:
+      consumes:
+      - application/json
+      description: Update an existing profile by hackathon ID and profile ID
+      parameters:
+      - description: Hackathon ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Profile ID
+        in: path
+        name: profile_id
+        required: true
+        type: integer
+      - description: Updated profile data
+        in: body
+        name: profile
+        required: true
+        schema:
+          $ref: '#/definitions/models.Profile'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Profile updated successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid hackathon ID, profile ID, or request data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Failed to update profile
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update a profile
+      tags:
+      - Profiles
+  /auth/account:
+    delete:
+      description: Permanently delete the user account and all associated data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Account deleted successfully
+          schema:
+            $ref: '#/definitions/handlers.MessageResponse'
+        "401":
+          description: Invalid or missing token
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Failed to delete account
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete user account
+      tags:
+      - Authentication
+  /auth/check:
+    get:
+      description: Check if the provided JWT token is valid
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token is valid
+          schema:
+            properties:
+              email:
+                type: string
+              message:
+                type: string
+              user_id:
+                type: integer
+              valid:
+                type: boolean
+            type: object
+        "401":
+          description: Invalid or missing token
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Validate token
+      tags:
+      - Authentication
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user with email and password
+      parameters:
+      - description: User login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            $ref: '#/definitions/handlers.AuthResponse'
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: User login
+      tags:
+      - Authentication
+  /auth/login/email:
+    post:
+      consumes:
+      - application/json
+      description: Send a verification code to email for registration
+      parameters:
+      - description: Email to send verification code
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.EmailCodeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Verification code sent successfully
+          schema:
+            $ref: '#/definitions/handlers.MessageResponse'
+        "400":
+          description: Invalid email or request data
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "429":
+          description: Too many requests, please wait
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Failed to send verification code
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Send email verification code
+      tags:
+      - Authentication
+  /auth/login/telegram:
+    get:
+      description: Generate Telegram bot authentication URL
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Telegram auth URL generated
+          schema:
+            $ref: '#/definitions/handlers.TelegramAuthResponse'
+      summary: Get Telegram auth URL
+      tags:
+      - Authentication
+  /auth/logout:
+    post:
+      description: Logout user (client should remove tokens)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logout successful
+          schema:
+            $ref: '#/definitions/handlers.MessageResponse'
+        "401":
+          description: Invalid or missing token
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: User logout
+      tags:
+      - Authentication
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Get new access and refresh tokens using a valid refresh token
+      parameters:
+      - description: Refresh token
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.RefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Tokens refreshed successfully
+          schema:
+            properties:
+              access_token:
+                type: string
+              refresh_token:
+                type: string
+            type: object
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Invalid refresh token
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Refresh access token
+      tags:
+      - Authentication
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user account with username, email and password
+      parameters:
+      - description: User registration data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User registered successfully
+          schema:
+            $ref: '#/definitions/handlers.AuthResponse'
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "409":
+          description: User already exists
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - Authentication
+  /auth/verify/email:
+    post:
+      consumes:
+      - application/json
+      description: Verify email verification code and create user account
+      parameters:
+      - description: Email verification data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.VerifyEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User registered successfully
+          schema:
+            $ref: '#/definitions/handlers.AuthResponse'
+        "400":
+          description: Invalid verification code or expired
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "409":
+          description: User already exists
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Failed to create user
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Verify email and register user
+      tags:
+      - Authentication
+  /auth/verify/telegram:
+    post:
+      consumes:
+      - application/json
+      description: Verify Telegram login data and authenticate user
+      parameters:
+      - description: Telegram auth data
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            auth_date:
+              type: string
+            hash:
+              type: string
+            id:
+              type: string
+            username:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Telegram authentication successful
+          schema:
+            properties:
+              access_token:
+                type: string
+              message:
+                type: string
+              refresh_token:
+                type: string
+              user:
+                type: object
+            type: object
+        "400":
+          description: Invalid request format
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Invalid Telegram data
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Verify Telegram authentication
+      tags:
+      - Authentication
+  /health:
+    get:
+      description: Check if the service is running and healthy
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Service is healthy
+          schema:
+            $ref: '#/definitions/server.HealthResponse'
+      summary: Health check
+      tags:
+      - System
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

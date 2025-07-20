@@ -18,6 +18,16 @@ func NewProfileHandler(profileService *services.ProfileService) *ProfileHandler 
 	return &ProfileHandler{profileService: profileService}
 }
 
+// GetProfilesByHackathonID godoc
+// @Summary      Get profiles by hackathon ID
+// @Description  Retrieve all profiles for a specific hackathon
+// @Tags         Profiles
+// @Produce      json
+// @Param        id path int true "Hackathon ID"
+// @Success      200 {array} models.Profile "List of profiles for the hackathon"
+// @Failure      400 {object} map[string]string "Invalid hackathon ID"
+// @Failure      500 {object} map[string]string "Failed to retrieve profiles"
+// @Router       /api/profiles/hackathon/{id} [get]
 func (h *ProfileHandler) GetProfilesByHackathonID(c *gin.Context) {
 	hackathonID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -34,6 +44,18 @@ func (h *ProfileHandler) GetProfilesByHackathonID(c *gin.Context) {
 	c.JSON(http.StatusOK, profiles)
 }
 
+// CreateProfile godoc
+// @Summary      Create a new profile
+// @Description  Create a new profile for a specific hackathon
+// @Tags         Profiles
+// @Accept       json
+// @Produce      json
+// @Param        id path int true "Hackathon ID"
+// @Param        profile body models.Profile true "Profile data (ID and HackathonID will be set automatically)"
+// @Success      201 {object} map[string]interface{} "Profile created successfully"
+// @Failure      400 {object} map[string]string "Invalid hackathon ID or request data"
+// @Failure      500 {object} map[string]string "Failed to create profile"
+// @Router       /api/profiles/hackathon/{id} [post]
 func (h *ProfileHandler) CreateProfile(c *gin.Context) {
 	hackathonID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -64,6 +86,17 @@ func (h *ProfileHandler) CreateProfile(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"id": id, "message": "Profile created successfully"})
 }
 
+// GetProfileByID godoc
+// @Summary      Get profile by ID
+// @Description  Retrieve a specific profile by hackathon ID and profile ID
+// @Tags         Profiles
+// @Produce      json
+// @Param        id path int true "Hackathon ID"
+// @Param        profile_id path int true "Profile ID"
+// @Success      200 {object} models.Profile "Profile details"
+// @Failure      400 {object} map[string]string "Invalid hackathon ID or profile ID"
+// @Failure      404 {object} map[string]string "Profile not found"
+// @Router       /api/profiles/hackathon/{id}/profile/{profile_id} [get]
 func (h *ProfileHandler) GetProfileByID(c *gin.Context) {
 	hackathonID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -86,6 +119,19 @@ func (h *ProfileHandler) GetProfileByID(c *gin.Context) {
 	c.JSON(http.StatusOK, profile)
 }
 
+// UpdateProfile godoc
+// @Summary      Update a profile
+// @Description  Update an existing profile by hackathon ID and profile ID
+// @Tags         Profiles
+// @Accept       json
+// @Produce      json
+// @Param        id path int true "Hackathon ID"
+// @Param        profile_id path int true "Profile ID"
+// @Param        profile body models.Profile true "Updated profile data"
+// @Success      200 {object} map[string]string "Profile updated successfully"
+// @Failure      400 {object} map[string]string "Invalid hackathon ID, profile ID, or request data"
+// @Failure      500 {object} map[string]string "Failed to update profile"
+// @Router       /api/profiles/hackathon/{id}/profile/{profile_id} [put]
 func (h *ProfileHandler) UpdateProfile(c *gin.Context) {
 	hackathonID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -116,6 +162,17 @@ func (h *ProfileHandler) UpdateProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Profile updated successfully"})
 }
 
+// DeleteProfile godoc
+// @Summary      Delete a profile
+// @Description  Delete an existing profile by hackathon ID and profile ID
+// @Tags         Profiles
+// @Produce      json
+// @Param        id path int true "Hackathon ID"
+// @Param        profile_id path int true "Profile ID"
+// @Success      200 {object} map[string]string "Profile deleted successfully"
+// @Failure      400 {object} map[string]string "Invalid hackathon ID or profile ID"
+// @Failure      500 {object} map[string]string "Failed to delete profile"
+// @Router       /api/profiles/hackathon/{id}/profile/{profile_id} [delete]
 func (h *ProfileHandler) DeleteProfile(c *gin.Context) {
 	hackathonID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

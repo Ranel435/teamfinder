@@ -10,12 +10,23 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "teamfinder/backend/docs" // Import generated docs
 )
 
 type Server struct {
 	Router  *gin.Engine
 	addr    string
 	storage *storage.Storage
+}
+
+type HealthResponse struct {
+	Service   string `json:"service" example:"teamfinder-backend"`
+	Status    string `json:"status" example:"healthy"`
+	Timestamp string `json:"timestamp" example:"2024-01-01T12:00:00Z"`
+	Version   string `json:"version" example:"1.0.0"`
 }
 
 func New(host string, st *storage.Storage) *Server {
@@ -33,6 +44,9 @@ func New(host string, st *storage.Storage) *Server {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
+
+	// Swagger route
+	s.Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	s.setupRoutes()
 
@@ -54,12 +68,19 @@ func (s *Server) setupRoutes() {
 	routes.SetupProfileRoutes(api, handlers.NewProfileHandler(services.NewProfileService()))
 }
 
+// HealthCheck godoc
+// @Summary      Health check
+// @Description  Check if the service is running and healthy
+// @Tags         System
+// @Produce      json
+// @Success      200 {object} HealthResponse "Service is healthy"
+// @Router       /health [get]
 func (s *Server) healthCheck(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"status":    "healthy",
-		"timestamp": time.Now().UTC().Format(time.RFC3339),
-		"service":   "teamfinder-backend",
-		"version":   "1.0.0",
+	c.JSON(http.StatusOK, HealthResponse{
+		Service:   "teamfinder-backend",
+		Status:    "healthy",
+		Timestamp: time.Now().UTC().Format(time.RFC3339),
+		Version:   "1.0.0",
 	})
 }
 

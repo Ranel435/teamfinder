@@ -18,6 +18,14 @@ func NewHackathonHandler(hackathonService *services.HackathonService) *Hackathon
 	return &HackathonHandler{hackathonService: hackathonService}
 }
 
+// GetAllHackathons godoc
+// @Summary      Get all hackathons
+// @Description  Retrieve a list of all available hackathons
+// @Tags         Hackathons
+// @Produce      json
+// @Success      200 {array} models.Hackathon "List of hackathons"
+// @Failure      500 {object} map[string]string "Failed to retrieve hackathons"
+// @Router       /api/hackathons [get]
 func (h *HackathonHandler) GetAllHackathons(c *gin.Context) {
 	hackathons, err := h.hackathonService.GetAllHackathons()
 	if err != nil {
@@ -28,6 +36,16 @@ func (h *HackathonHandler) GetAllHackathons(c *gin.Context) {
 	c.JSON(http.StatusOK, hackathons)
 }
 
+// GetHackathonByID godoc
+// @Summary      Get hackathon by ID
+// @Description  Retrieve a specific hackathon by its ID
+// @Tags         Hackathons
+// @Produce      json
+// @Param        id path int true "Hackathon ID"
+// @Success      200 {object} models.Hackathon "Hackathon details"
+// @Failure      400 {object} map[string]string "Invalid hackathon ID"
+// @Failure      404 {object} map[string]string "Hackathon not found"
+// @Router       /api/hackathons/{id} [get]
 func (h *HackathonHandler) GetHackathonByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -44,6 +62,17 @@ func (h *HackathonHandler) GetHackathonByID(c *gin.Context) {
 	c.JSON(http.StatusOK, hackathon)
 }
 
+// CreateHackathon godoc
+// @Summary      Create a new hackathon
+// @Description  Create a new hackathon with the provided details
+// @Tags         Hackathons
+// @Accept       json
+// @Produce      json
+// @Param        hackathon body models.Hackathon true "Hackathon data (ID will be ignored)"
+// @Success      201 {object} map[string]interface{} "Hackathon created successfully"
+// @Failure      400 {object} map[string]string "Invalid request data"
+// @Failure      500 {object} map[string]string "Failed to create hackathon"
+// @Router       /api/hackathons [post]
 func (h *HackathonHandler) CreateHackathon(c *gin.Context) {
 	var hackathon models.Hackathon
 	if err := c.ShouldBindJSON(&hackathon); err != nil {
@@ -62,6 +91,18 @@ func (h *HackathonHandler) CreateHackathon(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"id": id, "message": "Hackathon created successfully"})
 }
 
+// UpdateHackathon godoc
+// @Summary      Update a hackathon
+// @Description  Update an existing hackathon by ID
+// @Tags         Hackathons
+// @Accept       json
+// @Produce      json
+// @Param        id path int true "Hackathon ID"
+// @Param        hackathon body models.Hackathon true "Updated hackathon data"
+// @Success      200 {object} map[string]string "Hackathon updated successfully"
+// @Failure      400 {object} map[string]string "Invalid hackathon ID or request data"
+// @Failure      500 {object} map[string]string "Failed to update hackathon"
+// @Router       /api/hackathons/{id} [put]
 func (h *HackathonHandler) UpdateHackathon(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -85,6 +126,16 @@ func (h *HackathonHandler) UpdateHackathon(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Hackathon updated successfully"})
 }
 
+// DeleteHackathon godoc
+// @Summary      Delete a hackathon
+// @Description  Delete an existing hackathon by ID
+// @Tags         Hackathons
+// @Produce      json
+// @Param        id path int true "Hackathon ID"
+// @Success      200 {object} map[string]string "Hackathon deleted successfully"
+// @Failure      400 {object} map[string]string "Invalid hackathon ID"
+// @Failure      500 {object} map[string]string "Failed to delete hackathon"
+// @Router       /api/hackathons/{id} [delete]
 func (h *HackathonHandler) DeleteHackathon(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

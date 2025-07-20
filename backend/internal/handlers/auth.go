@@ -2,11 +2,11 @@ package handlers
 
 import (
 	"database/sql"
-	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"strings"
-	"teamfinder/backend/internal/db"
+	"teamfinder/backend/internal/database"
 	"teamfinder/backend/internal/models"
 	"teamfinder/backend/internal/services"
 	"teamfinder/backend/internal/utils"
@@ -56,44 +56,55 @@ func (h *AuthHandler) Register(c *gin.Context) {
 		return
 	}
 
-	// Hash password
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
+		log.Printf("ERROR: Password hashing failed for user '%s': %v", req.Username, err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to process password"})
 		return
 	}
 
-	// Create user in database
 	query := `
 		INSERT INTO users (username, email, password_hash)
 		VALUES ($1, $2, $3)
 		RETURNING id`
 
 	var userID int
-	err = db.Pool.QueryRow(c, query, req.Username, req.Email, string(hashedPassword)).Scan(&userID)
+	err = database.Pool.QueryRow(c, query, req.Username, req.Email, string(hashedPassword)).Scan(&userID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+		if strings.Contains(err.Error(), "duplicate key") {
+			if strings.Contains(err.Error(), "username") {
+				c.JSON(http.StatusConflict, gin.H{"error": "Username already exists"})
+			} else if strings.Contains(err.Error(), "email") {
+				c.JSON(http.StatusConflict, gin.H{"error": "Email already exists"})
+			} else {
+				c.JSON(http.StatusConflict, gin.H{"error": "User already exists"})
+			}
+		} else {
+			log.Printf("ERROR: Failed to create user '%s': %v", req.Username, err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+		}
 		return
 	}
 
-	// Create empty profile for user
 	profileQuery := `
-		INSERT INTO profiles (user_id, name)
-		VALUES ($1, $2)`
+		INSERT INTO profiles (user_id, name, surname, hackathon_id)
+		VALUES ($1, $2, $3, NULL)`
 
-	_, err = db.Pool.Exec(c, profileQuery, userID, req.Username)
+	_, err = database.Pool.Exec(c, profileQuery, userID, req.Username, "")
 	if err != nil {
+		log.Printf("ERROR: Failed to create profile for user %d: %v", userID, err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create profile"})
 		return
 	}
 
-	// Generate tokens
 	accessToken, refreshToken, err := utils.GenerateTokenPair(uint(userID), req.Email)
 	if err != nil {
+		log.Printf("ERROR: Failed to generate tokens for user %d: %v", userID, err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate tokens"})
 		return
 	}
 
+	log.Printf("INFO: User registered successfully, id=%d, username='%s', email='%s'", userID, req.Username, req.Email)
 	c.JSON(http.StatusOK, gin.H{
 		"access_token":  accessToken,
 		"refresh_token": refreshToken,
@@ -107,32 +118,33 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	// Get user from database
 	var user models.User
 	query := `SELECT id, email, password_hash FROM users WHERE email = $1`
-	err := db.Pool.QueryRow(c, query, req.Email).Scan(&user.ID, &user.Email, &user.PasswordHash)
+	err := database.Pool.QueryRow(c, query, req.Email).Scan(&user.ID, &user.Email, &user.PasswordHash)
 	if err == sql.ErrNoRows {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	} else if err != nil {
+		log.Printf("ERROR: Database error during login for email '%s': %v", req.Email, err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database error"})
 		return
 	}
 
-	// Verify password
 	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(req.Password))
 	if err != nil {
+		log.Printf("WARN: Failed login attempt for email '%s'", req.Email)
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
 
-	// Generate tokens
 	accessToken, refreshToken, err := utils.GenerateTokenPair(uint(user.ID), user.Email)
 	if err != nil {
+		log.Printf("ERROR: Failed to generate tokens for user %d: %v", user.ID, err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate tokens"})
 		return
 	}
 
+	log.Printf("INFO: User logged in successfully, id=%d, email='%s'", user.ID, user.Email)
 	c.JSON(http.StatusOK, gin.H{
 		"access_token":  accessToken,
 		"refresh_token": refreshToken,
@@ -157,6 +169,7 @@ func (h *AuthHandler) SendEmailCode(c *gin.Context) {
 			})
 			return
 		}
+		log.Printf("ERROR: Failed to send verification code to '%s': %v", req.Email, err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Failed to send verification code",
 		})
@@ -168,6 +181,7 @@ func (h *AuthHandler) SendEmailCode(c *gin.Context) {
 		createdAt: time.Now(),
 	}
 
+	log.Printf("INFO: Verification code sent to '%s'", req.Email)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Verification code sent successfully",
 	})
@@ -181,15 +195,10 @@ func (h *AuthHandler) VerifyEmailCode(c *gin.Context) {
 		Password string `json:"password" binding:"required,min=8"`
 	}
 
-	// Добавляем логирование входящих данных
 	body, _ := io.ReadAll(c.Request.Body)
-	fmt.Printf("Received request body: %s\n", string(body))
 	c.Request.Body = io.NopCloser(bytes.NewBuffer(body))
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		fmt.Printf("Validation error: %v\n", err)
-		fmt.Printf("Received data: email=%s, code=%s, username=%s, password=%s\n",
-			req.Email, req.Code, req.Username, req.Password)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -207,51 +216,52 @@ func (h *AuthHandler) VerifyEmailCode(c *gin.Context) {
 	}
 
 	if codeInfo.code != req.Code {
+		log.Printf("WARN: Invalid verification code attempt for email '%s'", req.Email)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid verification code"})
 		return
 	}
 
-	// Hash password
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
+		log.Printf("ERROR: Password hashing failed during email verification for '%s': %v", req.Username, err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to process password"})
 		return
 	}
 
-	// Create user in database
 	query := `
 		INSERT INTO users (username, email, password_hash)
 		VALUES ($1, $2, $3)
 		RETURNING id`
 
 	var userID int
-	err = db.Pool.QueryRow(c, query, req.Username, req.Email, string(hashedPassword)).Scan(&userID)
+	err = database.Pool.QueryRow(c, query, req.Username, req.Email, string(hashedPassword)).Scan(&userID)
 	if err != nil {
-		fmt.Printf("Database error: %v\n", err)
+		log.Printf("ERROR: Failed to create user during email verification, username='%s': %v", req.Username, err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 		return
 	}
 
-	// Create empty profile for user
 	profileQuery := `
-		INSERT INTO profiles (user_id, name)
-		VALUES ($1, $2)`
+		INSERT INTO profiles (user_id, name, surname, hackathon_id)
+		VALUES ($1, $2, $3, NULL)`
 
-	_, err = db.Pool.Exec(c, profileQuery, userID, req.Username)
+	_, err = database.Pool.Exec(c, profileQuery, userID, req.Username, "")
 	if err != nil {
+		log.Printf("ERROR: Failed to create profile during email verification for user %d: %v", userID, err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create profile"})
 		return
 	}
 
-	// Generate tokens
 	accessToken, refreshToken, err := utils.GenerateTokenPair(uint(userID), req.Email)
 	if err != nil {
+		log.Printf("ERROR: Failed to generate tokens during email verification for user %d: %v", userID, err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate tokens"})
 		return
 	}
 
 	delete(h.codes, req.Email)
 
+	log.Printf("INFO: User registered via email verification, id=%d, username='%s', email='%s'", userID, req.Username, req.Email)
 	c.JSON(http.StatusOK, gin.H{
 		"access_token":  accessToken,
 		"refresh_token": refreshToken,
@@ -270,33 +280,28 @@ func (h *AuthHandler) TelegramLogin(c *gin.Context) {
 func (h *AuthHandler) VerifyTelegram(c *gin.Context) {
 	var req map[string]string
 
-	// Извлекаем параметры из тела запроса
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request format"})
 		return
 	}
 
-	// Проверяем подлинность данных с помощью TelegramService
 	if !h.telegramService.ValidateAuthData(req) {
+		log.Printf("WARN: Invalid Telegram auth data attempt")
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid Telegram data"})
 		return
 	}
 
-	// Извлекаем данные пользователя
 	telegramID := req["id"]
 	username := req["username"]
 
-	// Здесь надо будет добавить логику проверки или регистрации пользователя в БД
-	// Например: findOrCreateUser(telegramID, username)
-
-	// Создаем токены
-	accessToken, refreshToken, err := utils.GenerateTokenPair(1, username) // Реальный ID пользователя заменить на 1
+	accessToken, refreshToken, err := utils.GenerateTokenPair(1, username)
 	if err != nil {
+		log.Printf("ERROR: Failed to generate tokens for Telegram auth: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate tokens"})
 		return
 	}
 
-	// Возвращаем токены клиенту
+	log.Printf("INFO: User logged in via Telegram, telegram_id='%s', username='%s'", telegramID, username)
 	c.JSON(http.StatusOK, gin.H{
 		"message":       "Login successful",
 		"telegram_id":   telegramID,

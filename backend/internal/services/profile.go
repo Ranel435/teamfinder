@@ -6,9 +6,7 @@ import (
 	"teamfinder/backend/internal/models"
 )
 
-type ProfileService struct {
-	// Add dependencies like database connection here
-}
+type ProfileService struct{}
 
 func NewProfileService() *ProfileService {
 	return &ProfileService{}
@@ -16,11 +14,11 @@ func NewProfileService() *ProfileService {
 
 func (s *ProfileService) GetProfilesByHackathonID(hackathonID int) ([]models.Profile, error) {
 	query := `
-		SELECT p.id, p.user_id, p.name, p.academic_group, p.telegram_handle, 
-			   p.desired_role, p.skills, p.about_me, p.achievements, p.status 
-		FROM profiles p
-		JOIN hackathon_profiles hp ON p.id = hp.profile_id
-		WHERE hp.hackathon_id = $1`
+		SELECT id, user_id, hackathon_id, name, surname, academic_group, 
+			   telegram_handle, desired_role, skills, about_me, achievements, status 
+		FROM profiles
+		WHERE hackathon_id = $1 AND status = 'active'
+		ORDER BY id DESC`
 
 	rows, err := database.Pool.Query(context.Background(), query, hackathonID)
 	if err != nil {
@@ -31,8 +29,8 @@ func (s *ProfileService) GetProfilesByHackathonID(hackathonID int) ([]models.Pro
 	var profiles []models.Profile
 	for rows.Next() {
 		var p models.Profile
-		err := rows.Scan(&p.ID, &p.UserID, &p.Name, &p.AcademicGroup,
-			&p.TelegramHandle, &p.DesiredRole, &p.Skills,
+		err := rows.Scan(&p.ID, &p.UserID, &p.HackathonID, &p.Name, &p.Surname,
+			&p.AcademicGroup, &p.TelegramHandle, &p.DesiredRole, &p.Skills,
 			&p.AboutMe, &p.Achievements, &p.Status)
 		if err != nil {
 			return nil, err
@@ -44,14 +42,14 @@ func (s *ProfileService) GetProfilesByHackathonID(hackathonID int) ([]models.Pro
 
 func (s *ProfileService) CreateProfile(profile *models.Profile) (int, error) {
 	query := `
-		INSERT INTO profiles (user_id, name, surname, academic_group, telegram_handle, 
+		INSERT INTO profiles (user_id, hackathon_id, name, surname, academic_group, telegram_handle, 
 			desired_role, skills, about_me, achievements, status)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
 		RETURNING id`
 
 	var id int
 	err := database.Pool.QueryRow(context.Background(), query,
-		profile.UserID, profile.Name, profile.Surname, profile.AcademicGroup,
+		profile.UserID, profile.HackathonID, profile.Name, profile.Surname, profile.AcademicGroup,
 		profile.TelegramHandle, profile.DesiredRole, profile.Skills,
 		profile.AboutMe, profile.Achievements, profile.Status).Scan(&id)
 
@@ -59,13 +57,42 @@ func (s *ProfileService) CreateProfile(profile *models.Profile) (int, error) {
 }
 
 func (s *ProfileService) GetProfileByID(hackathonID, profileID int) (*models.Profile, error) {
-	return nil, nil
+	query := `
+		SELECT id, user_id, hackathon_id, name, surname, academic_group,
+			   telegram_handle, desired_role, skills, about_me, achievements, status
+		FROM profiles 
+		WHERE id = $1 AND hackathon_id = $2`
+
+	var profile models.Profile
+	err := database.Pool.QueryRow(context.Background(), query, profileID, hackathonID).Scan(
+		&profile.ID, &profile.UserID, &profile.HackathonID, &profile.Name, &profile.Surname,
+		&profile.AcademicGroup, &profile.TelegramHandle, &profile.DesiredRole,
+		&profile.Skills, &profile.AboutMe, &profile.Achievements, &profile.Status)
+
+	if err != nil {
+		return nil, err
+	}
+	return &profile, nil
 }
 
 func (s *ProfileService) UpdateProfile(hackathonID, profileID int, profile *models.Profile) error {
-	return nil
+	query := `
+		UPDATE profiles SET 
+			name = $1, surname = $2, academic_group = $3, telegram_handle = $4,
+			desired_role = $5, skills = $6, about_me = $7, achievements = $8,
+			status = $9, updated_at = CURRENT_TIMESTAMP
+		WHERE id = $10 AND hackathon_id = $11`
+
+	_, err := database.Pool.Exec(context.Background(), query,
+		profile.Name, profile.Surname, profile.AcademicGroup, profile.TelegramHandle,
+		profile.DesiredRole, profile.Skills, profile.AboutMe, profile.Achievements,
+		profile.Status, profileID, hackathonID)
+
+	return err
 }
 
 func (s *ProfileService) DeleteProfile(hackathonID, profileID int) error {
-	return nil
+	query := `DELETE FROM profiles WHERE id = $1 AND hackathon_id = $2`
+	_, err := database.Pool.Exec(context.Background(), query, profileID, hackathonID)
+	return err
 }

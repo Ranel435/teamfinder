@@ -6,5 +6,4 @@ type Hackathon struct {
 	Description string `json:"description"`
 	StartDate   string `json:"start_date"`
 	EndDate     string `json:"end_date"`
-	// Add other fields as needed
 }

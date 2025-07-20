@@ -4,44 +4,36 @@ import (
 	"context"
 	"log"
 	"teamfinder/backend/internal/config"
-	"teamfinder/backend/internal/db"
+	"teamfinder/backend/internal/database"
 	"teamfinder/backend/internal/middleware"
 	"teamfinder/backend/internal/pkg/server"
 	"teamfinder/backend/internal/pkg/storage"
 )
 
 func main() {
-	//==========> DATA BASE (POSTGRESQL)
-	// Загрузка конфигурации
 	cfg := config.LoadConfig()
 
-	// Подключение к базе данных
-	db.ConnectDB(cfg.DatabaseURL)
-	defer db.Pool.Close()
+	if err := database.ConnectDB(cfg.DatabaseURL); err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+	defer database.CloseDB()
 
-	// Проверка подключения
-	if err := db.Pool.Ping(context.Background()); err != nil {
+	if err := database.Pool.Ping(context.Background()); err != nil {
 		log.Fatalf("Unable to ping database: %v", err)
 	}
 
-	// Запуск миграций
-	if err := db.RunMigrations(); err != nil {
+	if err := database.RunMigrations(); err != nil {
 		log.Printf("Warning: Failed to run migrations: %v", err)
 	}
 
-	//==========> SERVER (ROUTES)
-
-	// store init
 	store, err := storage.NewStorage()
 	if err != nil {
 		panic(err)
 	}
 
-	// router creating
 	router := server.New(":8090", &store)
 	router.Router.Use(middleware.CorsMiddleware())
 
-	// start server
 	router.Start()
 	log.Println("Backend started successfully")
 }
